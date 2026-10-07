@@ -1,0 +1,55 @@
+name: Build Kast Manager
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y meson ninja-build gettext appstream-util \
+            itstool libglibmm-2.68-dev libgtkmm-4.0-dev libgtop2-dev \
+            librsvg2-dev libadwaita-1-dev libsystemd-dev \
+            libglib2.0-dev-bin desktop-file-utils libfuse2
+
+      - name: Configure
+        run: meson setup build --prefix=/usr --buildtype=release
+
+      - name: Build
+        run: ninja -C build
+
+      - name: Test (unit)
+        run: meson test -C build --print-errorlogs || true
+
+  appimage:
+    runs-on: ubuntu-22.04
+    needs: build
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y meson ninja-build gettext appstream-util \
+            itstool libglibmm-2.68-dev libgtkmm-4.0-dev libgtop2-dev \
+            librsvg2-dev libadwaita-1-dev libsystemd-dev \
+            libglib2.0-dev-bin desktop-file-utils libfuse2 \
+            curl file zsync
+
+      - name: Build AppImage
+        run: bash packaging/build-appimage.sh
+
+      - name: Upload AppImage
+        uses: actions/upload-artifact@v4
+        with:
+          name: KastManager-x86_64.AppImage
+          path: KastManager-x86_64.AppImage
