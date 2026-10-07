@@ -475,7 +475,7 @@ on_activate_about (GSimpleAction *,
     NULL
   };
 
-  about_dialog = adw_about_dialog_new_from_appdata ("/org/gnome/gnome-system-monitor/metainfo.xml",
+  about_dialog = adw_about_dialog_new_from_appdata ("/io/github/tejaskhanna989/KastManager/metainfo.xml",
                                                     VERSION);
 
   adw_about_dialog_set_copyright (ADW_ABOUT_DIALOG (about_dialog),
@@ -500,7 +500,7 @@ on_activate_keyboard_shortcuts (GSimpleAction *,
   GError *err = NULL;
   AdwDialog *shortcuts_dialog;
 
-  gtk_builder_add_from_resource (builder, "/org/gnome/gnome-system-monitor/shortcuts-dialog.ui", &err);
+  gtk_builder_add_from_resource (builder, "/io/github/tejaskhanna989/KastManager/shortcuts-dialog.ui", &err);
   if (err != NULL)
     g_error ("%s", err->message);
 
@@ -843,16 +843,16 @@ create_main_window (GsmApplication *app)
   GtkBuilder *builder = gtk_builder_new ();
   GError *err = NULL;
 
-  gtk_builder_add_from_resource (builder, "/org/gnome/gnome-system-monitor/data/interface.ui", &err);
+  gtk_builder_add_from_resource (builder, "/io/github/tejaskhanna989/KastManager/data/interface.ui", &err);
   if (err != NULL)
     g_error ("%s", err->message);
-  gtk_builder_add_from_resource (builder, "/org/gnome/gnome-system-monitor/data/menus.ui", &err);
+  gtk_builder_add_from_resource (builder, "/io/github/tejaskhanna989/KastManager/data/menus.ui", &err);
   if (err != NULL)
     g_error ("%s", err->message);
 
   app->main_window = ADW_APPLICATION_WINDOW (gtk_builder_get_object (builder, "main_window"));
   gtk_window_set_application (GTK_WINDOW (app->main_window), app->gobj ());
-  gtk_widget_set_name (GTK_WIDGET (app->main_window), "gnome-system-monitor");
+  gtk_widget_set_name (GTK_WIDGET (app->main_window), "kast-manager");
 
   /* create the main stack */
   app->stack = ADW_VIEW_STACK (gtk_builder_get_object (builder, "stack"));

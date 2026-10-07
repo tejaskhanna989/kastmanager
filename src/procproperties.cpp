@@ -216,7 +216,7 @@ create_single_procproperties_dialog (GtkTreeModel *model,
   GtkBuilder *builder = gtk_builder_new ();
   GError *err = NULL;
 
-  gtk_builder_add_from_resource (builder, "/org/gnome/gnome-system-monitor/data/procproperties.ui", &err);
+  gtk_builder_add_from_resource (builder, "/io/github/tejaskhanna989/KastManager/data/procproperties.ui", &err);
   if (err != NULL)
     g_error ("%s", err->message);
 

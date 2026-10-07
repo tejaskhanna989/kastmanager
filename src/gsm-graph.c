@@ -1,5 +1,5 @@
 /*
- * GNOME System Monitor graph
+ * Kast Manager graph
  * Copyright (C) 2022 Ondřej Míchal <harrymichal@seznam.cz>
  * All rights reserved.
  *

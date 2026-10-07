@@ -192,7 +192,7 @@ create_preferences_dialog (GsmApplication *app)
     return;
 
   builder = gtk_builder_new ();
-  gtk_builder_add_from_resource (builder, "/org/gnome/gnome-system-monitor/data/preferences.ui", &err);
+  gtk_builder_add_from_resource (builder, "/io/github/tejaskhanna989/KastManager/data/preferences.ui", &err);
   if (err != NULL)
     {
       procman_debug ("problem loading preferences ui %s", err->message);

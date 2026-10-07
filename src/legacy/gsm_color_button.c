@@ -275,10 +275,10 @@ gsm_color_button_snapshot (GtkWidget   *widget,
       case GSMCP_TYPE_NETWORK_IN:
         if (priv->image_buffer == NULL)
           priv->image_buffer =
-            fill_image_buffer_from_resource (cr, "/org/gnome/gnome-system-monitor/pixmaps/arrow_overlay.svg");
+            fill_image_buffer_from_resource (cr, "/io/github/tejaskhanna989/KastManager/pixmaps/arrow_overlay.svg");
         if (priv->mask_buffer == NULL)
           priv->mask_buffer =
-            fill_image_buffer_from_resource (cr, "/org/gnome/gnome-system-monitor/pixmaps/arrow_mask.svg");
+            fill_image_buffer_from_resource (cr, "/io/github/tejaskhanna989/KastManager/pixmaps/arrow_mask.svg");
 
         gtk_widget_set_size_request (widget, 32, 32);
         gsm_color_button_draw_colored_icon (cr, priv->image_buffer, priv->mask_buffer, TRUE);
@@ -288,10 +288,10 @@ gsm_color_button_snapshot (GtkWidget   *widget,
       case GSMCP_TYPE_NETWORK_OUT:
         if (priv->image_buffer == NULL)
           priv->image_buffer =
-            fill_image_buffer_from_resource (cr, "/org/gnome/gnome-system-monitor/pixmaps/arrow_overlay.svg");
+            fill_image_buffer_from_resource (cr, "/io/github/tejaskhanna989/KastManager/pixmaps/arrow_overlay.svg");
         if (priv->mask_buffer == NULL)
           priv->mask_buffer =
-            fill_image_buffer_from_resource (cr, "/org/gnome/gnome-system-monitor/pixmaps/arrow_mask.svg");
+            fill_image_buffer_from_resource (cr, "/io/github/tejaskhanna989/KastManager/pixmaps/arrow_mask.svg");
 
         gtk_widget_set_size_request (widget, 32, 32);
         gsm_color_button_draw_colored_icon (cr, priv->image_buffer, priv->mask_buffer, FALSE);
@@ -301,10 +301,10 @@ gsm_color_button_snapshot (GtkWidget   *widget,
       case GSMCP_TYPE_DISK_READ:
         if (priv->image_buffer == NULL)
           priv->image_buffer =
-            fill_image_buffer_from_resource (cr, "/org/gnome/gnome-system-monitor/pixmaps/arrow_overlay.svg");
+            fill_image_buffer_from_resource (cr, "/io/github/tejaskhanna989/KastManager/pixmaps/arrow_overlay.svg");
         if (priv->mask_buffer == NULL)
           priv->mask_buffer =
-            fill_image_buffer_from_resource (cr, "/org/gnome/gnome-system-monitor/pixmaps/arrow_mask.svg");
+            fill_image_buffer_from_resource (cr, "/io/github/tejaskhanna989/KastManager/pixmaps/arrow_mask.svg");
 
         gtk_widget_set_size_request (widget, 32, 32);
         gsm_color_button_draw_colored_icon (cr, priv->image_buffer, priv->mask_buffer, FALSE);
@@ -314,10 +314,10 @@ gsm_color_button_snapshot (GtkWidget   *widget,
       case GSMCP_TYPE_DISK_WRITE:
         if (priv->image_buffer == NULL)
           priv->image_buffer =
-            fill_image_buffer_from_resource (cr, "/org/gnome/gnome-system-monitor/pixmaps/arrow_overlay.svg");
+            fill_image_buffer_from_resource (cr, "/io/github/tejaskhanna989/KastManager/pixmaps/arrow_overlay.svg");
         if (priv->mask_buffer == NULL)
           priv->mask_buffer =
-            fill_image_buffer_from_resource (cr, "/org/gnome/gnome-system-monitor/pixmaps/arrow_mask.svg");
+            fill_image_buffer_from_resource (cr, "/io/github/tejaskhanna989/KastManager/pixmaps/arrow_mask.svg");
 
         gtk_widget_set_size_request (widget, 32, 32);
         gsm_color_button_draw_colored_icon (cr, priv->image_buffer, priv->mask_buffer, TRUE);

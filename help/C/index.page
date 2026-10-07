@@ -4,9 +4,9 @@
       id="index">
   <info>
     <revision pkgversion="3.11" date="2014-01-27" status="review"/>
-    <title type='link' role='trail'>System Monitor</title>
-    <title type='link'>System Monitor</title>
-    <title type='text'>System Monitor</title>
+    <title type='link' role='trail'>Kast Manager</title>
+    <title type='link'>Kast Manager</title>
+    <title type='text'>Kast Manager</title>
 
     <include href="legal.xml" xmlns="http://www.w3.org/2001/XInclude"/>
 
@@ -22,16 +22,16 @@
       <years>2017</years>
     </credit>
 
-    <desc>System Monitor shows you what programs are running and how much processor time, memory, and disk space are being used.</desc>
+    <desc>Kast Manager shows you what programs are running and how much processor time, memory, and disk space are being used.</desc>
 
   </info>
 
 <title>
-<media src="figures/org.gnome.SystemMonitor.svg" width="48px" height="48px" its:translate="no" />
-  System Monitor
+<media src="figures/io.github.tejaskhanna989.KastManager.svg" width="48px" height="48px" its:translate="no" />
+  Kast Manager
 </title>
 
-<p><app>System Monitor</app> shows you what programs are running and how much processor time, memory, and disk space are being used.</p>
+<p><app>Kast Manager</app> shows you what programs are running and how much processor time, memory, and disk space are being used.</p>
 
 <section id="cpu">
   <title>Monitoring the CPU</title>

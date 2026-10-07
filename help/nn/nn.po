@@ -1,11 +1,11 @@
-# Norwegian Nynorsk translation for gnome-system-monitor.
-# Copyright (C) 2026 gnome-system-monitor's COPYRIGHT HOLDER
-# This file is distributed under the same license as the gnome-system-monitor package.
+# Norwegian Nynorsk translation for kast-manager.
+# Copyright (C) 2026 kast-manager's COPYRIGHT HOLDER
+# This file is distributed under the same license as the kast-manager package.
 # Roy-Magne Mo <rmo@sunnmore.net>, 2026.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: gnome-system-monitor main\n"
+"Project-Id-Version: kast-manager main\n"
 "POT-Creation-Date: 2026-09-16 04:51+0000\n"
 "PO-Revision-Date: 2026-09-19 00:34+0200\n"
 "Last-Translator: Roy-Magne Mo <rmo@sunnmore.net>\n"
@@ -191,7 +191,7 @@ msgstr ""
 #. (itstool) path: item/p
 #: C/process-identify-file.page:38
 msgid ""
-"Click <guiseq><gui>System Monitor</gui><gui>Search for Open Files</gui></"
+"Click <guiseq><gui>Kast Manager</gui><gui>Search for Open Files</gui></"
 "guiseq>."
 msgstr ""
 "Klikk <guiseq><gui>Systemovervakar</gui><gui>Søk etter opne "
@@ -289,7 +289,7 @@ msgstr "For å vise ulike eller tilleggsinformasjonar i prosesslista:"
 #. (itstool) path: item/p
 #: C/process-columns.page:30 C/process-update-speed.page:38 C/net-bits.page:38
 #: C/mem-check.page:65
-msgid "Click <guiseq><gui>System Monitor</gui><gui>Preferences</gui></guiseq>."
+msgid "Click <guiseq><gui>Kast Manager</gui><gui>Preferences</gui></guiseq>."
 msgstr ""
 "Klikk <guiseq><gui>Systemovervakar</gui><gui>Innstillingar</gui></guiseq>."
 
@@ -320,7 +320,7 @@ msgstr ""
 #. (itstool) path: info/desc
 #: C/process-update-speed.page:22
 msgid ""
-"Refresh the information shown in the System Monitor with a longer or shorter "
+"Refresh the information shown in the Kast Manager with a longer or shorter "
 "interval."
 msgstr ""
 "Oppdater informasjonen som vert vist i Systemovervakinga med eit lengre "
@@ -354,7 +354,7 @@ msgstr "Oppgi ein verdi for <gui>Oppdateringsintervall i sekund</gui>."
 #: C/process-update-speed.page:48
 msgid ""
 "Setting the <gui>Update interval</gui> to a lower value will cause "
-"<gui>System Monitor</gui> itself to use more of the CPU."
+"<gui>Kast Manager</gui> itself to use more of the CPU."
 msgstr ""
 "Å setje <gui>Oppdateringsintervall</gui> til ein lågare verdi gjer at "
 "<gui>Systemovervakar</gui> sjølv brukar meir av prosessoren."
@@ -542,7 +542,7 @@ msgstr ""
 #. (itstool) path: info/desc
 #: C/commandline.page:21
 msgid ""
-"Information in System Monitor can also be found using command line tools."
+"Information in Kast Manager can also be found using command line tools."
 msgstr ""
 "Informasjon i Systemovervaking kan også finnast ved hjelp av "
 "kommandolinjeverktøy."
@@ -555,10 +555,10 @@ msgstr "Få same informasjon frå kommandolinja"
 #. (itstool) path: page/p
 #: C/commandline.page:33
 msgid ""
-"Most of the information displayed by System Monitor can also be obtained "
+"Most of the information displayed by Kast Manager can also be obtained "
 "using these command line tools."
 msgstr ""
-"Det meste av informasjonen som System Monitor viser kan òg hentast med desse"
+"Det meste av informasjonen som Kast Manager viser kan òg hentast med desse"
 " kommandolinjeverktøya."
 
 #. (itstool) path: td/p
@@ -905,7 +905,7 @@ msgstr "Er GiB det same som GB (gigabyte)?"
 msgid ""
 "The memory and disk space statistics are displayed using <em>IEC binary "
 "prefixes</em>, KiB, MiB, GiB, TiB (for kibi, mebi, gibi and tebi). These are "
-"intended to distinguish binary reporting of sizes used in System Monitor "
+"intended to distinguish binary reporting of sizes used in Kast Manager "
 "(multiples of 1024) from decimal sizes (multiples of 1000) commonly used, "
 "for instance, in packaging of hard disks."
 msgstr ""
@@ -988,7 +988,7 @@ msgstr ""
 msgid ""
 "You can also change how rapidly the chart is updated (the update interval), "
 "and how the lines for each processor are displayed (e.g. as a stacked area "
-"chart). Change the relevant options by clicking <gui>System Monitor</gui>, "
+"chart). Change the relevant options by clicking <gui>Kast Manager</gui>, "
 "then select <gui>Preferences</gui>, and then the <gui>Resources</gui> tab."
 msgstr ""
 "Du kan òg endre kor raskt diagrammet vert oppdatert "
@@ -1853,19 +1853,19 @@ msgstr ""
 #. (itstool) path: info/title
 #: C/index.page:7
 msgctxt "link:trail"
-msgid "System Monitor"
+msgid "Kast Manager"
 msgstr "Systemovervakar"
 
 #. (itstool) path: info/title
 #: C/index.page:8
 msgctxt "link"
-msgid "System Monitor"
+msgid "Kast Manager"
 msgstr "Systemovervakar"
 
 #. (itstool) path: info/title
 #: C/index.page:9
 msgctxt "text"
-msgid "System Monitor"
+msgid "Kast Manager"
 msgstr "Systemovervakar"
 
 #. (itstool) path: credit/name
@@ -1881,7 +1881,7 @@ msgstr "2017"
 #. (itstool) path: info/desc
 #: C/index.page:25
 msgid ""
-"System Monitor shows you what programs are running and how much processor "
+"Kast Manager shows you what programs are running and how much processor "
 "time, memory, and disk space are being used."
 msgstr ""
 "Systemovervaking viser kva appar som køyrer og kor mykje prosessortid, minne"
@@ -1889,13 +1889,13 @@ msgstr ""
 
 #. (itstool) path: page/title
 #: C/index.page:29
-msgid "<_:media-1/> System Monitor"
+msgid "<_:media-1/> Kast Manager"
 msgstr "<_:media-1/> Systemovervaking"
 
 #. (itstool) path: page/p
 #: C/index.page:34
 msgid ""
-"<app>System Monitor</app> shows you what programs are running and how much "
+"<app>Kast Manager</app> shows you what programs are running and how much "
 "processor time, memory, and disk space are being used."
 msgstr ""
 "<app>Systemovervakar</app> viser kva appar som køyrer og kor mykje "
@@ -1952,7 +1952,7 @@ msgstr "Tving ein app til å avslutte («drep») med ein gong"
 #: C/process-kill.page:23
 msgid ""
 "If a program stops working or freezes, you can force it to close (\"kill\" "
-"it) using <app>System Monitor</app>. Go to the <gui>Processes</gui> tab and "
+"it) using <app>Kast Manager</app>. Go to the <gui>Processes</gui> tab and "
 "click to select the process you want to end. First, click <gui>End Process</"
 "gui> to try to let it exit cleanly."
 msgstr ""
@@ -2123,7 +2123,7 @@ msgstr ""
 #. (itstool) path: page/p
 #: C/fs-showall.page:23
 msgid ""
-"To see these special filesystems, click <guiseq><gui>System Monitor</"
+"To see these special filesystems, click <guiseq><gui>Kast Manager</"
 "gui><gui>Preferences</gui></guiseq>, and under the <gui>File Systems</gui> "
 "tab, check <gui>Show all file systems</gui>."
 msgstr ""

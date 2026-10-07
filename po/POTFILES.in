@@ -1,16 +1,16 @@
 # List of source files containing translatable strings.
 # Please keep this file sorted alphabetically.
 data/disks.ui
-data/gnome-system-monitor-kde.desktop.in.in
+data/kast-manager-kde.desktop.in.in
 data/shortcuts-dialog.ui
 data/interface.ui
 data/lsof.ui
 data/memmaps.ui
 data/menus.ui
 data/openfiles.ui
-data/org.gnome.gnome-system-monitor.policy.in.in
-data/org.gnome.SystemMonitor.metainfo.xml.in.in
-data/org.gnome.SystemMonitor.desktop.in.in
+data/io.github.tejaskhanna989.KastManager.policy.in.in
+data/io.github.tejaskhanna989.KastManager.metainfo.xml.in.in
+data/io.github.tejaskhanna989.KastManager.desktop.in.in
 data/preferences.ui
 data/procproperties.ui
 data/renice.ui
@@ -31,7 +31,7 @@ src/main.cpp
 src/memmaps.cpp
 src/open-file.cpp
 src/openfiles.cpp
-src/org.gnome.gnome-system-monitor.gschema.xml.in
+src/io.github.tejaskhanna989.KastManager.gschema.xml.in
 src/prefsdialog.cpp
 src/procactions.cpp
 src/procdialogs.cpp

@@ -5,7 +5,7 @@ desktop_files = []
 
 desktop_files += i18n.merge_file(
         input: configure_file(
-                  input: 'org.gnome.SystemMonitor.desktop.in.in',
+                  input: 'io.github.tejaskhanna989.KastManager.desktop.in.in',
                  output: '@0@.desktop.in'.format(app_id),
           configuration: dataconf,
         ),
@@ -18,11 +18,11 @@ desktop_files += i18n.merge_file(
 
 desktop_files += i18n.merge_file(
         input: configure_file(
-                  input: 'gnome-system-monitor-kde.desktop.in.in',
-                 output: 'gnome-system-monitor-kde.desktop.in',
+                  input: 'kast-manager-kde.desktop.in.in',
+                 output: 'kast-manager-kde.desktop.in',
           configuration: dataconf,
         ),
-       output: 'gnome-system-monitor-kde.desktop',
+       output: 'kast-manager-kde.desktop',
          type: 'desktop',
        po_dir: '../po',
       install: true,
@@ -32,7 +32,7 @@ desktop_files += i18n.merge_file(
 metainfo_file = i18n.merge_file(
   input : configure_file(
   configuration: dataconf,
-  input : 'org.gnome.SystemMonitor.metainfo.xml.in.in',
+  input : 'io.github.tejaskhanna989.KastManager.metainfo.xml.in.in',
   output: '@0@.metainfo.xml.in'.format(app_id),
   ),
   output: '@0@.metainfo.xml'.format(app_id),
@@ -44,10 +44,10 @@ metainfo_file = i18n.merge_file(
 i18n.merge_file(
   input : configure_file(
   configuration: dataconf,
-  input : 'org.gnome.gnome-system-monitor.policy.in.in',
-  output: 'org.gnome.gnome-system-monitor.policy.in'
+  input : 'io.github.tejaskhanna989.KastManager.policy.in.in',
+  output: 'io.github.tejaskhanna989.KastManager.policy.in'
   ),
-  output: 'org.gnome.gnome-system-monitor.policy',
+  output: 'io.github.tejaskhanna989.KastManager.policy',
   po_dir: '../po',
   data_dirs: '../po',
   install: true,
@@ -55,7 +55,7 @@ i18n.merge_file(
 )
 
 configure_file(
-  input: 'org.gnome.SystemMonitor.service.in',
+  input: 'io.github.tejaskhanna989.KastManager.service.in',
   output: '@0@.service'.format(app_id),
   configuration: dataconf,
   install: true,

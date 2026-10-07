@@ -1,5 +1,5 @@
 /*
- * SPDX-License-Identifier: GPL-2.0-or-later
+ * SPDX-License-Identifier: GPL-3.0-or-later-or-later
  *
  * SPDX-FileCopyrightText: Copyright (C) 2020 Jacob Barkdull
  */
@@ -232,7 +232,7 @@ create_single_set_affinity_dialog (GtkTreeModel *model,
   GtkBuilder *builder = gtk_builder_new ();
   GError *err = NULL;
 
-  gtk_builder_add_from_resource (builder, "/org/gnome/gnome-system-monitor/data/setaffinity.ui", &err);
+  gtk_builder_add_from_resource (builder, "/io/github/tejaskhanna989/KastManager/data/setaffinity.ui", &err);
   if (err != NULL)
     g_error ("%s", err->message);
 

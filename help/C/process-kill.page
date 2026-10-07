@@ -20,7 +20,7 @@
 
   <title>Force Stop ("kill") a program immediately</title>
 
-  <p>If a program stops working or freezes, you can force it to close ("kill" it) using <app>System Monitor</app>. Go to the <gui>Processes</gui> tab and click to select the process you want to end. First, click <gui>End Process</gui> to try to let it exit cleanly.</p>
+  <p>If a program stops working or freezes, you can force it to close ("kill" it) using <app>Kast Manager</app>. Go to the <gui>Processes</gui> tab and click to select the process you want to end. First, click <gui>End Process</gui> to try to let it exit cleanly.</p>
   
   <p>If the process does not close after a few seconds, right-click it and select <gui>Force Stop</gui> from the menu that appears.</p>
     

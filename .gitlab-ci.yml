@@ -1,4 +1,4 @@
-# Test whether building gnome-system-monitor works on fedora and ubuntu.
+# Test whether building kast-manager works on fedora and ubuntu.
 # Tests against the latest libtop master version.
 
 stages:
@@ -96,7 +96,7 @@ build-fedora:
     - ../autogen.sh --disable-dependency-tracking --prefix=/usr --libdir=/usr/lib64
     - make
     - make install
-    - cd ../.. # build and install gnome-system-monitor
+    - cd ../.. # build and install kast-manager
     - meson "${MESON_BUILD_DIR}" -Dsystemd=false
     - ninja -C "${MESON_BUILD_DIR}"
     - ninja -C "${MESON_BUILD_DIR}" install
@@ -117,7 +117,7 @@ build-ubuntu:
     - ../autogen.sh
     - make
     - make install
-    - cd ../..  # build and install gnome-system-monitor
+    - cd ../..  # build and install kast-manager
     - meson "${MESON_BUILD_DIR}"
     - ninja -C "${MESON_BUILD_DIR}"
     - ninja -C "${MESON_BUILD_DIR}" install

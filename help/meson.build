@@ -30,6 +30,6 @@ gnome.yelp(meson.project_name(),
     'units.page',
   ],
   media: [
-    'figures/org.gnome.SystemMonitor.svg',
+    'figures/io.github.tejaskhanna989.KastManager.svg',
   ],
 )

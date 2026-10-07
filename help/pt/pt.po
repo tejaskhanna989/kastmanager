@@ -1,12 +1,12 @@
-# Portuguese translation for gnome-system-monitor.
-# Copyright (C) 2016 gnome-system-monitor's COPYRIGHT HOLDER
-# This file is distributed under the same license as the gnome-system-monitor package.
+# Portuguese translation for kast-manager.
+# Copyright (C) 2016 kast-manager's COPYRIGHT HOLDER
+# This file is distributed under the same license as the kast-manager package.
 # Tiago Santos <tiagofsantos81@sapo.pt>, 2016.
 #   CAT com base na versão espanhola
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: gnome-system-monitor master\n"
+"Project-Id-Version: kast-manager master\n"
 "POT-Creation-Date: 2016-08-29 21:51+0000\n"
 "PO-Revision-Date: 2016-08-31 01:46+0100\n"
 "Language-Team: Portuguese <gnome_pt@yahoogroups.com>\n"
@@ -64,7 +64,7 @@ msgstr "2014"
 #. (itstool) path: info/desc
 #: C/commandline.page:21
 msgid ""
-"Information in System Monitor can also be found using command line tools."
+"Information in Kast Manager can also be found using command line tools."
 msgstr ""
 "A informação do Monitor do sistema também se pode obter utilizando as "
 "ferramentas da linha de comandos."
@@ -77,7 +77,7 @@ msgstr "Obter a mesma informação utilizando a linha de comandos"
 #. (itstool) path: page/p
 #: C/commandline.page:33
 msgid ""
-"Most of the information displayed by System Monitor can also be obtained "
+"Most of the information displayed by Kast Manager can also be obtained "
 "using these command line tools."
 msgstr ""
 "A maior parte da informação mostrada pelo Monitor do sistema pode-se "
@@ -193,7 +193,7 @@ msgstr ""
 msgid ""
 "You can also change how rapidly the chart is updated (the update interval), "
 "and how the lines for each processor are displayed (e.g. as a stacked area "
-"chart). Change the relevant options by clicking <gui>System Monitor</gui>, "
+"chart). Change the relevant options by clicking <gui>Kast Manager</gui>, "
 "then select <gui>Preferences</gui>, and then the <gui>Resources</gui> tab."
 msgstr ""
 "Também pode a frequência com a que se atualiza o gráfico (o intervalo "
@@ -626,7 +626,7 @@ msgstr ""
 #. (itstool) path: page/p
 #: C/fs-showall.page:23
 msgid ""
-"To see these special filesystems, click <guiseq><gui>System Monitor</"
+"To see these special filesystems, click <guiseq><gui>Kast Manager</"
 "gui><gui>Preferences</gui></guiseq>, and under the <gui>File Systems</gui> "
 "tab, check <gui>Show all file systems</gui>."
 msgstr ""
@@ -654,19 +654,19 @@ msgstr ""
 #. (itstool) path: info/title
 #: C/index.page:6
 msgctxt "link"
-msgid "System Monitor"
+msgid "Kast Manager"
 msgstr "Monitor do sistema"
 
 #. (itstool) path: info/title
 #: C/index.page:7
 msgctxt "text"
-msgid "System Monitor"
+msgid "Kast Manager"
 msgstr "Monitor do sistema"
 
 #. (itstool) path: info/desc
 #: C/index.page:17
 msgid ""
-"System Monitor shows you what programs are running and how much processor "
+"Kast Manager shows you what programs are running and how much processor "
 "time, memory, and disk space are being used."
 msgstr ""
 "O monitor do sistema mostra que programas estão em execução e quanto "
@@ -674,7 +674,7 @@ msgstr ""
 
 #. (itstool) path: page/title
 #: C/index.page:21
-msgid "System Monitor"
+msgid "Kast Manager"
 msgstr "Monitor do sistema"
 
 #. (itstool) path: links/title
@@ -797,7 +797,7 @@ msgstr "Para mudar o <gui>intervalo de actualização</gui>:"
 
 #. (itstool) path: item/p
 #: C/mem-check.page:65 C/net-bits.page:38 C/process-update-speed.page:38
-msgid "Click <guiseq><gui>System Monitor</gui><gui>Preferences</gui></guiseq>."
+msgid "Click <guiseq><gui>Kast Manager</gui><gui>Preferences</gui></guiseq>."
 msgstr ""
 "Carregue em <guiseq><gui>Monitor do sistema</gui><gui>Preferências</gui></"
 "guiseq>."
@@ -1363,7 +1363,7 @@ msgstr ""
 #. (itstool) path: item/p
 #: C/process-identify-file.page:38
 msgid ""
-"Click <guiseq><gui>System Monitor</gui><gui>Search for Open Files</gui></"
+"Click <guiseq><gui>Kast Manager</gui><gui>Search for Open Files</gui></"
 "guiseq>."
 msgstr ""
 "Carregue em <guiseq><gui>Monitor do sistema</gui><gui>Procurar ficheiros "
@@ -1473,7 +1473,7 @@ msgstr "Matar (fechar) um programa imediatamente"
 #: C/process-kill.page:23
 msgid ""
 "If a program stops working or freezes, you can force it to close (\"kill\" "
-"it) using <app>System Monitor</app>. Go to the <gui>Processes</gui> tab and "
+"it) using <app>Kast Manager</app>. Go to the <gui>Processes</gui> tab and "
 "click to select the process you want to kill. Then, click <gui>End Process</"
 "gui>."
 msgstr ""
@@ -1763,7 +1763,7 @@ msgstr "A maioria dos processos estarão em execução ou dormindo."
 #. (itstool) path: info/desc
 #: C/process-update-speed.page:22
 msgid ""
-"Refresh the information shown in the System Monitor with a longer or shorter "
+"Refresh the information shown in the Kast Manager with a longer or shorter "
 "interval."
 msgstr ""
 "Actualizar a informação mostrada no Monitor do sistema com um "
@@ -1792,7 +1792,7 @@ msgstr ""
 #: C/process-update-speed.page:48
 msgid ""
 "Setting the <gui>Update interval</gui> to a lower value will cause "
-"<gui>System Monitor</gui> itself to use more of the CPU."
+"<gui>Kast Manager</gui> itself to use more of the CPU."
 msgstr ""
 "Configurar o <gui>Intervalo de actualização</gui> a um valor menor fará "
 "que o <gui>Monitor do sistema</gui> como tal use mais CPU."
@@ -1863,7 +1863,7 @@ msgstr "É o mesmo GiB que GB (gigabyte)?"
 msgid ""
 "The memory and disk space statistics are displayed using <em>IEC binary "
 "prefixes</em>, KiB, MiB, GiB, TiB (for kibi, mebi, gibi and tebi). These are "
-"intended to distinguish binary reporting of sizes used in System Monitor "
+"intended to distinguish binary reporting of sizes used in Kast Manager "
 "(multiples of 1024) from decimal sizes (multiples of 1000) commonly used, "
 "for instance, in packaging of hard disks."
 msgstr ""

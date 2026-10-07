@@ -3,11 +3,11 @@
  "-//freedesktop//DTD PolicyKit Policy Configuration 1.0//EN"
  "http://www.freedesktop.org/standards/PolicyKit/1.0/policyconfig.dtd">
 <policyconfig>
-  <vendor>The GNOME Project</vendor>
-  <vendor_url>http://www.gnome.org/</vendor_url>
-  <icon_name>org.gnome.SystemMonitor</icon_name>
+  <vendor>Kast</vendor>
+  <vendor_url>https://github.com/tejaskhanna989/kastmanager</vendor_url>
+  <icon_name>io.github.tejaskhanna989.KastManager</icon_name>
 
-  <action id="org.gnome.gnome-system-monitor.kill">
+  <action id="io.github.tejaskhanna989.KastManager.kill">
     <description>Kill process</description>
     <message>Privileges are required to control other users’ processes</message>
     <defaults>
@@ -18,7 +18,7 @@
     <annotate key="org.freedesktop.policykit.exec.path">@pkglibexecdir@/gsm-kill</annotate>
   </action>
 
-  <action id="org.gnome.gnome-system-monitor.renice">
+  <action id="io.github.tejaskhanna989.KastManager.renice">
     <description>Renice process</description>
     <message>Privileges are required to change the priority of processes</message>
     <defaults>

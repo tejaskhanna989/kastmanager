@@ -1,10 +1,10 @@
-# Basque translation for gnome-system-monitor.
-# Copyright (C) 2021 gnome-system-monitor's COPYRIGHT HOLDER
-# This file is distributed under the same license as the gnome-system-monitor package.
+# Basque translation for kast-manager.
+# Copyright (C) 2021 kast-manager's COPYRIGHT HOLDER
+# This file is distributed under the same license as the kast-manager package.
 # Asier Sarasua Garmendia <asiersarasua@ni.eus>, 2021, 2022, 2024.
 #
 msgid ""
-msgstr "Project-Id-Version: gnome-system-monitor master\n"
+msgstr "Project-Id-Version: kast-manager master\n"
 "POT-Creation-Date: 2024-03-29 03:57+0000\n"
 "PO-Revision-Date: 2024-05-05 05:05+0000\n"
 "Last-Translator: Asier Sarasua Garmendia <asiersarasua@ni.eus>\n"
@@ -252,7 +252,7 @@ msgstr "Sarearen abiadura bitetan bistaratzeko:"
 #. (itstool) path: item/p
 #: C/net-bits.page:38 C/process-update-speed.page:38 C/mem-check.page:65
 #: C/process-columns.page:30
-msgid "Click <guiseq><gui>System Monitor</gui><gui>Preferences</gui></guiseq>."
+msgid "Click <guiseq><gui>Kast Manager</gui><gui>Preferences</gui></guiseq>."
 msgstr "Joan <guiseq><gui>Sistemaren monitorea</gui><gui>Hobespenak</gui></guiseq> aukerara."
 
 #. (itstool) path: item/p
@@ -336,7 +336,7 @@ msgstr "<gui>Baliabideak</gui> fitxan ageri den <em>sistema-memoria</em> da (ale
 #. (itstool) path: info/desc
 #: C/process-update-speed.page:22
 msgid ""
-"Refresh the information shown in the System Monitor with a longer or shorter "
+"Refresh the information shown in the Kast Manager with a longer or shorter "
 "interval."
 msgstr "Freskatu sistemaren monitorean erakutsitako informazioa tarte luzeago edo laburragoan."
 
@@ -366,7 +366,7 @@ msgstr "Sartu balio bat <gui>Eguneratze-tartea segundotan</gui> aukerarako."
 #: C/process-update-speed.page:48
 msgid ""
 "Setting the <gui>Update interval</gui> to a lower value will cause "
-"<gui>System Monitor</gui> itself to use more of the CPU."
+"<gui>Kast Manager</gui> itself to use more of the CPU."
 msgstr "<gui>Eguneratze-tartea</gui> aukeraren balioa baxuagoa bada, <gui>Sistema-monitoreak</gui> beerak PUZ gehiago erabiliko du."
 
 #. (itstool) path: info/desc
@@ -577,7 +577,7 @@ msgstr "Ordenagailu askok prozesadore bat baino gehiago dute (<em>nukleo anitzek
 msgid ""
 "You can also change how rapidly the chart is updated (the update interval), "
 "and how the lines for each processor are displayed (e.g. as a stacked area "
-"chart). Change the relevant options by clicking <gui>System Monitor</gui>, "
+"chart). Change the relevant options by clicking <gui>Kast Manager</gui>, "
 "then select <gui>Preferences</gui>, and then the <gui>Resources</gui> tab."
 msgstr "Grafikoa zenbatero eguneratzen den eta prozesadore bakoitzaren marrak nola erakusten diren ere aldatu daiteke. Horretarako, ireki <gui>Sistema-monitorea</gui>, hautatu <gui>Hobespenak</gui> aukera eta ondoren <gui>Baliabideak</gui> fitxa."
 
@@ -1090,7 +1090,7 @@ msgstr "Hil (itxi) programa bat berehala"
 #: C/process-kill.page:23
 msgid ""
 "If a program stops working or freezes, you can force it to close (\"kill\" "
-"it) using <app>System Monitor</app>. Go to the <gui>Processes</gui> tab and "
+"it) using <app>Kast Manager</app>. Go to the <gui>Processes</gui> tab and "
 "click to select the process you want to kill. Then, click <gui>End Process</"
 "gui>."
 msgstr ""
@@ -1436,7 +1436,7 @@ msgstr ""
 #. (itstool) path: item/p
 #: C/process-identify-file.page:38
 msgid ""
-"Click <guiseq><gui>System Monitor</gui><gui>Search for Open Files</gui></"
+"Click <guiseq><gui>Kast Manager</gui><gui>Search for Open Files</gui></"
 "guiseq>."
 msgstr ""
 
@@ -1481,7 +1481,7 @@ msgstr ""
 #. (itstool) path: page/p
 #: C/fs-showall.page:23
 msgid ""
-"To see these special filesystems, click <guiseq><gui>System Monitor</"
+"To see these special filesystems, click <guiseq><gui>Kast Manager</"
 "gui><gui>Preferences</gui></guiseq>, and under the <gui>File Systems</gui> "
 "tab, check <gui>Show all file systems</gui>."
 msgstr ""
@@ -1499,7 +1499,7 @@ msgstr ""
 #. (itstool) path: info/desc
 #: C/commandline.page:21
 msgid ""
-"Information in System Monitor can also be found using command line tools."
+"Information in Kast Manager can also be found using command line tools."
 msgstr "Sistemaren monitorea aplikazioari buruzko informazioa komando-lerroko tresnen bidez ere aurkitu daiteke."
 
 #. (itstool) path: page/title
@@ -1510,7 +1510,7 @@ msgstr "Eskuratu informazio bera komando-lerroan"
 #. (itstool) path: page/p
 #: C/commandline.page:33
 msgid ""
-"Most of the information displayed by System Monitor can also be obtained "
+"Most of the information displayed by Kast Manager can also be obtained "
 "using these command line tools."
 msgstr "Sistemaren monitoreak bistaratutako informazio gehiena komando-lerroko tresnen bidez ere eskuratu daiteke."
 
@@ -1620,7 +1620,7 @@ msgstr "Gauza bera al dira GiB eta GB (gigabyte)?"
 msgid ""
 "The memory and disk space statistics are displayed using <em>IEC binary "
 "prefixes</em>, KiB, MiB, GiB, TiB (for kibi, mebi, gibi and tebi). These are "
-"intended to distinguish binary reporting of sizes used in System Monitor "
+"intended to distinguish binary reporting of sizes used in Kast Manager "
 "(multiples of 1024) from decimal sizes (multiples of 1000) commonly used, "
 "for instance, in packaging of hard disks."
 msgstr ""
@@ -1655,19 +1655,19 @@ msgstr "Kanpoko unitate bat, 1.0 TB (terabyte) dituela esaten bada, 0.909 TiB (t
 #. (itstool) path: info/title
 #: C/index.page:7
 msgctxt "link:trail"
-msgid "System Monitor"
+msgid "Kast Manager"
 msgstr "Sistemaren monitorea"
 
 #. (itstool) path: info/title
 #: C/index.page:8
 msgctxt "link"
-msgid "System Monitor"
+msgid "Kast Manager"
 msgstr "Sistemaren monitorea"
 
 #. (itstool) path: info/title
 #: C/index.page:9
 msgctxt "text"
-msgid "System Monitor"
+msgid "Kast Manager"
 msgstr "Sistemaren monitorea"
 
 #. (itstool) path: credit/name
@@ -1683,19 +1683,19 @@ msgstr "2017"
 #. (itstool) path: info/desc
 #: C/index.page:25
 msgid ""
-"System Monitor shows you what programs are running and how much processor "
+"Kast Manager shows you what programs are running and how much processor "
 "time, memory, and disk space are being used."
 msgstr "Sistemaren monitoreak erakusten du zein programak ari diren exekutatzen eta prozesadorearen zenbat denbora, zenbat memoria eta zenbat disko-espazio ari doren erabiltzen."
 
 #. (itstool) path: page/title
 #: C/index.page:29
-msgid "<_:media-1/> System Monitor"
+msgid "<_:media-1/> Kast Manager"
 msgstr "<_:media-1/> Sistemaren monitorea"
 
 #. (itstool) path: page/p
 #: C/index.page:34
 msgid ""
-"<app>System Monitor</app> shows you what programs are running and how much "
+"<app>Kast Manager</app> shows you what programs are running and how much "
 "processor time, memory, and disk space are being used."
 msgstr "<app>Sistemaren monitorea</app> aplikazioak erakusten du zein programak ari diren exekutatzen eta prozesadorearen zenbat denbora, zenbat memoria eta zenbat disko-espazio ari diren erabiltzen."
 

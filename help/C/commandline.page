@@ -18,7 +18,7 @@
       <years>2014</years>
     </credit>
 
-    <desc>Information in System Monitor can also be found using command line
+    <desc>Information in Kast Manager can also be found using command line
     tools.</desc>
   </info>
 
@@ -27,10 +27,10 @@
   <comment>
     <cite date="2011-06-18" href="mailto:philbull@gmail.com">Phil Bull</cite>
     <p>Briefly list a few useful command line tools which can provide some of
-    the same information as System Monitor. Don't go into too much detail.</p>
+    the same information as Kast Manager. Don't go into too much detail.</p>
   </comment>
 
-  <p>Most of the information displayed by System Monitor can also be obtained
+  <p>Most of the information displayed by Kast Manager can also be obtained
   using these command line tools.</p>
 
 <table rules="rows" frame="top bottom">

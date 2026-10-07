@@ -258,7 +258,7 @@ procdialog_create_renice_dialog (GsmApplication *app)
   builder = gtk_builder_new ();
   GError *err = NULL;
 
-  gtk_builder_add_from_resource (builder, "/org/gnome/gnome-system-monitor/data/renice.ui", &err);
+  gtk_builder_add_from_resource (builder, "/io/github/tejaskhanna989/KastManager/data/renice.ui", &err);
   if (err != NULL)
     g_error ("%s", err->message);
 

@@ -54,7 +54,7 @@ See 'svn log' for change history.
 
 2007-04-27  Benoît Dejean  <benoit@placenet.org>
 
-	* src/gnome-system-monitor.schemas.in:
+	* src/kast-manager.schemas.in:
 	
 	Better documentation about 'Solaris mode'.
 
@@ -102,7 +102,7 @@ See 'svn log' for change history.
 	* src/Makefile.am:
 	* src/gconf-keys.cpp:
 	* src/gconf-keys.h:
-	* src/gnome-system-monitor.schemas.in:
+	* src/kast-manager.schemas.in:
 	* src/procdialogs.cpp:
 	* src/procman.cpp:
 	* src/procman.h:
@@ -283,13 +283,13 @@ See 'svn log' for change history.
 
 2007-03-12  Benoît Dejean  <benoit@placenet.org>
 
-	* gnome-system-monitor.desktop.in.in:
+	* kast-manager.desktop.in.in:
 	
 	Dropped X-Red-Hat-Base.
 
 2007-03-11  Benoît Dejean  <benoit@placenet.org>
 
-	* gnome-system-monitor.desktop.in.in:
+	* kast-manager.desktop.in.in:
 	
 	Gnome Goal #3 : removed "Application" category from .desktop file.
 	
@@ -351,9 +351,9 @@ See 'svn log' for change history.
 
 2007-02-28  Mariano Suárez-Alvarez  <mariano@gnome.org>
 
-	* help/C/gnome-system-monitor.xml: added a description, to make g-d-u
+	* help/C/kast-manager.xml: added a description, to make g-d-u
 	happy
-	* po/POTFILES.skip: add gnome-system-monitor.desktop.in to make distcheck 
+	* po/POTFILES.skip: add kast-manager.desktop.in to make distcheck 
 	happy
 	* gnome-doc-utils.make: removed from SVN, as this is a generated file
 
@@ -366,8 +366,8 @@ See 'svn log' for change history.
 2007-02-28  Benoît Dejean  <benoit@placenet.org>
 
 	* configure.in:
-	* help/C/gnome-system-monitor-C.omf:
-	* help/gnome-system-monitor.omf.in:
+	* help/C/kast-manager-C.omf:
+	* help/kast-manager.omf.in:
 
 	Added missing omf.in.
 	Dropped old and now useless .omf.
@@ -431,7 +431,7 @@ See 'svn log' for change history.
 	* Makefile.am:
 	* configure.in:
 	* help/C/Makefile.am:
-	* help/C/gnome-system-monitor.xml:
+	* help/C/kast-manager.xml:
 	* help/Makefile.am:
 	* help/bg/Makefile.am:
 
@@ -532,7 +532,7 @@ See 'svn log' for change history.
 	* src/callbacks.h:
 	* src/favorites.cpp:
 	* src/favorites.h:
-	* src/gnome-system-monitor.schemas.in:
+	* src/kast-manager.schemas.in:
 	* src/interface.cpp:
 	* src/procdialogs.cpp:
 	* src/procdialogs.h:
@@ -795,7 +795,7 @@ See 'svn log' for change history.
 
 2006-12-04  Benoît Dejean  <benoit@placenet.org>
 
-	* help/C/gnome-system-monitor.xml:
+	* help/C/kast-manager.xml:
 	* src/procdialogs.c: (create_proc_field_page),
 	(procdialog_create_preferences_dialog):
 
@@ -918,7 +918,7 @@ See 'svn log' for change history.
 
 2006-11-13  Benoît Dejean  <benoit@placenet.org>
 
-	* src/gnome-system-monitor.schemas.in:
+	* src/kast-manager.schemas.in:
 
 	Fixed schema.
 	Closes #163396.
@@ -1006,7 +1006,7 @@ See 'svn log' for change history.
 2006-11-04  Benoît Dejean  <benoit@placenet.org>
 
 	* src/callbacks.c:
-	* src/gnome-system-monitor.schemas.in:
+	* src/kast-manager.schemas.in:
 	* src/procdialogs.c:
 	* src/procman.c:
 	* src/procman.h:
@@ -1025,7 +1025,7 @@ See 'svn log' for change history.
 
 2006-11-04  Benoît Dejean  <benoit@placenet.org>
 
-	* src/gnome-system-monitor.schemas.in:
+	* src/kast-manager.schemas.in:
 
 	Fixed typo.
 	Closes #358365.
@@ -1079,13 +1079,13 @@ See 'svn log' for change history.
 
 2006-10-17  Benoît Dejean  <benoit@placenet.org>
 
-	* src/gnome-system-monitor.schemas.in:
+	* src/kast-manager.schemas.in:
 
 	Reverted last change. Reopened #358365.
 
 2006-10-16  Benoît Dejean  <benoit@placenet.org>
 
-	* src/gnome-system-monitor.schemas.in:
+	* src/kast-manager.schemas.in:
 
 	Fixed typo.
 	Closes #358365.
@@ -1129,7 +1129,7 @@ See 'svn log' for change history.
 
 2006-08-31  Benoît Dejean  <benoit@placenet.org>
 
-	* src/gnome-system-monitor.schemas.in:
+	* src/kast-manager.schemas.in:
 
 	Fixed schema regression.
 	Re-closes #341026.
@@ -1239,7 +1239,7 @@ See 'svn log' for change history.
 	* configure.in: Require pkg-config 0.19 and gnome-icon-theme 2.15.3
 	for the new icon naming spec icon names
 
-	* gnome-system-monitor.desktop.in.in:
+	* kast-manager.desktop.in.in:
 	* src/callbacks.c (cb_about):
 	* src/procmain.c (main):
 	Use utilities-system-monitor as the icon name, instead of gnome-monitor
@@ -1340,7 +1340,7 @@ See 'svn log' for change history.
 
 2006-06-22  Benoît Dejean  <benoit@placenet.org>
 
-	* src/gnome-system-monitor.schemas.in:
+	* src/kast-manager.schemas.in:
 	* src/procman.h:
 	* src/proctable.c: (sort_ints), (proctable_new),
 	(get_process_memory_info), (update_info_mutable_cols):
@@ -1380,7 +1380,7 @@ See 'svn log' for change history.
 2006-06-18  Benoît Dejean  <benoit@placenet.org>
 
 	* configure.in:
-	* src/gnome-system-monitor.schemas.in:
+	* src/kast-manager.schemas.in:
 
 	Bumped version number to 2.15.0.
 	Updated schema.
@@ -1413,7 +1413,7 @@ See 'svn log' for change history.
 
 2006-05-08  Benoît Dejean  <benoit@placenet.org>
 
-	* src/gnome-system-monitor.schemas.in:
+	* src/kast-manager.schemas.in:
 	
 	Display CPU% by default.
 	Closes #341026.
@@ -1518,14 +1518,14 @@ See 'svn log' for change history.
 
 2006-01-25  Benoît Dejean  <benoit@placenet.org>
 
-	* gnome-system-monitor.desktop.in.in:
+	* kast-manager.desktop.in.in:
 	
 	Fixed.
 	Closes #328581.
 
 2006-01-21  Benoît Dejean  <benoit@placenet.org>
 
-	* gnome-system-monitor.desktop.in.in:
+	* kast-manager.desktop.in.in:
 	
 	Add GNOME and/or GTK categories of the .desktop file.
 	Closes #328020.
@@ -1563,7 +1563,7 @@ See 'svn log' for change history.
 2006-01-12  Benoît Dejean  <benoit@placenet.org>
 
 	* Makefile.am:
-	* gnome-system-monitor.spec:
+	* kast-manager.spec:
 
 	Dropped RPM spec file.
 	Closes #162038.
@@ -1617,7 +1617,7 @@ See 'svn log' for change history.
 
 2006-01-02  Benoît Dejean  <benoit@placenet.org>
 
-	* src/gnome-system-monitor.schemas.in:
+	* src/kast-manager.schemas.in:
 
 	Made Resources tab default.
 	Closes #324968.
@@ -1645,7 +1645,7 @@ See 'svn log' for change history.
 2005-12-28  Dennis Cranston  <dennis_cranston@yahoo.com>
 
 	* src/disks.c: (cb_disk_columns_changed), (create_disk_view):
-	* src/gnome-system-monitor.schemas.in:
+	* src/kast-manager.schemas.in:
 	* src/procman.c: (procman_get_tree_state),
 	(procman_save_tree_state):  Allow user to sort the device 
 	list.  Fixes bug #311920
@@ -1675,7 +1675,7 @@ See 'svn log' for change history.
 
 2005-12-27  Benoît Dejean  <benoit@placenet.org>
 
-	* src/gnome-system-monitor.schemas.in:
+	* src/kast-manager.schemas.in:
 
 	Fixed typo.
 
@@ -1788,7 +1788,7 @@ See 'svn log' for change history.
 
 2005-11-22  Matthias Clasen  <mclasen@redhat.com>
 
-	* gnome-system-monitor.desktop.in.in: Add Monitor
+	* kast-manager.desktop.in.in: Add Monitor
 	and X-Red-Hat-Base to Categories.  (#322130)
 
 2005-11-13  Benoît Dejean  <benoit@placenet.org>
@@ -1797,7 +1797,7 @@ See 'svn log' for change history.
 
 2005-11-08  Benoît Dejean  <benoit@placenet.org>
 
-	* src/gnome-system-monitor.schemas.in:
+	* src/kast-manager.schemas.in:
 	* src/smooth_refresh.c: (status_changed), (smooth_refresh_new),
 	(smooth_refresh_destroy), (smooth_refresh_get):
 
@@ -1859,7 +1859,7 @@ See 'svn log' for change history.
 	  labels to read "Received" and "Sent", to accurately
 	  portray what they're counting. Fixes bug #318714
 	  submitted by Christian Rose.
-	* src/gnome-system-monitor.schemas.in.h: Reword a
+	* src/kast-manager.schemas.in.h: Reword a
 	  confusing schema description, correcting a spelling
 	  error in the process. Fixes bug #318712, submitted by
 	  Christian Rose.
@@ -1868,7 +1868,7 @@ See 'svn log' for change history.
 
 	* src/Makefile.am:
 	* src/callbacks.c: (cb_row_selected):
-	* src/gnome-system-monitor.schemas.in:
+	* src/kast-manager.schemas.in:
 	* src/infoview.c:
 	* src/infoview.h:
 	* src/interface.c: (create_proc_view), (update_sensitivity):
@@ -2170,7 +2170,7 @@ See 'svn log' for change history.
 2005-06-13  Martin Ejdestig  <mejde@dtek.chalmers.se>
 
 	* procman.c (procman_data_new): 
-	* src/gnome-system-monitor.schemas.in:
+	* src/kast-manager.schemas.in:
 	Modified default colors to be a little brighter. Closes #305877.
 	
 	Reviewed by Benoît Dejean  <TazForEver@dlfp.org>.	
@@ -2188,7 +2188,7 @@ See 'svn log' for change history.
 	* src/callbacks.c: (cb_app_delete), (cb_net_in_color_changed),
 	(cb_net_out_color_changed), (cb_change_current_page):
 	* src/callbacks.h:
-	* src/gnome-system-monitor.schemas.in:
+	* src/kast-manager.schemas.in:
 	* src/interface.c: (create_sys_view):
 	* src/load-graph.c: (net_scale), (get_net), (load_graph_update),
 	(load_graph_unalloc), (load_graph_alloc), (load_graph_new):
@@ -2202,7 +2202,7 @@ See 'svn log' for change history.
 
 2005-06-10  Benoît Dejean  <TazForEver@dlfp.org>
 
-	* src/gnome-system-monitor.schemas.in:
+	* src/kast-manager.schemas.in:
 	* src/procman.c: (procman_get_tree_state),
 	(procman_save_tree_state):
 	* src/proctable.c: (cb_columns_changed),
@@ -2280,7 +2280,7 @@ See 'svn log' for change history.
 
 2005-05-30  Benoît Dejean  <TazForEver@dlfp.org>
 
-	* src/gnome-system-monitor.schemas.in: Made 
+	* src/kast-manager.schemas.in: Made 
 	/apps/procman/show_tree FALSE default. See #305883.
 
 2005-05-30  Benoît Dejean  <TazForEver@dlfp.org>
@@ -2410,7 +2410,7 @@ See 'svn log' for change history.
 2005-04-30  Benoît Dejean  <TazForEver@dlfp.org>
 
 	* src/callbacks.c: (fsusage_stats), (cb_update_disks):
-	* src/gnome-system-monitor.schemas.in:
+	* src/kast-manager.schemas.in:
 	* src/procdialogs.c: (show_all_fs_toggled),
 	(procdialog_create_preferences_dialog):
 	* src/procman.c: (show_all_fs_changed_cb), (procman_data_new):
@@ -2504,7 +2504,7 @@ See 'svn log' for change history.
 
 	* configure.in:
 	* src/procman.c: (cb_server), (main): Added dependency on libbacon.
-	Spawn only one instance of gnome-system-monitor.
+	Spawn only one instance of kast-manager.
 
 2005-03-31  Benoît Dejean  <TazForEver@dlfp.org>
 
@@ -2591,7 +2591,7 @@ See 'svn log' for change history.
 
 2005-03-16  Benoît Dejean  <TazForEver@dlfp.org>
 
-	* src/gnome-system-monitor.schemas.in:
+	* src/kast-manager.schemas.in:
 	* src/interface.c: (create_disk_view), (create_sys_view),
 	(create_main_window):
 	* src/interface.h:
@@ -2748,7 +2748,7 @@ See 'svn log' for change history.
 
 2005-03-06  Benoît Dejean  <TazForEver@dlfp.org>
 
-	* gnome-system-monitor.spec: Updated.
+	* kast-manager.spec: Updated.
 
 2005-02-28  Benoît Dejean  <TazForEver@dlfp.org>
 
@@ -2804,7 +2804,7 @@ See 'svn log' for change history.
 
 2005-01-24  Duarte Loreto <happyguy_pt@hotmail.com>
 
-	* src/gnome-system-monitor.schemas.in: Fixed a typo 
+	* src/kast-manager.schemas.in: Fixed a typo 
 	  (waring -> warning)
 
 2005-01-24  Benoît Dejean  <TazForEver@dlfp.org>
@@ -2937,7 +2937,7 @@ See 'svn log' for change history.
 
 2005-01-09  Benoît Dejean  <TazForEver@dlfp.org>
 
-	* src/gnome-system-monitor.schemas.in: Fixed. Closes #163391.
+	* src/kast-manager.schemas.in: Fixed. Closes #163391.
 
 2005-01-09  Benoît Dejean  <TazForEver@dlfp.org>
 
@@ -2990,12 +2990,12 @@ See 'svn log' for change history.
 
 	* po/POTFILES.in: added the .schemas.in file
 	* src/Makefile.am: added rules to add schemas i18n support
-	* src/gnome-system-monitor.schemas:
-	* src/gnome-system-monitor.schemas.in: moved .schemas to .schemas.in
+	* src/kast-manager.schemas:
+	* src/kast-manager.schemas.in: moved .schemas to .schemas.in
 
 2004-12-30  Luca Ferretti  <elle.uca@infinito.it>
 
-	* gnome-system-monitor.desktop.in.in: Use gnome-monitor as
+	* kast-manager.desktop.in.in: Use gnome-monitor as
 	application icon. This icon is the one provided by gnome-icon-theme
 	* src/callbacks.c: (cb_about_activate) use gnome-monitor as
 	application logo an small tuning in about dialog: add documenters,
@@ -3075,7 +3075,7 @@ See 'svn log' for change history.
 	ProcInfo is fully updated only when needed (is_visible and is displayed).
 	I think this is safe.
 		
-	gnome-system-monitor seems a bit faster : 2.6.0 eats 35% CPU with 200 processes
+	kast-manager seems a bit faster : 2.6.0 eats 35% CPU with 200 processes
 	refresh every sec, where current uses about 27% CPU on my ibook 1GHZ.
 
 2004-11-28  Benoît Dejean  <tazforever@dlfp.org>
@@ -3148,8 +3148,8 @@ See 'svn log' for change history.
 	* Bug Buddy can now identify procman's version
 	automagically by the X-GNOME-Bugzilla-Version header.
 	* configure.in: Added *.desktop.in to AC_OUTPUT
-	* gnome-system-monitor.desktop.in: Moved to *.desktop.in.in
-	* gnome-system-monitor.desktop.in.in: Added 
+	* kast-manager.desktop.in: Moved to *.desktop.in.in
+	* kast-manager.desktop.in.in: Added 
 	X-GNOME-Bugzilla-Version header
 	* po/POTFILES.in: References *.desktop.in.in instead of *.desktop.in
 
@@ -3181,7 +3181,7 @@ See 'svn log' for change history.
 
 2004-11-21  Benoît Dejean  <tazforever@dlfp.org>
 
-	* src/gnome-system-monitor.schemas:
+	* src/kast-manager.schemas:
 	* src/procman.c: (color_changed_cb), (procman_data_new): Changed default
 	colors. Closes #129886.
 	+ 1-line cleanup.
@@ -3608,8 +3608,8 @@ See 'svn log' for change history.
 
 2004-02-19 Breda McColgan <breda.mccolgan@sun.com>
 
-	* help/C/gnome-system-monitor.xml: Updated based on peer review comments from Bill Day
-	* help/C/gnome-system-monitor-C.omf: Updated date.
+	* help/C/kast-manager.xml: Updated based on peer review comments from Bill Day
+	* help/C/kast-manager-C.omf: Updated date.
 
 2004-02-15  Kevin Vandersloot
 
@@ -3624,15 +3624,15 @@ See 'svn log' for change history.
 
 2004-02-06 Breda McColgan <breda.mccolgan@sun.com>
 
-	* help/C/gnome-system-monitor.xml: Updated for GNOME 2.6, technical review draft	
-	* help/C/gnome-system-monitor-C.omf: Updated for GNOME 2.6
+	* help/C/kast-manager.xml: Updated for GNOME 2.6, technical review draft	
+	* help/C/kast-manager-C.omf: Updated for GNOME 2.6
 
 2004-02-06 Breda McColgan <breda.mccolgan@sun.com>
 
-	* help/C/gnome-system-monitor.xml: Updated for GNOME 2.6, technical review draft	
-	* help/C/gnome-system-monitor-C.omf: Updated for GNOME 2.6
+	* help/C/kast-manager.xml: Updated for GNOME 2.6, technical review draft	
+	* help/C/kast-manager-C.omf: Updated for GNOME 2.6
 	* help/C/l10n.txt: Added for GNOME 2.6
-	* help/C/figures/gnome-system-monitor_window.png: Added for GNOME 2.6
+	* help/C/figures/kast-manager_window.png: Added for GNOME 2.6
 
 2004-02-03  Paolo Borelli  <pborelli@katamail.com>
 
@@ -3733,7 +3733,7 @@ See 'svn log' for change history.
 
 2003-10-20  Bastien Nocera  <hadess@hadess.net>
 
-	* configure.in: release gnome-system-monitor 2.5.0
+	* configure.in: release kast-manager 2.5.0
 
 2003-10-20  Bastien Nocera  <hadess@hadess.net>
 
@@ -3797,7 +3797,7 @@ See 'svn log' for change history.
 
 2003-07-02  Jordi Mallach  <jordi@sindominio.net>
 
-	* gnome-system-monitor.desktop.in: Add Encoding and X-GNOME-Bugzilla
+	* kast-manager.desktop.in: Add Encoding and X-GNOME-Bugzilla
 	entries, and fix Terminal.
 
 2003-06-11  Kenneth Rohde Christiansen  <kenneth@gnu.org>
@@ -3941,7 +3941,7 @@ See 'svn log' for change history.
 
 2002-11-25  Kevin Vandersloot <kfv101@psu.edu>
 
-	* configure.in, gnome-system-monitor.spec: release 2.0.3
+	* configure.in, kast-manager.spec: release 2.0.3
 	
 2002-11-25  Kevin Vandersloot <kfv101@psu.edu>
 
@@ -3950,7 +3950,7 @@ See 'svn log' for change history.
 
 2002-11-22 John Fleck <jfleck@inkstain.net>
 
-	* help/C/gnome-system-monitor.xml
+	* help/C/kast-manager.xml
 	* help/C/figures/memoryMaps.png, moreInfo.png,
 	pocessListing.png, systemMonitor.png
 	checking in new help docs from Bill Day
@@ -3999,7 +3999,7 @@ See 'svn log' for change history.
 	* Makefile.am: added omf.make to EXTRA_DIST remove omf-install dir
 	* configure.in: remove omf-install dir
 	* help/C/Makefile.am: change figs to figdir
-	* help/C/gnome-system-monitor-C.omf: Updated to new OMF format
+	* help/C/kast-manager-C.omf: Updated to new OMF format
 
 2002-05-19  Kevin Vandersloot <kfv101@psu.edu>
 
@@ -4049,8 +4049,8 @@ See 'svn log' for change history.
 2002-05-02 John Fleck <jfleck@inkstain.net>
 
 	* help/C/Makefile.am
-	* help/C/gnome-system-monitor-C.omf
-	enabling docs name change to gnome-system-monitor
+	* help/C/kast-manager-C.omf
+	enabling docs name change to kast-manager
 
 2002-05-02  Abel Cheung  <maddog@linux.org.hk>
 
@@ -4123,7 +4123,7 @@ Mon Apr 29 11:44:14 2002  Owen Taylor  <otaylor@redhat.com>
 
 2002-02-24  Kevin Vandersloot <kfv101@psu.edu>
 	
-	* configure.in, gnome-system-monitor.spec: release 1.1.5
+	* configure.in, kast-manager.spec: release 1.1.5
 
 2002-02-22  Kjartan Maraas  <kmaraas@gnome.org>
 
@@ -4140,7 +4140,7 @@ Mon Apr 29 11:44:14 2002  Owen Taylor  <otaylor@redhat.com>
 	* prettytable.c: clean up the icon mess. Icons should now
 	get added properly.
 
-	* defaulttable.c: remove gnome-system-monitor from here
+	* defaulttable.c: remove kast-manager from here
 	since I'm now able to pick it up properly
 
 	* proctable.c: gdk_pixbuf_unref->g_object_unref
@@ -4194,12 +4194,12 @@ Mon Apr 29 11:44:14 2002  Owen Taylor  <otaylor@redhat.com>
 
 2002-01-30  Kevin Vandersloot <kfv101@psu.edu>
 
-	* defaulttable.h: change procman to gnome-system-monitor
+	* defaulttable.h: change procman to kast-manager
 	so that it gets a nice icon :)
 
 2002-01-28  Kevin Vandersloot <kfv101@psu.edu>
 
-	* configure.in, gnome-system-monitor.spec: bump version to 1.1.3
+	* configure.in, kast-manager.spec: bump version to 1.1.3
 	and some small fixes for spec
 
 	* release 1.1.3
@@ -4207,19 +4207,19 @@ Mon Apr 29 11:44:14 2002  Owen Taylor  <otaylor@redhat.com>
 2002-01-27  Seth Nickell  <snickell@stanford.edu>
 
 	* Makefile.am:
-	* gnome-system-monitor.desktop.in:
-	* gnome-system-monitor.spec:
+	* kast-manager.desktop.in:
+	* kast-manager.spec:
 	* procman.desktop.in:
 	* procman.spec:
 
 	Renaming applications to match their menu entries.
 
-	System Monitor -> gnome-system-monitor.
+	Kast Manager -> kast-manager.
 
 2002-01-27  Seth Nickell  <snickell@stanford.edu>
 
 	* Makefile.am:
-	* gnome-system-monitor.schemas:
+	* kast-manager.schemas:
 	* procman.schemas:
 
 	Rennaming application binaries to match their
@@ -4230,7 +4230,7 @@ Mon Apr 29 11:44:14 2002  Owen Taylor  <otaylor@redhat.com>
 	* defaulttable.h:
 	* interface.c: (create_main_window):
 
-	Change name to "System Monitor" as per the menu entry.
+	Change name to "Kast Manager" as per the menu entry.
 
 2002-01-26  Kevin Vandersloot <kfv101@psu.edu>
 
@@ -4268,7 +4268,7 @@ Mon Apr 29 11:44:14 2002  Owen Taylor  <otaylor@redhat.com>
 
 	* procman.desktop.in:
 
-	Rename "System Monitor" and change the icon.
+	Rename "Kast Manager" and change the icon.
 
 2002-01-19  Kevin Vandersloot <kfv101@psu.edu>
 

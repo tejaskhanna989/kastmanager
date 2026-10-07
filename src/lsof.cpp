@@ -1,5 +1,5 @@
 /*
- * SPDX-License-Identifier: GPL-2.0-or-later
+ * SPDX-License-Identifier: GPL-3.0-or-later-or-later
  */
 
 #include <config.h>
@@ -165,7 +165,7 @@ gsm_lsof_class_init (GsmLsofClass *klass)
 {
   GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
 
-  gtk_widget_class_set_template_from_resource (widget_class, "/org/gnome/gnome-system-monitor/data/lsof.ui");
+  gtk_widget_class_set_template_from_resource (widget_class, "/io/github/tejaskhanna989/KastManager/data/lsof.ui");
 
   gtk_widget_class_bind_template_child (widget_class, GsmLsof, search_bar);
   gtk_widget_class_bind_template_child (widget_class, GsmLsof, search_entry);

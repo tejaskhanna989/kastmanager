@@ -28,14 +28,14 @@
 
   <steps>
     <item><p>Click
-    <guiseq><gui>System Monitor</gui><gui>Preferences</gui></guiseq>.</p></item>
+    <guiseq><gui>Kast Manager</gui><gui>Preferences</gui></guiseq>.</p></item>
     <item><p>Click the <gui>Processes</gui> tab.</p></item>
     <item><p>Select the desired headings in the <gui>Information Fields</gui>
     list.</p></item>
   </steps>
 
   <p>For each process listed in the <gui>Processes</gui> tab,
-  <app>System Monitor</app> provides information in a number of categories.
+  <app>Kast Manager</app> provides information in a number of categories.
   For detailed descriptions of what the columns mean, check the
   <link href="man:ps"><cmd>ps</cmd> man page</link>.</p>
 

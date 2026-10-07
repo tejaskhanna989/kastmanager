@@ -272,7 +272,7 @@ msgstr "以比特为单位显示网速："
 #. (itstool) path: item/p
 #: C/net-bits.page:38 C/process-update-speed.page:38 C/mem-check.page:65
 #: C/process-columns.page:30
-msgid "Click <guiseq><gui>System Monitor</gui><gui>Preferences</gui></guiseq>."
+msgid "Click <guiseq><gui>Kast Manager</gui><gui>Preferences</gui></guiseq>."
 msgstr "点击 <guiseq><gui>系统监视器</gui><gui>首选项</gui></guiseq>。"
 
 #. (itstool) path: item/p
@@ -372,7 +372,7 @@ msgstr ""
 #. (itstool) path: info/desc
 #: C/process-update-speed.page:22
 msgid ""
-"Refresh the information shown in the System Monitor with a longer or shorter "
+"Refresh the information shown in the Kast Manager with a longer or shorter "
 "interval."
 msgstr "以更长或更短的时间间隔刷新系统监视器中显示的信息。"
 
@@ -403,7 +403,7 @@ msgstr "输入 <gui>更新间隔秒数</gui> 的值。"
 #: C/process-update-speed.page:48
 msgid ""
 "Setting the <gui>Update interval</gui> to a lower value will cause "
-"<gui>System Monitor</gui> itself to use more of the CPU."
+"<gui>Kast Manager</gui> itself to use more of the CPU."
 msgstr ""
 "将 <gui>更新间隔</gui> 设置为较低的值将导致 <gui>系统监视器</gui> 自身占用更"
 "多的 CPU。"
@@ -650,7 +650,7 @@ msgstr ""
 msgid ""
 "You can also change how rapidly the chart is updated (the update interval), "
 "and how the lines for each processor are displayed (e.g. as a stacked area "
-"chart). Change the relevant options by clicking <gui>System Monitor</gui>, "
+"chart). Change the relevant options by clicking <gui>Kast Manager</gui>, "
 "then select <gui>Preferences</gui>, and then the <gui>Resources</gui> tab."
 msgstr ""
 "您还可以更改图表的更新速度（更新间隔）以及每个处理器的显示方式（例如，作为堆"
@@ -1252,7 +1252,7 @@ msgstr "立即杀死（关闭）一个程序"
 #: C/process-kill.page:23
 msgid ""
 "If a program stops working or freezes, you can force it to close (\"kill\" "
-"it) using <app>System Monitor</app>. Go to the <gui>Processes</gui> tab and "
+"it) using <app>Kast Manager</app>. Go to the <gui>Processes</gui> tab and "
 "click to select the process you want to kill. Then, click <gui>End Process</"
 "gui>."
 msgstr ""
@@ -1634,7 +1634,7 @@ msgstr ""
 #. (itstool) path: item/p
 #: C/process-identify-file.page:38
 msgid ""
-"Click <guiseq><gui>System Monitor</gui><gui>Search for Open Files</gui></"
+"Click <guiseq><gui>Kast Manager</gui><gui>Search for Open Files</gui></"
 "guiseq>."
 msgstr "点击 <guiseq><gui>系统监视器</gui><gui>搜索打开的文件</gui></guiseq>。"
 
@@ -1685,7 +1685,7 @@ msgstr ""
 #. (itstool) path: page/p
 #: C/fs-showall.page:23
 msgid ""
-"To see these special filesystems, click <guiseq><gui>System Monitor</"
+"To see these special filesystems, click <guiseq><gui>Kast Manager</"
 "gui><gui>Preferences</gui></guiseq>, and under the <gui>File Systems</gui> "
 "tab, check <gui>Show all file systems</gui>."
 msgstr ""
@@ -1709,7 +1709,7 @@ msgstr ""
 #. (itstool) path: info/desc
 #: C/commandline.page:21
 msgid ""
-"Information in System Monitor can also be found using command line tools."
+"Information in Kast Manager can also be found using command line tools."
 msgstr "系统监视器中的信息也可以使用命令行工具获得。"
 
 #. (itstool) path: page/title
@@ -1720,7 +1720,7 @@ msgstr "从命令行获取相同的信息"
 #. (itstool) path: page/p
 #: C/commandline.page:33
 msgid ""
-"Most of the information displayed by System Monitor can also be obtained "
+"Most of the information displayed by Kast Manager can also be obtained "
 "using these command line tools."
 msgstr "系统监视器显示的大部分信息也可以通过这些命令行工具获得。"
 
@@ -1836,7 +1836,7 @@ msgstr "GiB 与 GB 相同吗？"
 msgid ""
 "The memory and disk space statistics are displayed using <em>IEC binary "
 "prefixes</em>, KiB, MiB, GiB, TiB (for kibi, mebi, gibi and tebi). These are "
-"intended to distinguish binary reporting of sizes used in System Monitor "
+"intended to distinguish binary reporting of sizes used in Kast Manager "
 "(multiples of 1024) from decimal sizes (multiples of 1000) commonly used, "
 "for instance, in packaging of hard disks."
 msgstr ""
@@ -1875,19 +1875,19 @@ msgstr "宣传为 1.0 TB 的外部硬盘驱动器将显示为 0.909 TiB。"
 #. (itstool) path: info/title
 #: C/index.page:7
 msgctxt "link:trail"
-msgid "System Monitor"
+msgid "Kast Manager"
 msgstr "系统监视器"
 
 #. (itstool) path: info/title
 #: C/index.page:8
 msgctxt "link"
-msgid "System Monitor"
+msgid "Kast Manager"
 msgstr "系统监视器"
 
 #. (itstool) path: info/title
 #: C/index.page:9
 msgctxt "text"
-msgid "System Monitor"
+msgid "Kast Manager"
 msgstr "系统监视器"
 
 #. (itstool) path: credit/name
@@ -1903,19 +1903,19 @@ msgstr "2017"
 #. (itstool) path: info/desc
 #: C/index.page:25
 msgid ""
-"System Monitor shows you what programs are running and how much processor "
+"Kast Manager shows you what programs are running and how much processor "
 "time, memory, and disk space are being used."
 msgstr "系统监视器向您显示正在运行的程序以及使用了多少处理器、内存和磁盘空间。"
 
 #. (itstool) path: page/title
 #: C/index.page:29
-msgid "<_:media-1/> System Monitor"
+msgid "<_:media-1/> Kast Manager"
 msgstr "<_:media-1/> 系统监视器"
 
 #. (itstool) path: page/p
 #: C/index.page:34
 msgid ""
-"<app>System Monitor</app> shows you what programs are running and how much "
+"<app>Kast Manager</app> shows you what programs are running and how much "
 "processor time, memory, and disk space are being used."
 msgstr ""
 "<app>系统监视器</app> 显示正在运行的程序以及使用了多少处理器、内存和磁盘空"

@@ -22,7 +22,7 @@
         <attribute name="action">win.shortcuts</attribute>
       </item>
       <item>
-        <attribute name="label" translatable="yes">_About System Monitor</attribute>
+        <attribute name="label" translatable="yes">_About Kast Manager</attribute>
         <attribute name="action">win.about</attribute>
       </item>
     </section>
@@ -77,7 +77,7 @@
         <attribute name="action">win.shortcuts</attribute>
       </item>
       <item>
-        <attribute name="label" translatable="yes">_About System Monitor</attribute>
+        <attribute name="label" translatable="yes">_About Kast Manager</attribute>
         <attribute name="action">win.about</attribute>
       </item>
     </section>

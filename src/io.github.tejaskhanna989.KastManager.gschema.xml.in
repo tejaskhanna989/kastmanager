@@ -1,5 +1,5 @@
 <schemalist gettext-domain="@GETTEXT_PACKAGE@">
-  <schema id="org.gnome.gnome-system-monitor" path="/org/gnome/gnome-system-monitor/">
+  <schema id="io.github.tejaskhanna989.KastManager" path="/io/github/tejaskhanna989/KastManager/">
     <key name="window-width" type="i">
       <default>800</default>
       <summary>Main window width</summary>
@@ -257,13 +257,13 @@
       </summary>
     </key>
 
-    <child name="proctree" schema="org.gnome.gnome-system-monitor.proctree" />
-    <child name="disksview" schema="org.gnome.gnome-system-monitor.disksview" />
-    <child name="memmapstree" schema="org.gnome.gnome-system-monitor.memmapstree" />
-    <child name="openfilestree" schema="org.gnome.gnome-system-monitor.openfilestree" />
+    <child name="proctree" schema="io.github.tejaskhanna989.KastManager.proctree" />
+    <child name="disksview" schema="io.github.tejaskhanna989.KastManager.disksview" />
+    <child name="memmapstree" schema="io.github.tejaskhanna989.KastManager.memmapstree" />
+    <child name="openfilestree" schema="io.github.tejaskhanna989.KastManager.openfilestree" />
   </schema>
 
-  <schema id="org.gnome.gnome-system-monitor.proctree" path="/org/gnome/gnome-system-monitor/proctree/">
+  <schema id="io.github.tejaskhanna989.KastManager.proctree" path="/io/github/tejaskhanna989/KastManager/proctree/">
     <key name="sort-col" type="i">
       <default>8
       </default>
@@ -665,7 +665,7 @@
 
   </schema>
 
-  <schema id="org.gnome.gnome-system-monitor.disksview" path="/org/gnome/gnome-system-monitor/disksview/">
+  <schema id="io.github.tejaskhanna989.KastManager.disksview" path="/io/github/tejaskhanna989/KastManager/disksview/">
     <key name="sort-col" type="s">
       <default>'directory'
       </default>
@@ -787,7 +787,7 @@
 
   </schema>
 
-  <schema id="org.gnome.gnome-system-monitor.memmapstree" path="/org/gnome/gnome-system-monitor/memmapstree/">
+  <schema id="io.github.tejaskhanna989.KastManager.memmapstree" path="/io/github/tejaskhanna989/KastManager/memmapstree/">
     <key name="sort-col" type="i">
       <default>0
       </default>
@@ -803,7 +803,7 @@
     </key>
   </schema>
 
-  <schema id="org.gnome.gnome-system-monitor.openfilestree" path="/org/gnome/gnome-system-monitor/openfilestree/">
+  <schema id="io.github.tejaskhanna989.KastManager.openfilestree" path="/io/github/tejaskhanna989/KastManager/openfilestree/">
     <key name="sort-col" type="i">
       <default>0
       </default>

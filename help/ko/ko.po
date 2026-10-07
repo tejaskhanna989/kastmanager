@@ -1,11 +1,11 @@
-# Korean translation for gnome-system-monitor.
-# Copyright (C) 2016 gnome-system-monitor's COPYRIGHT HOLDER
-# This file is distributed under the same license as the gnome-system-monitor package.
+# Korean translation for kast-manager.
+# Copyright (C) 2016 kast-manager's COPYRIGHT HOLDER
+# This file is distributed under the same license as the kast-manager package.
 # Seong-ho Cho <shcho@gnome.org>, 2016-2017, 2021.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: gnome-system-monitor master\n"
+"Project-Id-Version: kast-manager master\n"
 "POT-Creation-Date: 2021-09-07 09:52+0000\n"
 "PO-Revision-Date: 2021-09-09 10:19+0900\n"
 "Last-Translator: Seong-ho Cho <darkcircle.0426@gmail.com>\n"
@@ -287,7 +287,7 @@ msgstr "네트워크 속도를 비트 단위로 표시하려면:"
 #. (itstool) path: item/p
 #: C/net-bits.page:38 C/process-update-speed.page:38 C/mem-check.page:65
 #: C/process-columns.page:30
-msgid "Click <guiseq><gui>System Monitor</gui><gui>Preferences</gui></guiseq>."
+msgid "Click <guiseq><gui>Kast Manager</gui><gui>Preferences</gui></guiseq>."
 msgstr ""
 "<guiseq><gui>시스템 정보</gui><gui>기본 설정</gui></guiseq>을 누르십시오."
 
@@ -394,7 +394,7 @@ msgstr ""
 #. (itstool) path: info/desc
 #: C/process-update-speed.page:22
 msgid ""
-"Refresh the information shown in the System Monitor with a longer or shorter "
+"Refresh the information shown in the Kast Manager with a longer or shorter "
 "interval."
 msgstr ""
 "시스템 정보에 나타나는 정보를 더 긴 주기 또는 더 짧은 주기로 새로 고칩니다."
@@ -427,7 +427,7 @@ msgstr "<gui>업데이트 주기, 초 단위</gui> 값을 입력하십시오."
 #: C/process-update-speed.page:48
 msgid ""
 "Setting the <gui>Update interval</gui> to a lower value will cause "
-"<gui>System Monitor</gui> itself to use more of the CPU."
+"<gui>Kast Manager</gui> itself to use more of the CPU."
 msgstr ""
 "<gui>업데이트 주기</gui>를 낮은 값으로 설정하면 <gui>시스템 정보</gui>에서 "
 "CPU를 더 많이 활용합니다."
@@ -695,7 +695,7 @@ msgstr ""
 msgid ""
 "You can also change how rapidly the chart is updated (the update interval), "
 "and how the lines for each processor are displayed (e.g. as a stacked area "
-"chart). Change the relevant options by clicking <gui>System Monitor</gui>, "
+"chart). Change the relevant options by clicking <gui>Kast Manager</gui>, "
 "then select <gui>Preferences</gui>, and then the <gui>Resources</gui> tab."
 msgstr ""
 "차트 업데이트 빈도(업데이트 주기)와 각 프로세스 표시 줄 수(예: 누적 영역 차"
@@ -1335,7 +1335,7 @@ msgstr "프로그램을 즉시 강제로 끝내기(닫기)"
 #: C/process-kill.page:23
 msgid ""
 "If a program stops working or freezes, you can force it to close (\"kill\" "
-"it) using <app>System Monitor</app>. Go to the <gui>Processes</gui> tab and "
+"it) using <app>Kast Manager</app>. Go to the <gui>Processes</gui> tab and "
 "click to select the process you want to kill. Then, click <gui>End Process</"
 "gui>."
 msgstr ""
@@ -1741,7 +1741,7 @@ msgstr ""
 #. (itstool) path: item/p
 #: C/process-identify-file.page:38
 msgid ""
-"Click <guiseq><gui>System Monitor</gui><gui>Search for Open Files</gui></"
+"Click <guiseq><gui>Kast Manager</gui><gui>Search for Open Files</gui></"
 "guiseq>."
 msgstr ""
 "<guiseq><gui>시스템 정보</gui><gui>열린 파일 검색</gui></guiseq>을 누르십시"
@@ -1795,7 +1795,7 @@ msgstr ""
 #. (itstool) path: page/p
 #: C/fs-showall.page:23
 msgid ""
-"To see these special filesystems, click <guiseq><gui>System Monitor</"
+"To see these special filesystems, click <guiseq><gui>Kast Manager</"
 "gui><gui>Preferences</gui></guiseq>, and under the <gui>File Systems</gui> "
 "tab, check <gui>Show all file systems</gui>."
 msgstr ""
@@ -1820,7 +1820,7 @@ msgstr ""
 #. (itstool) path: info/desc
 #: C/commandline.page:21
 msgid ""
-"Information in System Monitor can also be found using command line tools."
+"Information in Kast Manager can also be found using command line tools."
 msgstr "시스템 정보에 나타나는 정보는 명령행 도구로도 확인할 수 있습니다."
 
 #. (itstool) path: page/title
@@ -1831,7 +1831,7 @@ msgstr "명령행에서 동일한 정보 확인하기"
 #. (itstool) path: page/p
 #: C/commandline.page:33
 msgid ""
-"Most of the information displayed by System Monitor can also be obtained "
+"Most of the information displayed by Kast Manager can also be obtained "
 "using these command line tools."
 msgstr ""
 "시스템 정보에 나타나는 대부분의 정보는 다음 명령행 도구로도 볼 수 있습니다."
@@ -1952,7 +1952,7 @@ msgstr "GiB는 GB(기가바이트)랑 같나요?"
 msgid ""
 "The memory and disk space statistics are displayed using <em>IEC binary "
 "prefixes</em>, KiB, MiB, GiB, TiB (for kibi, mebi, gibi and tebi). These are "
-"intended to distinguish binary reporting of sizes used in System Monitor "
+"intended to distinguish binary reporting of sizes used in Kast Manager "
 "(multiples of 1024) from decimal sizes (multiples of 1000) commonly used, "
 "for instance, in packaging of hard disks."
 msgstr ""
@@ -1993,19 +1993,19 @@ msgstr ""
 #. (itstool) path: info/title
 #: C/index.page:7
 msgctxt "link:trail"
-msgid "System Monitor"
+msgid "Kast Manager"
 msgstr "시스템 정보"
 
 #. (itstool) path: info/title
 #: C/index.page:8
 msgctxt "link"
-msgid "System Monitor"
+msgid "Kast Manager"
 msgstr "시스템 정보"
 
 #. (itstool) path: info/title
 #: C/index.page:9
 msgctxt "text"
-msgid "System Monitor"
+msgid "Kast Manager"
 msgstr "시스템 정보"
 
 #. (itstool) path: credit/name
@@ -2021,7 +2021,7 @@ msgstr "2017"
 #. (itstool) path: info/desc
 #: C/index.page:25
 msgid ""
-"System Monitor shows you what programs are running and how much processor "
+"Kast Manager shows you what programs are running and how much processor "
 "time, memory, and disk space are being used."
 msgstr ""
 "시스템 정보에서는 어떤 프로그램이 동작하는지 프로세스 시간, 메모리, 디스크 공"
@@ -2029,13 +2029,13 @@ msgstr ""
 
 #. (itstool) path: page/title
 #: C/index.page:29
-msgid "<_:media-1/> System Monitor"
+msgid "<_:media-1/> Kast Manager"
 msgstr "<_:media-1/> 시스템 정보"
 
 #. (itstool) path: page/p
 #: C/index.page:34
 msgid ""
-"<app>System Monitor</app> shows you what programs are running and how much "
+"<app>Kast Manager</app> shows you what programs are running and how much "
 "processor time, memory, and disk space are being used."
 msgstr ""
 "<app>시스템 정보</app>에서는 어떤 프로그램이 동작하는지 프로세스 시간, 메모"

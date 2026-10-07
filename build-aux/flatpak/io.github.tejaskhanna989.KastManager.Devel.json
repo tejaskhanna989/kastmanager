@@ -1,9 +1,9 @@
 {
-    "app-id": "org.gnome.SystemMonitor.Devel",
+    "app-id": "io.github.tejaskhanna989.KastManager.Devel",
     "runtime": "org.gnome.Platform",
     "runtime-version": "master",
     "sdk": "org.gnome.Sdk",
-    "command": "gnome-system-monitor",
+    "command": "kast-manager",
     "finish-args": [
         "--device=dri",
         "--share=ipc",
@@ -186,7 +186,7 @@
             ]
         },
         {
-            "name": "gnome-system-monitor",
+            "name": "kast-manager",
             "builddir": true,
             "buildsystem": "meson",
             "run-tests": true,

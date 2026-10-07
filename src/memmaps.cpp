@@ -1,5 +1,5 @@
 /*
- * SPDX-License-Identifier: GPL-2.0-or-later
+ * SPDX-License-Identifier: GPL-3.0-or-later-or-later
  */
 
 #include <config.h>
@@ -375,7 +375,7 @@ gsm_memmaps_view_class_init (GsmMemMapsViewClass *klass)
 
   GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
 
-  gtk_widget_class_set_template_from_resource (widget_class, "/org/gnome/gnome-system-monitor/data/memmaps.ui");
+  gtk_widget_class_set_template_from_resource (widget_class, "/io/github/tejaskhanna989/KastManager/data/memmaps.ui");
 
   gtk_widget_class_bind_template_child (widget_class, GsmMemMapsView, column_view);
   gtk_widget_class_bind_template_child (widget_class, GsmMemMapsView, window_title);

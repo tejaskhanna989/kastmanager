@@ -1,5 +1,5 @@
 /*
- * SPDX-License-Identifier: GPL-2.0-or-later
+ * SPDX-License-Identifier: GPL-3.0-or-later-or-later
  */
 
 #include "config.h"
@@ -425,7 +425,7 @@ gsm_disks_view_class_init (GsmDisksViewClass *klass)
 
   g_object_class_install_properties (object_class, N_PROPS, properties);
 
-  gtk_widget_class_set_template_from_resource (widget_class, "/org/gnome/gnome-system-monitor/data/disks.ui");
+  gtk_widget_class_set_template_from_resource (widget_class, "/io/github/tejaskhanna989/KastManager/data/disks.ui");
 
   gtk_widget_class_bind_template_child (widget_class, GsmDisksView, column_view);
   gtk_widget_class_bind_template_child (widget_class, GsmDisksView, selection);

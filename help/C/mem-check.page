@@ -63,7 +63,7 @@
   <steps>
     <item>
       <p>Click
-      <guiseq><gui>System Monitor</gui><gui>Preferences</gui></guiseq>.</p>
+      <guiseq><gui>Kast Manager</gui><gui>Preferences</gui></guiseq>.</p>
     </item>
     <item>
       <p>Click the <gui>Resources</gui> tab.</p>

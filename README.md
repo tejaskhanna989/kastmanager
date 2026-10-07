@@ -1,5 +1,7 @@
-# System Monitor
-GNOME System Monitor is a GNOME process viewer and system monitor with an attractive, 
+# Kast Manager
+
+> Fork of [GNOME System Monitor](https://gitlab.gnome.org/GNOME/gnome-system-monitor) rebranded as Kast Manager, licensed under GPL-3.0-or-later (upstream was GPL-2.0-or-later).
+Kast Manager is a GNOME process viewer and system monitor with an attractive, 
 easy-to-use interface, It has features, such as a tree view for process dependencies,
 icons for processes, the ability to hide processes that you don't want to see,
 graphical time histories of CPU/memory/swap usage,
@@ -7,10 +9,10 @@ the ability to kill/renice processes needing root access,
 as well as the standard features that you might expect from a process viewer.
 
 ## License
-This project is licensed under the **GNU General Public License v2.0**. [Learn more](https://choosealicense.com/licenses/gpl-2.0/)
+This project is licensed under the **GNU General Public License v3.0**. [Learn more](https://choosealicense.com/licenses/gpl-3.0/)
 
 ## Building
-The steps described below show how to compile and install _GNOME System Monitor_ from its source.
+The steps described below show how to compile and install _Kast Manager_ from its source.
 
 ### Install required dependencies
 To build the application, the following dependencies are required:
@@ -42,7 +44,7 @@ Where `build` is just a directory name, and is up to your choosing.
 ##### Build the application - this compiles the source.
 `ninja -C build`
  
-##### Install the application on your system - required to run _GNOME System Monitor_.
+##### Install the application on your system - required to run _Kast Manager_.
 `ninja -C build install`
 
 ### Cleanup
@@ -56,4 +58,4 @@ Where `build` is just a directory name, and is up to your choosing.
 ## Bugs
 
 Please file System-Monitor bugs at:
-https://gitlab.gnome.org/GNOME/gnome-system-monitor/issues
+https://gitlab.gnome.org/GNOME/kast-manager/issues

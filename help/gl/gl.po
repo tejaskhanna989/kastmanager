@@ -1,12 +1,12 @@
-# Galician translation for gnome-system-monitor.
-# Copyright (C) 2022 gnome-system-monitor's COPYRIGHT HOLDER
-# This file is distributed under the same license as the gnome-system-monitor package.
+# Galician translation for kast-manager.
+# Copyright (C) 2022 kast-manager's COPYRIGHT HOLDER
+# This file is distributed under the same license as the kast-manager package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 # Fran Dieguez <frandieguez@gnome.org>, 2022.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: gnome-system-monitor master\n"
+"Project-Id-Version: kast-manager master\n"
 "POT-Creation-Date: 2024-04-07 19:49+0000\n"
 "PO-Revision-Date: 2022-02-06 12:05+0100\n"
 "Last-Translator: Fran Dieguez <frandieguez@gnome.org>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 "X-DL-Branch: master\n"
 "X-DL-Domain: help\n"
-"X-DL-Module: gnome-system-monitor\n"
+"X-DL-Module: kast-manager\n"
 "X-DL-State: Translating\n"
 "X-DL-Team: gl\n"
 "X-Generator: Gtranslator 40.0\n"
@@ -312,7 +312,7 @@ msgstr "Para mostrar a velocidade de rede en bits:"
 #: C/net-bits.page:38 C/process-update-speed.page:38 C/mem-check.page:65
 #: C/process-columns.page:30
 msgid ""
-"Click <guiseq><gui>System Monitor</gui><gui>Preferences</gui></guiseq>."
+"Click <guiseq><gui>Kast Manager</gui><gui>Preferences</gui></guiseq>."
 msgstr ""
 "Prema <guiseq><gui>Monitor do sistema</gui><gui>Preferencias</gui></guiseq>."
 
@@ -430,7 +430,7 @@ msgstr ""
 #: C/process-update-speed.page:22
 #, fuzzy
 msgid ""
-"Refresh the information shown in the System Monitor with a longer or shorter"
+"Refresh the information shown in the Kast Manager with a longer or shorter"
 " interval."
 msgstr ""
 "Actualiza a información mostrada no monitor do sistema cun intervalo máis "
@@ -466,7 +466,7 @@ msgstr ""
 #, fuzzy
 msgid ""
 "Setting the <gui>Update interval</gui> to a lower value will cause "
-"<gui>System Monitor</gui> itself to use more of the CPU."
+"<gui>Kast Manager</gui> itself to use more of the CPU."
 msgstr ""
 "A configuración do intervalo de actualización </gui> a un valor máis baixo "
 "provocará que o monitor do sistema </gui> use máis da CPU."
@@ -769,7 +769,7 @@ msgstr ""
 msgid ""
 "You can also change how rapidly the chart is updated (the update interval), "
 "and how the lines for each processor are displayed (e.g. as a stacked area "
-"chart). Change the relevant options by clicking <gui>System Monitor</gui>, "
+"chart). Change the relevant options by clicking <gui>Kast Manager</gui>, "
 "then select <gui>Preferences</gui>, and then the <gui>Resources</gui> tab."
 msgstr ""
 "Tamén pode cambiar a rapidez que se actualiza o gráfico (o intervalo de "
@@ -1484,12 +1484,12 @@ msgstr "Matar (pechar) un programa inmediatamente"
 #, fuzzy
 msgid ""
 "If a program stops working or freezes, you can force it to close (\"kill\" "
-"it) using <app>System Monitor</app>. Go to the <gui>Processes</gui> tab and "
+"it) using <app>Kast Manager</app>. Go to the <gui>Processes</gui> tab and "
 "click to select the process you want to kill. Then, click <gui>End "
 "Process</gui>."
 msgstr ""
 "Se un programa deixa de funcionar ou se conxela, pode forzalo a pechar "
-"(\"Matalo\") usando <Pisp> System Monitor </pp>.Vaia á pestana <Gui> "
+"(\"Matalo\") usando <Pisp> Kast Manager </pp>.Vaia á pestana <Gui> "
 "Procesos </ui> e fai clic para seleccionar o proceso que desexa matar.A "
 "continuación, faga clic en <ui> Fin Process </ui>."
 
@@ -1936,7 +1936,7 @@ msgstr ""
 #: C/process-identify-file.page:38
 #, fuzzy
 msgid ""
-"Click <guiseq><gui>System Monitor</gui><gui>Search for Open "
+"Click <guiseq><gui>Kast Manager</gui><gui>Search for Open "
 "Files</gui></guiseq>."
 msgstr ""
 "Faga clic en <GuiseQ> <ui> Monitor de sistema </ui> <ui> Busque ficheiros "
@@ -2030,7 +2030,7 @@ msgstr ""
 #: C/commandline.page:21
 #, fuzzy
 msgid ""
-"Information in System Monitor can also be found using command line tools."
+"Information in Kast Manager can also be found using command line tools."
 msgstr ""
 "A información no monitor do sistema tamén se pode atopar mediante "
 "ferramentas de liña de comandos."
@@ -2044,7 +2044,7 @@ msgstr "Obter a mesma información desde a liña de ordes"
 #: C/commandline.page:33
 #, fuzzy
 msgid ""
-"Most of the information displayed by System Monitor can also be obtained "
+"Most of the information displayed by Kast Manager can also be obtained "
 "using these command line tools."
 msgstr ""
 "A maior parte da información amosada polo monitor do sistema tamén se pode "
@@ -2180,7 +2180,7 @@ msgstr "Gib é o mesmo que GB (Gigabyte)?"
 msgid ""
 "The memory and disk space statistics are displayed using <em>IEC binary "
 "prefixes</em>, KiB, MiB, GiB, TiB (for kibi, mebi, gibi and tebi). These are"
-" intended to distinguish binary reporting of sizes used in System Monitor "
+" intended to distinguish binary reporting of sizes used in Kast Manager "
 "(multiples of 1024) from decimal sizes (multiples of 1000) commonly used, "
 "for instance, in packaging of hard disks."
 msgstr ""
@@ -2225,19 +2225,19 @@ msgstr ""
 #. (itstool) path: info/title
 #: C/index.page:7
 msgctxt "link:trail"
-msgid "System Monitor"
+msgid "Kast Manager"
 msgstr "Monitor do sistema"
 
 #. (itstool) path: info/title
 #: C/index.page:8
 msgctxt "link"
-msgid "System Monitor"
+msgid "Kast Manager"
 msgstr "Monitor do sistema"
 
 #. (itstool) path: info/title
 #: C/index.page:9
 msgctxt "text"
-msgid "System Monitor"
+msgid "Kast Manager"
 msgstr "Monitor do sistema"
 
 #. (itstool) path: credit/name
@@ -2254,7 +2254,7 @@ msgstr "2017"
 #: C/index.page:25
 #, fuzzy
 msgid ""
-"System Monitor shows you what programs are running and how much processor "
+"Kast Manager shows you what programs are running and how much processor "
 "time, memory, and disk space are being used."
 msgstr ""
 "O monitor do sistema mostra que programas están a executar e canto tempo de "
@@ -2262,17 +2262,17 @@ msgstr ""
 
 #. (itstool) path: page/title
 #: C/index.page:29
-msgid "<_:media-1/> System Monitor"
+msgid "<_:media-1/> Kast Manager"
 msgstr "Monitor do sistema <_:media-1/>"
 
 #. (itstool) path: page/p
 #: C/index.page:34
 #, fuzzy
 msgid ""
-"<app>System Monitor</app> shows you what programs are running and how much "
+"<app>Kast Manager</app> shows you what programs are running and how much "
 "processor time, memory, and disk space are being used."
 msgstr ""
-"<pp> System Monitor </pp> móstralle que programas están a executar e canto "
+"<pp> Kast Manager </pp> móstralle que programas están a executar e canto "
 "tempo de procesador, memoria e espazo do disco se está a usar."
 
 #. (itstool) path: section/title

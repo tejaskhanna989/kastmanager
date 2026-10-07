@@ -4,24 +4,24 @@
          xmlns:gnome="http://api.gnome.org/doap-extensions#"
          xmlns="http://usefulinc.com/ns/doap#">
 
-  <name xml:lang="en">System Monitor</name>
+  <name xml:lang="en">Kast Manager</name>
   <shortdesc xml:lang="en">View current processes and monitor system state</shortdesc>
   <category rdf:resource="http://api.gnome.org/doap-extensions#core" />
   <programming-language>C++</programming-language>
-  <description>GNOME System Monitor is a GNOME process viewer and system monitor with
+  <description>Kast Manager is a GNOME process viewer and system monitor with
 an attractive, easy-to-use interface, It has features, such as a tree
 view for process dependencies, icons for processes, the ability to hide
 processes that you don't want to see, graphical time histories of
 CPU/memory/swap usage, the ability to kill/renice processes needing root
 access, as well as the standard features that you might expect from a
 process viewer.</description>
-  <homepage rdf:resource="https://apps.gnome.org/SystemMonitor" />
-  <download-page rdf:resource="http://download.gnome.org/sources/gnome-system-monitor/" />
-  <bug-database rdf:resource="https://gitlab.gnome.org/GNOME/gnome-system-monitor/issues" />
+  <homepage rdf:resource="https://github.com/tejaskhanna989/kastmanager" />
+  <download-page rdf:resource="https://github.com/tejaskhanna989/kastmanager/releases" />
+  <bug-database rdf:resource="https://github.com/tejaskhanna989/kastmanager/issues" />
   <repository>
     <GitRepository>
-        <location rdf:resource="https://gitlab.gnome.org/GNOME/gnome-system-monitor.git" />
-        <browse rdf:resource="https://gitlab.gnome.org/GNOME/gnome-system-monitor" />
+        <location rdf:resource="https://github.com/tejaskhanna989/kastmanager.git" />
+        <browse rdf:resource="https://github.com/tejaskhanna989/kastmanager" />
     </GitRepository>
   </repository>
   <platform>GTK 4</platform>

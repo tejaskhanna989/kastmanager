@@ -69,22 +69,22 @@ gresourceconf = configuration_data()
 gresourceconf.set('metainfo_file', '@0@.metainfo.xml'.format(app_id))
 
 gresource_file = configure_file(
-  input: 'gsm.gresource.xml.in',
-  output: 'gsm.gresource.xml',
+  input: 'kast.gresource.xml.in',
+  output: 'kast.gresource.xml',
   configuration: gresourceconf,
 )
 
 gsm_resource = gnome.compile_resources(
-  'gsm-resources',
+  'kast-resources',
   gresource_file,
-  c_name: 'gsm',
+  c_name: 'kast',
   dependencies: metainfo_file,
   source_dir: meson.project_source_root(),
 )
 
 gsm_schemas = configure_file(
-  input : 'org.gnome.gnome-system-monitor.gschema.xml.in',
-  output: 'org.gnome.gnome-system-monitor.gschema.xml',
+  input : 'io.github.tejaskhanna989.KastManager.gschema.xml.in',
+  output: 'io.github.tejaskhanna989.KastManager.gschema.xml',
   configuration: dataconf,
   install: true,
   install_dir: get_option('datadir') / 'glib-2.0' / 'schemas',
@@ -92,11 +92,11 @@ gsm_schemas = configure_file(
 
 gnome.compile_schemas(depend_files: gsm_schemas)
 
-gsm_gsettings = gnome.mkenums('org.gnome.gnome-system-monitor.enums.xml',
+gsm_gsettings = gnome.mkenums('io.github.tejaskhanna989.KastManager.enums.xml',
   sources: system_monitor_headers,
   comments: '<!-- @comment@ -->',
   fhead:    '<schemalist>',
-  vhead:    '  <@type@ id=\'org.gnome.gnome-system-monitor.@EnumName@\'>',
+  vhead:    '  <@type@ id=\'io.github.tejaskhanna989.KastManager.@EnumName@\'>',
   vprod:    '    <value nick=\'@valuenick@\' value=\'@valuenum@\'/>',
   vtail:    '  </@type@>',
   ftail:    '</schemalist>',

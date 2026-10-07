@@ -31,7 +31,7 @@
 
     <p>The memory and disk space statistics are displayed using <em>IEC binary
  prefixes</em>, KiB, MiB, GiB, TiB (for kibi, mebi, gibi and tebi). These are
- intended to distinguish binary reporting of sizes used in System Monitor
+ intended to distinguish binary reporting of sizes used in Kast Manager
  (multiples of 1024) from decimal sizes (multiples of 1000) commonly used, for
  instance, in packaging of hard disks.</p>
 

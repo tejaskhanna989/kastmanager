@@ -1,5 +1,5 @@
 /*
- * SPDX-License-Identifier: GPL-2.0-or-later
+ * SPDX-License-Identifier: GPL-3.0-or-later-or-later
  */
 
 #include "config.h"
@@ -40,10 +40,10 @@ main (int argc, char *argv[])
 {
   g_test_init (&argc, &argv, NULL);
 
-  g_test_add_func ("/gnome-system-monitor/cgroups/v2", test_cgroups_v2);
-  g_test_add_func ("/gnome-system-monitor/cgroups/v1/one-entry",
+  g_test_add_func ("/kast-manager/cgroups/v2", test_cgroups_v2);
+  g_test_add_func ("/kast-manager/cgroups/v1/one-entry",
                    test_cgroups_v1_one_entry);
-  g_test_add_func ("/gnome-system-monitor/cgroups/v1/multiple-entry",
+  g_test_add_func ("/kast-manager/cgroups/v1/multiple-entry",
                    test_cgroups_v1_multiple_entry);
 
   return g_test_run ();

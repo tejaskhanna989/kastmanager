@@ -1,5 +1,5 @@
 /*
- * SPDX-License-Identifier: GPL-2.0-or-later
+ * SPDX-License-Identifier: GPL-3.0-or-later-or-later
  */
 
 #include <config.h>
@@ -207,7 +207,7 @@ gsm_open_files_class_init (GsmOpenFilesClass *klass)
 
   g_object_class_install_properties (object_class, LAST_PROP, pspecs);
 
-  gtk_widget_class_set_template_from_resource (widget_class, "/org/gnome/gnome-system-monitor/data/openfiles.ui");
+  gtk_widget_class_set_template_from_resource (widget_class, "/io/github/tejaskhanna989/KastManager/data/openfiles.ui");
 
   gtk_widget_class_bind_template_child (widget_class, GsmOpenFiles, window_title);
   gtk_widget_class_bind_template_child (widget_class, GsmOpenFiles, store);

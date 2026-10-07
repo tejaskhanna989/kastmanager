@@ -23,7 +23,7 @@
 #include "disks.h"
 
 extern "C" {
-#include "gsm-resources.h"
+#include "kast-resources.h"
 }
 
 static void
@@ -389,7 +389,7 @@ GsmApplication::GsmApplication()
 
   smooth_refresh (NULL)
 {
-  Glib::set_application_name (_("System Monitor"));
+  Glib::set_application_name (_("Kast Manager"));
   this->set_version (VERSION);
   this->set_option_context_summary (_("A simple process and system monitor."));
   this->add_main_option_entry (OptionType::BOOL,
@@ -450,7 +450,7 @@ GsmApplication::on_help_activate (const Glib::VariantBase&)
 {
   GError*error = 0;
 
-  if (!g_app_info_launch_default_for_uri ("help:gnome-system-monitor", NULL, &error))
+  if (!g_app_info_launch_default_for_uri ("help:kast-manager", NULL, &error))
     {
       g_warning ("Could not display help : %s", error->message);
       g_error_free (error);
@@ -500,7 +500,7 @@ GsmApplication::on_startup ()
   AdwStyleManager *style_manager;
   GtkCssProvider *css_provider;
 
-  g_resources_register (gsm_get_resource ());
+  g_resources_register (kast_get_resource ());
 
   Gtk::Application::on_startup ();
 
@@ -510,7 +510,7 @@ GsmApplication::on_startup ()
   adw_style_manager_set_color_scheme (style_manager, ADW_COLOR_SCHEME_PREFER_LIGHT);
 
   css_provider = gtk_css_provider_new ();
-  gtk_css_provider_load_from_resource (css_provider, "/org/gnome/gnome-system-monitor/style.css");
+  gtk_css_provider_load_from_resource (css_provider, "/io/github/tejaskhanna989/KastManager/style.css");
   gtk_style_context_add_provider_for_display (gdk_display_get_default (),
                                               GTK_STYLE_PROVIDER (css_provider),
                                               GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
@@ -529,7 +529,7 @@ GsmApplication::on_startup ()
   add_action (make_action("lsof", &GsmApplication::on_lsof_activate));
   add_action (make_action("preferences", &GsmApplication::on_preferences_activate));
 
-  Glib::RefPtr<Gtk::Builder> builder = Gtk::Builder::create_from_resource ("/org/gnome/gnome-system-monitor/data/menus.ui");
+  Glib::RefPtr<Gtk::Builder> builder = Gtk::Builder::create_from_resource ("/io/github/tejaskhanna989/KastManager/data/menus.ui");
 
   set_accel_for_action ("win.show-dependencies", "<Primary>d");
   set_accel_for_action ("app.quit", "<Primary>q");

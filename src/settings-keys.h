@@ -1,7 +1,7 @@
 #ifndef _GSM_SETTINGS_KEYS_H_
 #define _GSM_SETTINGS_KEYS_H_
 
-#define GSM_GSETTINGS_SCHEMA                "org.gnome.gnome-system-monitor"
+#define GSM_GSETTINGS_SCHEMA                "io.github.tejaskhanna989.KastManager"
 #define FONT_SETTINGS_SCHEMA                "org.gnome.desktop.interface"
 
 #define FONT_SETTING_SCALING                "text-scaling-factor"

@@ -1,4 +1,4 @@
-New in 51.1 - 6 October 2026
+New in 1.0.0 - 6 October 2026
 
 * Updated translations
 * Remember window location on X11 (DerAlbi)
@@ -1430,7 +1430,7 @@ New in 3.9.5 - 29 July 2013
 * List of fixed bugs
   
   531097 Added expanders to show/hide separate graphs
-  704215 Make System Monitor work in Wayland
+  704215 Make Kast Manager work in Wayland
   704378 Switch to glib resource framework
   704467 Port to GAction
   674405 Use gtkHeaderbar instead of gtkNotebook
@@ -1537,7 +1537,7 @@ New in 3.7.90 - 18 February 2013
   520853 uninteresting information - hide free column
   431660 Column sizes resetted every time in 'File Systems' tab - save devices column settings
   142026 quicker way to select the columns you want - added popup menu on column headers
-  662264 "System Monitor" name conflicts with KDE's "System Monitor" - added OnlyShowIn KDE desktop file
+  662264 "Kast Manager" name conflicts with KDE's "Kast Manager" - added OnlyShowIn KDE desktop file
   693630 use SI units (MB, GB, ...) when talking about disk sizes
   unreported - migrated checkbox based settings to gsettings bindings instead of custom callback for save and load
   unreported - minor performance optimizations
@@ -1814,11 +1814,11 @@ New in 3.3.4 - 17 January 2012
   tr, courtesy of Muhammet Kara
 
 * List of fixed bugs:
-  662463 gnome-system-monitor crashes when nicotine+ is running
+  662463 kast-manager crashes when nicotine+ is running
   557122 Default sorting is backwards
   507108 Keep process list sorted
   632188 Not enough CPU usage line graph colors for high core count systems
-  543347 Add a Process Properties dialog in GNOME System Monitor
+  543347 Add a Process Properties dialog in Kast Manager
 
 New in 3.3.3 - 20 December 2011
 * More Control Group support improvements
@@ -1879,7 +1879,7 @@ New in 3.3.2 - 22 November 2011
   646393 system monitor should use g_get_user_runtime_dir
   616794 Miscellaneous string fixes
   576863 Code reading gnome-version.xml assumed it's well-formed
-  468495 System Monitor system tab does not show all CPUs
+  468495 Kast Manager system tab does not show all CPUs
   506035 Process/Application icons in wrong resolution
   343861 Window position and size aren´t remembered
   305883 Process listing doesn't fit in default window size
@@ -1926,8 +1926,8 @@ New in 3.0.0 - 4 April 2011
 * Updated translations.
 
 New in 2.99.3 - 25 March 2011
-* Change setting's id and path to org.gnome.gnome-system-monitor &
-  /org/gnome/gnome-system-monitor, respectively
+* Change setting's id and path to io.github.tejaskhanna989.KastManager &
+  /io/github/tejaskhanna989/KastManager, respectively
 * Updated translations.
 
 New in 2.99.2 - 21 March 2011
@@ -2321,7 +2321,7 @@ New in 2.11.2 - 18 may 2005
   a device is mounted or unmounted.
 * Smooth refresh so keep g-s-m own cpu usage < 10%
 * Fixed display if there's no swap.
-* Spawn only one instance of gnome-system-monitor thanks to libbacon.
+* Spawn only one instance of kast-manager thanks to libbacon.
 * etc
 
 Thanks to everyone who helped me. See ChangeLog.

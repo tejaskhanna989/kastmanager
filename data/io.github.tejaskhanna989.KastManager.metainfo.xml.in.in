@@ -3,16 +3,16 @@
 <component type="desktop-application">
   <id>@APP_ID@</id>
   <metadata_license>CC0-1.0</metadata_license>
-  <project_license>GPL-2.0</project_license>
-  <name>System Monitor</name>
+  <project_license>GPL-3.0-or-later</project_license>
+  <name>Kast Manager</name>
   <summary>View and manage system resources</summary>
   <description>
     <p>
-      System Monitor is a process viewer and system monitor with
+      Kast Manager is a process viewer and system monitor with
       an attractive, easy-to-use interface. 
     </p>
     <p>
-      System Monitor can help you find out what applications are using the processor
+      Kast Manager can help you find out what applications are using the processor
       or the memory of your computer, can manage the running applications, force
       stop processes not responding, and change the state or priority of existing 
       processes.
@@ -24,43 +24,43 @@
   </description>
   <screenshots>
     <screenshot type="default">
-      <image>https://gitlab.gnome.org/GNOME/gnome-system-monitor/raw/HEAD/data/screenshots/Processes.png</image>
+      <image>https://github.com/tejaskhanna989/kastmanager/raw/main/data/screenshots/Processes.png</image>
       <caption>Process list view</caption>
     </screenshot>
     <screenshot>
-      <image>https://gitlab.gnome.org/GNOME/gnome-system-monitor/raw/HEAD/data/screenshots/Resources.png</image>
+      <image>https://github.com/tejaskhanna989/kastmanager/raw/main/data/screenshots/Resources.png</image>
       <caption>Resources overview</caption>
     </screenshot>
     <screenshot>
-      <image>https://gitlab.gnome.org/GNOME/gnome-system-monitor/raw/HEAD/data/screenshots/Disks.png</image>
+      <image>https://github.com/tejaskhanna989/kastmanager/raw/main/data/screenshots/Disks.png</image>
       <caption>File Systems view</caption>
     </screenshot>
   </screenshots>
   <update_contact>robert.roth.off_at_gmail.com</update_contact>
   <project_group>GNOME</project_group>
   <content_rating type="oars-1.1" />
-  <translation type="gettext">gnome-system-monitor</translation>
+  <translation type="gettext">kast-manager</translation>
   <launchable type="desktop-id">@APP_ID@.desktop</launchable>
 
-  <developer id="org.gnome">
-    <name>The GNOME Project</name>
+  <developer id="io.github.tejaskhanna989">
+    <name>Kast</name>
   </developer>
 
-  <url type="bugtracker">https://gitlab.gnome.org/GNOME/gnome-system-monitor/-/work_items</url>
-  <url type="contribute">https://welcome.gnome.org/app/SystemMonitor/</url>
+  <url type="bugtracker">https://gitlab.gnome.org/GNOME/kast-manager/-/work_items</url>
+  <url type="contribute">https://welcome.gnome.org/app/KastManager/</url>
   <url type="donation">https://www.gnome.org/donate/</url>
-  <url type="help">https://help.gnome.org/users/gnome-system-monitor/stable/</url>
-  <url type="homepage">https://apps.gnome.org/SystemMonitor/</url>
-  <url type="translate">https://l10n.gnome.org/module/gnome-system-monitor/</url>
-  <url type="vcs-browser">https://gitlab.gnome.org/GNOME/gnome-system-monitor</url>
+  <url type="help">https://help.gnome.org/users/kast-manager/stable/</url>
+  <url type="homepage">https://apps.gnome.org/KastManager/</url>
+  <url type="translate">https://l10n.gnome.org/module/kast-manager/</url>
+  <url type="vcs-browser">https://gitlab.gnome.org/GNOME/kast-manager</url>
 
   <provides>
-    <binary>gnome-system-monitor</binary>
-    <id>org.gnome.SystemMonitor.desktop</id>
+    <binary>kast-manager</binary>
+    <id>io.github.tejaskhanna989.KastManager.desktop</id>
   </provides>
 
   <releases>
-    <release date="2026-10-06" version="51.1" type="stable">
+    <release date="2026-10-06" version="1.0.0" type="stable">
       <description>
         <ul>
           <li>Updated translations</li>

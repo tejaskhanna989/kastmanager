@@ -1,5 +1,5 @@
-# https://gitlab.gnome.org/GNOME/gnome-system-monitor/issues
-project('gnome-system-monitor',
+# https://github.com/tejaskhanna989/kastmanager/issues
+project('kast-manager',
   'c', 'cpp',
   default_options : [
     'c_std=gnu2x',
@@ -7,7 +7,7 @@ project('gnome-system-monitor',
     'warning_level=3',
     'b_lto=true',
   ],
-  version: '51.1',
+  version: '1.0.0',
   meson_version: '>=0.57.0',
 )
 
@@ -19,9 +19,9 @@ cc = meson.get_compiler('c')
 cx = meson.get_compiler('cpp')
 
 if get_option('development')
-  app_id = 'org.gnome.SystemMonitor.Devel'
+  app_id = 'io.github.tejaskhanna989.KastManager.Devel'
 else
-  app_id = 'org.gnome.SystemMonitor'
+  app_id = 'io.github.tejaskhanna989.KastManager'
 endif
 
 gettext_package = meson.project_name()
