@@ -144,8 +144,8 @@
 
     <key name="cpu-colors" type="a(us)">
       <default>[
-                (0, '#e01b24'),
-                (1, '#ff7800'),
+                (0, '#00e5ff'),
+                (1, '#c95bff'),
                 (2, '#f6d32d'),
                 (3, '#33d17a'),
                 (4, '#26a269'),
@@ -168,7 +168,7 @@
     </key>
 
     <key name="mem-color" type="s">
-      <default>'#e01b24'
+      <default>'#00e5ff'
       </default>
       <summary>Default graph memory color
       </summary>
