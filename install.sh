@@ -91,6 +91,14 @@ fi
 if [ -f "$ICON_SRC" ]; then
   cp -f "$ICON_SRC" "$ICON_FILE"
   echo "Icon: $ICON_FILE"
+  # PNG fallbacks for shells that prefer raster icons
+  if command -v rsvg-convert >/dev/null 2>&1; then
+    for size in 48 128; do
+      PNG_DIR="$HOME/.local/share/icons/hicolor/${size}x${size}/apps"
+      mkdir -p "$PNG_DIR"
+      rsvg-convert -w "$size" -h "$size" "$ICON_SRC" -o "$PNG_DIR/$APP_ID.png" 2>/dev/null && echo "Icon PNG: $PNG_DIR/$APP_ID.png"
+    done
+  fi
 else
   echo "Note: no icon found, shortcut will use $APP_ID (themed) fallback."
 fi
