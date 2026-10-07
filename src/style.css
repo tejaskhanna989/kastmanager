@@ -143,3 +143,103 @@ entry:focus {
   letter-spacing: 1px;
   color: @kast_neon_cyan;
 }
+
+/* ---- Kast dashboard cards ---- */
+
+.dash-value {
+  font-feature-settings: "tnum";
+  letter-spacing: 0.3px;
+}
+
+.dash-accent-cpu { color: #00f0ff; }
+.dash-accent-mem { color: #c95bff; }
+.dash-accent-swap { color: #3dff9e; }
+.dash-accent-load { color: #62a0ea; }
+.dash-accent-uptime { color: #ff8e3c; }
+.dash-accent-procs { color: #f6d32d; }
+
+#dash_grid > flowboxchild {
+  padding: 0;
+  background: transparent;
+  border: none;
+}
+
+#dash_grid button.card {
+  padding: 8px 14px;
+  border-radius: 16px;
+  border: 1px solid rgba(139, 148, 158, 0.22);
+  border-top-width: 3px;
+  background-color: @kast_card_bg;
+  transition: box-shadow 150ms ease-in-out, border-color 150ms ease-in-out;
+}
+
+#dash_grid button.card:hover {
+  border-color: rgba(0, 240, 255, 0.45);
+  box-shadow: 0 4px 24px rgba(0, 240, 255, 0.12);
+}
+
+#dash_cpu_card { border-top-color: #00f0ff; }
+#dash_mem_card { border-top-color: #c95bff; }
+#dash_swap_card { border-top-color: #3dff9e; }
+#dash_load_card { border-top-color: #62a0ea; }
+#dash_uptime_card { border-top-color: #ff8e3c; }
+#dash_procs_card { border-top-color: #f6d32d; }
+
+/* ---- Header switcher pill ---- */
+
+viewswitcher button.slider {
+  background: linear-gradient(135deg, rgba(0,240,255,0.9), rgba(201,91,255,0.9));
+  border-radius: 999px;
+}
+
+viewswitcher button {
+  border-radius: 999px;
+  padding: 4px 14px;
+  color: @kast_dim;
+}
+
+viewswitcher button:checked {
+  color: #06121a;
+  font-weight: 800;
+}
+
+/* ---- Resources sections ---- */
+
+expander {
+  background-color: @kast_card_bg;
+  border: 1px solid rgba(139, 148, 158, 0.20);
+  border-radius: 14px;
+  padding: 8px 10px;
+}
+
+expander > title {
+  color: @kast_fg;
+  font-weight: 800;
+}
+
+/* ---- Process table ---- */
+
+treeview {
+  border-radius: 12px;
+}
+
+treeview header button {
+  padding: 6px 8px;
+}
+
+treeview row {
+  padding: 2px 0;
+}
+
+/* ---- Scrollbars ---- */
+
+scrollbar slider {
+  background-color: rgba(139, 148, 158, 0.45);
+  border-radius: 999px;
+  min-width: 8px;
+  min-height: 8px;
+}
+
+scrollbar slider:hover {
+  background-color: rgba(0, 240, 255, 0.6);
+}

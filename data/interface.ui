@@ -119,8 +119,12 @@
                                         <property name="halign">start</property>
                                         <attributes>
                                           <attribute name="weight" value="bold"/>
-                                          <attribute name="scale" value="1.8"/>
+                                          <attribute name="scale" value="2.0"/>
                                         </attributes>
+                                        <style>
+                                          <class name="dash-value"/>
+                                          <class name="dash-accent-cpu"/>
+                                        </style>
                                       </object>
                                     </child>
                                     <child>
@@ -162,8 +166,12 @@
                                         <property name="halign">start</property>
                                         <attributes>
                                           <attribute name="weight" value="bold"/>
-                                          <attribute name="scale" value="1.8"/>
+                                          <attribute name="scale" value="2.0"/>
                                         </attributes>
+                                        <style>
+                                          <class name="dash-value"/>
+                                          <class name="dash-accent-mem"/>
+                                        </style>
                                       </object>
                                     </child>
                                     <child>
@@ -205,8 +213,12 @@
                                         <property name="halign">start</property>
                                         <attributes>
                                           <attribute name="weight" value="bold"/>
-                                          <attribute name="scale" value="1.8"/>
+                                          <attribute name="scale" value="2.0"/>
                                         </attributes>
+                                        <style>
+                                          <class name="dash-value"/>
+                                          <class name="dash-accent-swap"/>
+                                        </style>
                                       </object>
                                     </child>
                                     <child>
@@ -248,8 +260,12 @@
                                         <property name="halign">start</property>
                                         <attributes>
                                           <attribute name="weight" value="bold"/>
-                                          <attribute name="scale" value="1.8"/>
+                                          <attribute name="scale" value="2.0"/>
                                         </attributes>
+                                        <style>
+                                          <class name="dash-value"/>
+                                          <class name="dash-accent-load"/>
+                                        </style>
                                       </object>
                                     </child>
                                     <child>
@@ -291,8 +307,12 @@
                                         <property name="halign">start</property>
                                         <attributes>
                                           <attribute name="weight" value="bold"/>
-                                          <attribute name="scale" value="1.8"/>
+                                          <attribute name="scale" value="2.0"/>
                                         </attributes>
+                                        <style>
+                                          <class name="dash-value"/>
+                                          <class name="dash-accent-uptime"/>
+                                        </style>
                                       </object>
                                     </child>
                                     <child>
@@ -334,8 +354,12 @@
                                         <property name="halign">start</property>
                                         <attributes>
                                           <attribute name="weight" value="bold"/>
-                                          <attribute name="scale" value="1.8"/>
+                                          <attribute name="scale" value="2.0"/>
                                         </attributes>
+                                        <style>
+                                          <class name="dash-value"/>
+                                          <class name="dash-accent-procs"/>
+                                        </style>
                                       </object>
                                     </child>
                                     <child>
