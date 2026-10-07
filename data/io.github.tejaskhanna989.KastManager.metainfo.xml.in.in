@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Copyright 2016 Robert Roth -->
+<!-- Copyright 2016-2026 GNOME System Monitor contributors, Copyright 2026 Tejas Khanna -->
 <component type="desktop-application">
   <id>@APP_ID@</id>
   <metadata_license>CC0-1.0</metadata_license>
@@ -36,23 +36,22 @@
       <caption>File Systems view</caption>
     </screenshot>
   </screenshots>
-  <update_contact>robert.roth.off_at_gmail.com</update_contact>
-  <project_group>GNOME</project_group>
+  <update_contact>khannatejas989_at_gmail.com</update_contact>
   <content_rating type="oars-1.1" />
   <translation type="gettext">kast-manager</translation>
   <launchable type="desktop-id">@APP_ID@.desktop</launchable>
 
   <developer id="io.github.tejaskhanna989">
-    <name>Kast</name>
+    <name>Tejas Khanna</name>
   </developer>
 
-  <url type="bugtracker">https://gitlab.gnome.org/GNOME/kast-manager/-/work_items</url>
-  <url type="contribute">https://welcome.gnome.org/app/KastManager/</url>
-  <url type="donation">https://www.gnome.org/donate/</url>
-  <url type="help">https://help.gnome.org/users/kast-manager/stable/</url>
-  <url type="homepage">https://apps.gnome.org/KastManager/</url>
-  <url type="translate">https://l10n.gnome.org/module/kast-manager/</url>
-  <url type="vcs-browser">https://gitlab.gnome.org/GNOME/kast-manager</url>
+  <url type="bugtracker">https://github.com/tejaskhanna989/kastmanager/issues</url>
+  <url type="contribute">https://github.com/tejaskhanna989/kastmanager</url>
+  <url type="donation">https://github.com/tejaskhanna989/kastmanager</url>
+  <url type="help">https://github.com/tejaskhanna989/kastmanager#readme</url>
+  <url type="homepage">https://github.com/tejaskhanna989/kastmanager</url>
+  <url type="translate">https://github.com/tejaskhanna989/kastmanager</url>
+  <url type="vcs-browser">https://github.com/tejaskhanna989/kastmanager</url>
 
   <provides>
     <binary>kast-manager</binary>

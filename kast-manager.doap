@@ -8,7 +8,7 @@
   <shortdesc xml:lang="en">View current processes and monitor system state</shortdesc>
   <category rdf:resource="http://api.gnome.org/doap-extensions#core" />
   <programming-language>C++</programming-language>
-  <description>Kast Manager is a GNOME process viewer and system monitor with
+  <description>Kast Manager is a process viewer and system monitor with
 an attractive, easy-to-use interface, It has features, such as a tree
 view for process dependencies, icons for processes, the ability to hide
 processes that you don't want to see, graphical time histories of
@@ -29,15 +29,8 @@ process viewer.</description>
 
   <maintainer>
     <foaf:Person>
-      <foaf:name>Robert Roth</foaf:name>
-      <foaf:mbox rdf:resource="mailto:robert.roth.off@gmail.com" />
-      <gnome:userid>robertroth</gnome:userid>
-    </foaf:Person>
-  </maintainer>
-  <maintainer>
-    <foaf:Person>
-      <foaf:name>Óscar Fernández Díaz</foaf:name>
-      <foaf:mbox rdf:resource="mailto:oscarfernandezdiaz@gnome.org" />
+      <foaf:name>Tejas Khanna</foaf:name>
+      <foaf:mbox rdf:resource="mailto:khannatejas989@gmail.com" />
     </foaf:Person>
   </maintainer>
   

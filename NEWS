@@ -1,4 +1,12 @@
-New in 1.0.0 - 6 October 2026
+New in 1.0.0 - 7 October 2026 (Kast Manager fork by Tejas Khanna)
+
+* Full rebrand from GNOME System Monitor to Kast Manager
+* New App ID io.github.tejaskhanna989.KastManager, binary kast-manager
+* License upgraded to GPL-3.0-or-later
+* Single AppImage build via packaging/build-appimage.sh
+* Hidden-location installer with .desktop shortcut via install.sh
+
+New in 51.1 - 6 October 2026
 
 * Updated translations
 * Remember window location on X11 (DerAlbi)

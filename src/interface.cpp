@@ -450,6 +450,7 @@ on_activate_about (GSimpleAction *,
   AdwDialog *about_dialog;
 
   const gchar *authors[] = {
+    "Tejas Khanna",
     "Kevin Vandersloot",
     "Erik Johnsson",
     "Jorgen Scheibengruber",
@@ -481,7 +482,8 @@ on_activate_about (GSimpleAction *,
   adw_about_dialog_set_copyright (ADW_ABOUT_DIALOG (about_dialog),
                                   "Copyright \xc2\xa9 2001-2004 Kevin Vandersloot\n"
                                   "Copyright \xc2\xa9 2005-2007 Benoît Dejean\n"
-                                  "Copyright \xc2\xa9 2011 Chris Kühl");
+                                  "Copyright \xc2\xa9 2011 Chris Kühl\n"
+                                  "Copyright \xc2\xa9 2026 Tejas Khanna");
   adw_about_dialog_set_developers (ADW_ABOUT_DIALOG (about_dialog), authors);
   adw_about_dialog_set_artists (ADW_ABOUT_DIALOG (about_dialog), artists);
   adw_about_dialog_set_documenters (ADW_ABOUT_DIALOG (about_dialog), documenters);

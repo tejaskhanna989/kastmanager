@@ -1,12 +1,16 @@
 # Kast Manager
 
 > Fork of [GNOME System Monitor](https://gitlab.gnome.org/GNOME/gnome-system-monitor) rebranded as Kast Manager, licensed under GPL-3.0-or-later (upstream was GPL-2.0-or-later).
-Kast Manager is a GNOME process viewer and system monitor with an attractive, 
+Kast Manager is a process viewer and system monitor with an attractive, 
 easy-to-use interface, It has features, such as a tree view for process dependencies,
 icons for processes, the ability to hide processes that you don't want to see,
 graphical time histories of CPU/memory/swap usage,
 the ability to kill/renice processes needing root access,
 as well as the standard features that you might expect from a process viewer.
+
+## Author
+
+**Tejas Khanna** — https://github.com/tejaskhanna989/kastmanager
 
 ## License
 This project is licensed under the **GNU General Public License v3.0**. [Learn more](https://choosealicense.com/licenses/gpl-3.0/)
