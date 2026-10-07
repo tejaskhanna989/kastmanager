@@ -127,6 +127,19 @@ public:
   LoadGraph *net_graph;
   LoadGraph *disk_graph;
 
+  GtkLabel *dash_cpu_value;
+  GtkLabel *dash_cpu_detail;
+  GtkLabel *dash_mem_value;
+  GtkLabel *dash_mem_detail;
+  GtkLabel *dash_swap_value;
+  GtkLabel *dash_swap_detail;
+  GtkLabel *dash_load_value;
+  GtkLabel *dash_load_detail;
+  GtkLabel *dash_uptime_value;
+  GtkLabel *dash_uptime_detail;
+  GtkLabel *dash_procs_value;
+  GtkLabel *dash_procs_detail;
+
   GsmDisksView *disk_list;
 
   GtkTreeSelection *selection;

@@ -53,6 +53,317 @@
             <property name="vexpand">True</property>
             <child>
               <object class="AdwViewStackPage">
+                <property name="name">dashboard</property>
+                <property name="use-underline">True</property>
+                <property name="title" translatable="yes">_Dashboard</property>
+                <property name="icon-name">view-grid-symbolic</property>
+                <property name="child">
+                  <object class="GtkScrolledWindow" id="dash_scrolled">
+                    <property name="hexpand">True</property>
+                    <property name="vexpand">True</property>
+                    <property name="child">
+                      <object class="GtkBox" id="dash_box">
+                        <property name="orientation">vertical</property>
+                        <property name="spacing">12</property>
+                        <property name="margin-top">20</property>
+                        <property name="margin-bottom">24</property>
+                        <property name="margin-start">24</property>
+                        <property name="margin-end">24</property>
+                        <child>
+                          <object class="GtkLabel" id="dash_title">
+                            <property name="label" translatable="yes">Kast Manager</property>
+                            <property name="halign">start</property>
+                            <style>
+                              <class name="kast-neon-title"/>
+                            </style>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkLabel" id="dash_subtitle">
+                            <property name="label" translatable="yes">System overview — select a card to dive in</property>
+                            <property name="halign">start</property>
+                            <style>
+                              <class name="dim-label"/>
+                            </style>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkFlowBox" id="dash_grid">
+                            <property name="hexpand">True</property>
+                            <property name="homogeneous">True</property>
+                            <property name="min-children-per-line">2</property>
+                            <property name="max-children-per-line">3</property>
+                            <property name="row-spacing">12</property>
+                            <property name="column-spacing">12</property>
+                            <property name="selection-mode">none</property>
+                            <child>
+                              <object class="GtkButton" id="dash_cpu_card">
+                                <property name="child">
+                                  <object class="GtkBox">
+                                    <property name="orientation">vertical</property>
+                                    <property name="spacing">2</property>
+                                    <property name="margin-top">14</property>
+                                    <property name="margin-bottom">14</property>
+                                    <child>
+                                      <object class="GtkLabel">
+                                        <property name="label" translatable="yes">CPU</property>
+                                        <property name="halign">start</property>
+                                        <style>
+                                          <class name="dim-label"/>
+                                        </style>
+                                      </object>
+                                    </child>
+                                    <child>
+                                      <object class="GtkLabel" id="dash_cpu_value">
+                                        <property name="label">—</property>
+                                        <property name="halign">start</property>
+                                        <attributes>
+                                          <attribute name="weight" value="bold"/>
+                                          <attribute name="scale" value="1.8"/>
+                                        </attributes>
+                                      </object>
+                                    </child>
+                                    <child>
+                                      <object class="GtkLabel" id="dash_cpu_detail">
+                                        <property name="label">—</property>
+                                        <property name="halign">start</property>
+                                        <style>
+                                          <class name="dim-label"/>
+                                        </style>
+                                      </object>
+                                    </child>
+                                  </object>
+                                </property>
+                                <style>
+                                  <class name="card"/>
+                                </style>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkButton" id="dash_mem_card">
+                                <property name="child">
+                                  <object class="GtkBox">
+                                    <property name="orientation">vertical</property>
+                                    <property name="spacing">2</property>
+                                    <property name="margin-top">14</property>
+                                    <property name="margin-bottom">14</property>
+                                    <child>
+                                      <object class="GtkLabel">
+                                        <property name="label" translatable="yes">Memory</property>
+                                        <property name="halign">start</property>
+                                        <style>
+                                          <class name="dim-label"/>
+                                        </style>
+                                      </object>
+                                    </child>
+                                    <child>
+                                      <object class="GtkLabel" id="dash_mem_value">
+                                        <property name="label">—</property>
+                                        <property name="halign">start</property>
+                                        <attributes>
+                                          <attribute name="weight" value="bold"/>
+                                          <attribute name="scale" value="1.8"/>
+                                        </attributes>
+                                      </object>
+                                    </child>
+                                    <child>
+                                      <object class="GtkLabel" id="dash_mem_detail">
+                                        <property name="label">—</property>
+                                        <property name="halign">start</property>
+                                        <style>
+                                          <class name="dim-label"/>
+                                        </style>
+                                      </object>
+                                    </child>
+                                  </object>
+                                </property>
+                                <style>
+                                  <class name="card"/>
+                                </style>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkButton" id="dash_swap_card">
+                                <property name="child">
+                                  <object class="GtkBox">
+                                    <property name="orientation">vertical</property>
+                                    <property name="spacing">2</property>
+                                    <property name="margin-top">14</property>
+                                    <property name="margin-bottom">14</property>
+                                    <child>
+                                      <object class="GtkLabel">
+                                        <property name="label" translatable="yes">Swap</property>
+                                        <property name="halign">start</property>
+                                        <style>
+                                          <class name="dim-label"/>
+                                        </style>
+                                      </object>
+                                    </child>
+                                    <child>
+                                      <object class="GtkLabel" id="dash_swap_value">
+                                        <property name="label">—</property>
+                                        <property name="halign">start</property>
+                                        <attributes>
+                                          <attribute name="weight" value="bold"/>
+                                          <attribute name="scale" value="1.8"/>
+                                        </attributes>
+                                      </object>
+                                    </child>
+                                    <child>
+                                      <object class="GtkLabel" id="dash_swap_detail">
+                                        <property name="label">—</property>
+                                        <property name="halign">start</property>
+                                        <style>
+                                          <class name="dim-label"/>
+                                        </style>
+                                      </object>
+                                    </child>
+                                  </object>
+                                </property>
+                                <style>
+                                  <class name="card"/>
+                                </style>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkButton" id="dash_load_card">
+                                <property name="child">
+                                  <object class="GtkBox">
+                                    <property name="orientation">vertical</property>
+                                    <property name="spacing">2</property>
+                                    <property name="margin-top">14</property>
+                                    <property name="margin-bottom">14</property>
+                                    <child>
+                                      <object class="GtkLabel">
+                                        <property name="label" translatable="yes">Load average</property>
+                                        <property name="halign">start</property>
+                                        <style>
+                                          <class name="dim-label"/>
+                                        </style>
+                                      </object>
+                                    </child>
+                                    <child>
+                                      <object class="GtkLabel" id="dash_load_value">
+                                        <property name="label">—</property>
+                                        <property name="halign">start</property>
+                                        <attributes>
+                                          <attribute name="weight" value="bold"/>
+                                          <attribute name="scale" value="1.8"/>
+                                        </attributes>
+                                      </object>
+                                    </child>
+                                    <child>
+                                      <object class="GtkLabel" id="dash_load_detail">
+                                        <property name="label">—</property>
+                                        <property name="halign">start</property>
+                                        <style>
+                                          <class name="dim-label"/>
+                                        </style>
+                                      </object>
+                                    </child>
+                                  </object>
+                                </property>
+                                <style>
+                                  <class name="card"/>
+                                </style>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkButton" id="dash_uptime_card">
+                                <property name="child">
+                                  <object class="GtkBox">
+                                    <property name="orientation">vertical</property>
+                                    <property name="spacing">2</property>
+                                    <property name="margin-top">14</property>
+                                    <property name="margin-bottom">14</property>
+                                    <child>
+                                      <object class="GtkLabel">
+                                        <property name="label" translatable="yes">Uptime</property>
+                                        <property name="halign">start</property>
+                                        <style>
+                                          <class name="dim-label"/>
+                                        </style>
+                                      </object>
+                                    </child>
+                                    <child>
+                                      <object class="GtkLabel" id="dash_uptime_value">
+                                        <property name="label">—</property>
+                                        <property name="halign">start</property>
+                                        <attributes>
+                                          <attribute name="weight" value="bold"/>
+                                          <attribute name="scale" value="1.8"/>
+                                        </attributes>
+                                      </object>
+                                    </child>
+                                    <child>
+                                      <object class="GtkLabel" id="dash_uptime_detail">
+                                        <property name="label">—</property>
+                                        <property name="halign">start</property>
+                                        <style>
+                                          <class name="dim-label"/>
+                                        </style>
+                                      </object>
+                                    </child>
+                                  </object>
+                                </property>
+                                <style>
+                                  <class name="card"/>
+                                </style>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkButton" id="dash_procs_card">
+                                <property name="child">
+                                  <object class="GtkBox">
+                                    <property name="orientation">vertical</property>
+                                    <property name="spacing">2</property>
+                                    <property name="margin-top">14</property>
+                                    <property name="margin-bottom">14</property>
+                                    <child>
+                                      <object class="GtkLabel">
+                                        <property name="label" translatable="yes">Processes</property>
+                                        <property name="halign">start</property>
+                                        <style>
+                                          <class name="dim-label"/>
+                                        </style>
+                                      </object>
+                                    </child>
+                                    <child>
+                                      <object class="GtkLabel" id="dash_procs_value">
+                                        <property name="label">—</property>
+                                        <property name="halign">start</property>
+                                        <attributes>
+                                          <attribute name="weight" value="bold"/>
+                                          <attribute name="scale" value="1.8"/>
+                                        </attributes>
+                                      </object>
+                                    </child>
+                                    <child>
+                                      <object class="GtkLabel" id="dash_procs_detail">
+                                        <property name="label">—</property>
+                                        <property name="halign">start</property>
+                                        <style>
+                                          <class name="dim-label"/>
+                                        </style>
+                                      </object>
+                                    </child>
+                                  </object>
+                                </property>
+                                <style>
+                                  <class name="card"/>
+                                </style>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
+                      </object>
+                    </property>
+                  </object>
+                </property>
+              </object>
+            </child>
+            <child>
+              <object class="AdwViewStackPage">
                 <property name="name">resources</property>
                 <property name="use-underline">True</property>
                 <property name="title" translatable="yes">_Resources</property>

@@ -30,6 +30,12 @@
 #include <gdk/gdkkeysyms.h>
 #include <math.h>
 
+#include <glibtop/cpu.h>
+#include <glibtop/mem.h>
+#include <glibtop/swap.h>
+#include <glibtop/loadavg.h>
+#include <glibtop/uptime.h>
+#include <glibtop/proclist.h>
 #include "interface.h"
 #include "application.h"
 #include "procinfo.h"
@@ -439,6 +445,165 @@ create_sys_view (GsmApplication *app,
 
   app->disk_graph = disk_graph;
   g_free (title_template);
+}
+
+/* Kast Dashboard: live overview cards, refreshed every 2 seconds. */
+
+static guint64 dash_cpu_total_last = 0;
+static guint64 dash_cpu_idle_last = 0;
+static gboolean dash_cpu_have_last = FALSE;
+
+static void
+kast_dashboard_update (GsmApplication *app)
+{
+  glibtop_cpu cpu;
+  glibtop_mem mem;
+  glibtop_swap swap;
+  glibtop_loadavg load;
+  glibtop_uptime uptime;
+  gchar *text, *detail;
+
+  glibtop_get_cpu (&cpu);
+  guint64 total = cpu.total ? cpu.total : cpu.user + cpu.nice + cpu.sys + cpu.idle + cpu.iowait + cpu.irq + cpu.softirq;
+  guint64 idle = cpu.idle + cpu.iowait;
+  gdouble pct = 0.0;
+  if (dash_cpu_have_last && total > dash_cpu_total_last)
+    {
+      guint64 dtotal = total - dash_cpu_total_last;
+      guint64 didle = idle > dash_cpu_idle_last ? idle - dash_cpu_idle_last : 0;
+      pct = 100.0 * (1.0 - (gdouble) didle / (gdouble) dtotal);
+      pct = CLAMP (pct, 0.0, 100.0);
+    }
+  dash_cpu_total_last = total;
+  dash_cpu_idle_last = idle;
+  dash_cpu_have_last = TRUE;
+
+  text = g_strdup_printf (_("%.1f%%"), pct);
+  detail = g_strdup_printf (_("%d logical CPUs"), (int) app->config.num_cpus);
+  gtk_label_set_text (app->dash_cpu_value, text);
+  gtk_label_set_text (app->dash_cpu_detail, detail);
+  g_free (text);
+  g_free (detail);
+
+  glibtop_get_mem (&mem);
+  gdouble mempct = mem.total ? 100.0 * (gdouble) mem.user / (gdouble) mem.total : 0.0;
+  gchar *mem_used = format_byte_size (mem.user, app->config.resources_memory_in_iec);
+  gchar *mem_total = format_byte_size (mem.total, app->config.resources_memory_in_iec);
+  text = g_strdup_printf (_("%.1f%%"), mempct);
+  /* Translators: dashboard memory card detail, e.g. "3.9 GB of 8.2 GB" */
+  detail = g_strdup_printf (_("%s of %s"), mem_used, mem_total);
+  gtk_label_set_text (app->dash_mem_value, text);
+  gtk_label_set_text (app->dash_mem_detail, detail);
+  g_free (text);
+  g_free (detail);
+  g_free (mem_used);
+  g_free (mem_total);
+
+  glibtop_get_swap (&swap);
+  gdouble swappct = swap.total ? 100.0 * (gdouble) swap.used / (gdouble) swap.total : 0.0;
+  gchar *swap_used = format_byte_size (swap.used, app->config.resources_memory_in_iec);
+  gchar *swap_total = format_byte_size (swap.total, app->config.resources_memory_in_iec);
+  text = g_strdup_printf (_("%.1f%%"), swappct);
+  detail = g_strdup_printf (_("%s of %s"), swap_used, swap_total);
+  gtk_label_set_text (app->dash_swap_value, text);
+  gtk_label_set_text (app->dash_swap_detail, detail);
+  g_free (text);
+  g_free (detail);
+  g_free (swap_used);
+  g_free (swap_total);
+
+  glibtop_get_loadavg (&load);
+  text = g_strdup_printf ("%.2f", load.loadavg[0]);
+  detail = g_strdup_printf ("%.2f %.2f %.2f", load.loadavg[0], load.loadavg[1], load.loadavg[2]);
+  gtk_label_set_text (app->dash_load_value, text);
+  gtk_label_set_text (app->dash_load_detail, detail);
+  g_free (text);
+  g_free (detail);
+
+  glibtop_get_uptime (&uptime);
+  guint64 secs = (guint64) uptime.uptime;
+  guint days = secs / 86400;
+  guint hours = (secs % 86400) / 3600;
+  guint mins = (secs % 3600) / 60;
+  if (days > 0)
+    /* Translators: dashboard uptime value, e.g. "3d 4h" */
+    text = g_strdup_printf (_("%ud %uh"), days, hours);
+  else if (hours > 0)
+    text = g_strdup_printf (_("%uh %um"), hours, mins);
+  else
+    text = g_strdup_printf (_("%um"), mins);
+  /* Translators: dashboard uptime detail, e.g. "running since boot" */
+  detail = g_strdup (_("since boot"));
+  gtk_label_set_text (app->dash_uptime_value, text);
+  gtk_label_set_text (app->dash_uptime_detail, detail);
+  g_free (text);
+  g_free (detail);
+
+  glibtop_proclist proclist;
+  pid_t *pids = glibtop_get_proclist (&proclist, 0, 0);
+  gsize nprocs = proclist.number;
+  g_free (pids);
+  text = g_strdup_printf ("%u", (guint) nprocs);
+  /* Translators: dashboard processes card detail */
+  detail = g_strdup (_("tap a card to dive in"));
+  gtk_label_set_text (app->dash_procs_value, text);
+  gtk_label_set_text (app->dash_procs_detail, detail);
+  g_free (text);
+  g_free (detail);
+}
+
+static gboolean
+kast_dashboard_tick (gpointer data)
+{
+  GsmApplication *app = (GsmApplication *) data;
+  if (gtk_widget_get_mapped (GTK_WIDGET (app->main_window)))
+    kast_dashboard_update (app);
+  return G_SOURCE_CONTINUE;
+}
+
+static void
+kast_dashboard_go (GtkButton *,
+                   gpointer data)
+{
+  GsmApplication &app = GsmApplication::get ();
+  const char *page = (const char *) data;
+  app.settings->set_string (GSM_SETTING_CURRENT_TAB, page);
+  app.config.current_tab = page;
+  adw_view_stack_set_visible_child_name (app.stack, page);
+}
+
+static void
+create_dashboard_view (GsmApplication *app,
+                       GtkBuilder     *builder)
+{
+  app->dash_cpu_value = GTK_LABEL (gtk_builder_get_object (builder, "dash_cpu_value"));
+  app->dash_cpu_detail = GTK_LABEL (gtk_builder_get_object (builder, "dash_cpu_detail"));
+  app->dash_mem_value = GTK_LABEL (gtk_builder_get_object (builder, "dash_mem_value"));
+  app->dash_mem_detail = GTK_LABEL (gtk_builder_get_object (builder, "dash_mem_detail"));
+  app->dash_swap_value = GTK_LABEL (gtk_builder_get_object (builder, "dash_swap_value"));
+  app->dash_swap_detail = GTK_LABEL (gtk_builder_get_object (builder, "dash_swap_detail"));
+  app->dash_load_value = GTK_LABEL (gtk_builder_get_object (builder, "dash_load_value"));
+  app->dash_load_detail = GTK_LABEL (gtk_builder_get_object (builder, "dash_load_detail"));
+  app->dash_uptime_value = GTK_LABEL (gtk_builder_get_object (builder, "dash_uptime_value"));
+  app->dash_uptime_detail = GTK_LABEL (gtk_builder_get_object (builder, "dash_uptime_detail"));
+  app->dash_procs_value = GTK_LABEL (gtk_builder_get_object (builder, "dash_procs_value"));
+  app->dash_procs_detail = GTK_LABEL (gtk_builder_get_object (builder, "dash_procs_detail"));
+
+  g_signal_connect (gtk_builder_get_object (builder, "dash_cpu_card"), "clicked",
+                    G_CALLBACK (kast_dashboard_go), (gpointer) "resources");
+  g_signal_connect (gtk_builder_get_object (builder, "dash_mem_card"), "clicked",
+                    G_CALLBACK (kast_dashboard_go), (gpointer) "resources");
+  g_signal_connect (gtk_builder_get_object (builder, "dash_swap_card"), "clicked",
+                    G_CALLBACK (kast_dashboard_go), (gpointer) "resources");
+  g_signal_connect (gtk_builder_get_object (builder, "dash_load_card"), "clicked",
+                    G_CALLBACK (kast_dashboard_go), (gpointer) "resources");
+  g_signal_connect (gtk_builder_get_object (builder, "dash_uptime_card"), "clicked",
+                    G_CALLBACK (kast_dashboard_go), (gpointer) "resources");
+  g_signal_connect (gtk_builder_get_object (builder, "dash_procs_card"), "clicked",
+                    G_CALLBACK (kast_dashboard_go), (gpointer) "processes");
+
+  kast_dashboard_update (app);
+  g_timeout_add_seconds (2, kast_dashboard_tick, app);
 }
 
 static void
@@ -860,6 +1025,7 @@ create_main_window (GsmApplication *app)
   app->stack = ADW_VIEW_STACK (gtk_builder_get_object (builder, "stack"));
   create_proc_view (app, builder);
   create_sys_view (app, builder);
+  create_dashboard_view (app, builder);
   app->disk_list = GSM_DISKS_VIEW (gtk_builder_get_object (builder, "disks_view"));
 
   app->app_menu_button = GTK_MENU_BUTTON (gtk_builder_get_object (builder, "app_menu_button"));
