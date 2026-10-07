@@ -1,6 +1,125 @@
+/* Kast Manager — dark neon theme (Tejas Khanna) */
+
+@define-color kast_bg #0b0e14;
+@define-color kast_view_bg #11141c;
+@define-color kast_card_bg #161b26;
+@define-color kast_neon_cyan #00f0ff;
+@define-color kast_neon_magenta #c95bff;
+@define-color kast_neon_green #3dff9e;
+@define-color kast_fg #e6edf3;
+@define-color kast_dim #8b949e;
+
+window {
+  background-color: @kast_bg;
+  color: @kast_fg;
+}
+
+headerbar {
+  background-color: #0d1117;
+  color: @kast_fg;
+  border-bottom: 1px solid rgba(0, 240, 255, 0.22);
+}
+
+headerbar .title {
+  color: @kast_fg;
+  font-weight: 800;
+  letter-spacing: 0.4px;
+}
+
+headerbar button {
+  border-radius: 10px;
+}
+
+button.suggested-action {
+  background: linear-gradient(135deg, @kast_neon_cyan, @kast_neon_magenta);
+  color: #06090f;
+  font-weight: 700;
+  border: none;
+}
+
+button.destructive-action {
+  background: linear-gradient(135deg, #ff5470, #ff8e3c);
+  color: #14060a;
+  font-weight: 700;
+  border: none;
+}
+
+view,
+textview,
+treeview,
+listview {
+  background-color: @kast_view_bg;
+  color: @kast_fg;
+}
+
+treeview:selected,
+row:selected {
+  background: linear-gradient(90deg, rgba(0,240,255,0.28), rgba(201,91,255,0.28));
+  color: #ffffff;
+  border-radius: 8px;
+}
+
+treeview header button {
+  background-color: @kast_card_bg;
+  color: @kast_dim;
+  font-weight: 700;
+  border: none;
+}
+
+notebook header tabs tab:checked {
+  color: @kast_neon_cyan;
+  border-bottom: 2px solid @kast_neon_cyan;
+}
+
 .loadgraph {
-  background: linear-gradient(to bottom,
-                var(--window-bg-color),
-                var(--view-bg-color));
-  color: var(--window-fg-color);
+  background: linear-gradient(to bottom, #0b0e14, #11141c);
+  color: @kast_fg;
+  border: 1px solid rgba(0, 240, 255, 0.18);
+  border-radius: 12px;
+}
+
+.card {
+  background-color: @kast_card_bg;
+  border: 1px solid rgba(139, 148, 158, 0.22);
+  border-radius: 14px;
+}
+
+progressbar trough,
+levelbar trough {
+  background-color: #1c2330;
+  border-radius: 999px;
+  min-height: 8px;
+}
+
+progressbar progress,
+levelbar .filled {
+  background: linear-gradient(90deg, @kast_neon_cyan, @kast_neon_magenta);
+  border-radius: 999px;
+}
+
+switch:checked {
+  background: linear-gradient(135deg, @kast_neon_cyan, @kast_neon_green);
+}
+
+entry {
+  background-color: #0d1117;
+  color: @kast_fg;
+  border: 1px solid rgba(0, 240, 255, 0.25);
+  border-radius: 10px;
+}
+
+entry:focus {
+  border-color: @kast_neon_cyan;
+  box-shadow: 0 0 0 2px rgba(0, 240, 255, 0.25);
+}
+
+.dim-label {
+  color: @kast_dim;
+}
+
+.kast-neon-title {
+  font-size: 18px;
+  font-weight: 900;
+  letter-spacing: 1px;
+  color: @kast_neon_cyan;
 }
