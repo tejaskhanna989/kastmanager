@@ -57,9 +57,29 @@ if [ ! -x "$GTK_PLUGIN" ]; then
 fi
 
 echo "[5/5] Creating AppImage..."
-# Gtk plugin bundles schemas, gio modules, etc.
+# Gtk plugin bundles schemas, gio modules, pixbuf loaders, etc.
 export LINUXDEPLOY_OUTPUT_VERSION="1.0.0"
-"$LINUXDEPLOY" --appdir "$APPDIR" --plugin gtk \
+export ARCH=x86_64
+# linuxdeploy itself is an AppImage; allow running where FUSE is unavailable (containers, CI)
+export APPIMAGE_EXTRACT_AND_RUN=1
+
+PIXBUF_DIR="$(pkg-config --variable=gdk_pixbuf_moduledir gdk-pixbuf-2.0 2>/dev/null || true)"
+if [ -d "${PIXBUF_DIR:-/nonexistent}" ] && [ -n "$(ls -A "$PIXBUF_DIR" 2>/dev/null)" ]; then
+  PLUGIN_ARGS=(--plugin gtk)
+else
+  echo "WARNING: no gdk-pixbuf loaders found on this system (${PIXBUF_DIR:-unknown})."
+  echo "         Building WITHOUT the gtk plugin; images/SVG icons may fall back to the host."
+  echo "         For a fully portable AppImage, build on Ubuntu 22.04 or use the CI artifact."
+  PLUGIN_ARGS=()
+  # Minimal runtime env the gtk plugin would otherwise provide:
+  glib-compile-schemas "$APPDIR/usr/share/glib-2.0/schemas" 2>/dev/null || true
+  mkdir -p "$APPDIR/apprun-hooks"
+  cat > "$APPDIR/apprun-hooks/linuxdeploy-kast-hook.sh" <<'HOOK'
+export GSETTINGS_SCHEMA_DIR="$APPDIR/usr/share/glib-2.0/schemas${GSETTINGS_SCHEMA_DIR:+:$GSETTINGS_SCHEMA_DIR}"
+export GI_TYPELIB_PATH="$APPDIR/usr/lib/girepository-1.0${GI_TYPELIB_PATH:+:$GI_TYPELIB_PATH}"
+HOOK
+fi
+"$LINUXDEPLOY" --appdir "$APPDIR" "${PLUGIN_ARGS[@]}" \
   -d "${DESKTOP_SRC:-$APPDIR/usr/share/applications/$APP_ID.desktop}" \
   -i "$APPDIR/usr/share/icons/hicolor/scalable/apps/io.github.tejaskhanna989.KastManager.svg" \
   --output appimage
