@@ -30,7 +30,7 @@ datadir = join_paths(prefix, get_option('datadir'))
 
 gtk4      = dependency('gtk4')
 libadwaita = dependency('libadwaita-1')
-libgtop   = dependency('libgtop-2.0', version: '>=2.41.2')
+libgtop   = dependency('libgtop-2.0', version: '>=2.40.0')
 glib      = dependency('glib-2.0')
 gio       = dependency('gio-2.0')
 gmodule   = dependency('gmodule-2.0')
