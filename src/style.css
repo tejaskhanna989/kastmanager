@@ -185,6 +185,53 @@ entry:focus {
 #dash_uptime_card { border-top-color: #ff8e3c; }
 #dash_procs_card { border-top-color: #f6d32d; }
 
+/* ---- Kast sidebar layout ---- */
+
+.kast-sidebar {
+  background-color: #070a11;
+  border-right: 1px solid rgba(0, 240, 255, 0.16);
+  border-radius: 0 16px 16px 0;
+}
+
+.kast-brand {
+  font-size: 15px;
+  font-weight: 900;
+  letter-spacing: 6px;
+  color: @kast_neon_cyan;
+}
+
+.kast-header-title {
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: 0.6px;
+  color: @kast_fg;
+}
+
+button.kast-nav {
+  background: transparent;
+  border: none;
+  border-radius: 12px;
+  padding: 10px 12px;
+  color: @kast_dim;
+  font-weight: 700;
+}
+
+button.kast-nav:hover {
+  background: rgba(0, 240, 255, 0.08);
+  color: @kast_fg;
+}
+
+button.kast-nav.kast-nav-active {
+  background: linear-gradient(135deg, rgba(0,240,255,0.95), rgba(201,91,255,0.95));
+  color: #06121a;
+  font-weight: 800;
+  box-shadow: 0 4px 18px rgba(0, 240, 255, 0.25);
+}
+
+button.kast-nav.kast-nav-active image {
+  color: #06121a;
+}
+
 /* ---- Header switcher pill ---- */
 
 viewswitcher button.slider {

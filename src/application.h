@@ -140,6 +140,11 @@ public:
   GtkLabel *dash_procs_value;
   GtkLabel *dash_procs_detail;
 
+  GtkButton *nav_dashboard;
+  GtkButton *nav_resources;
+  GtkButton *nav_processes;
+  GtkButton *nav_disks;
+
   GsmDisksView *disk_list;
 
   GtkTreeSelection *selection;

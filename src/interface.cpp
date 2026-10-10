@@ -52,6 +52,8 @@
 #include "settings-keys.h"
 #include "legacy/gsm_color_button.h"
 
+static void kast_nav_sync (GsmApplication *app);
+
 static void
 search_text_changed (GtkEditable*,
                      gpointer data)
@@ -933,6 +935,7 @@ cb_change_current_page (AdwViewStack *view_stack,
     gtk_toggle_button_set_active (app->search_button, FALSE);
 
   update_page_activities ((GsmApplication *)data);
+  kast_nav_sync ((GsmApplication *)data);
 }
 
 static gboolean
@@ -1004,6 +1007,50 @@ cb_main_window_suspended (GtkWindow      *window,
 }
 
 
+static void
+kast_nav_sync (GsmApplication *app)
+{
+  const char *page = adw_view_stack_get_visible_child_name (app->stack);
+  struct { GtkButton *btn; const char *name; } navs[] = {
+    { app->nav_dashboard, "dashboard" },
+    { app->nav_resources, "resources" },
+    { app->nav_processes, "processes" },
+    { app->nav_disks, "disks" },
+  };
+  for (gsize i = 0; i < G_N_ELEMENTS (navs); i++)
+    {
+      GtkStyleContext *ctx = gtk_widget_get_style_context (GTK_WIDGET (navs[i].btn));
+      if (g_strcmp0 (page, navs[i].name) == 0)
+        gtk_style_context_add_class (ctx, "kast-nav-active");
+      else
+        gtk_style_context_remove_class (ctx, "kast-nav-active");
+    }
+}
+
+static void
+create_kast_nav (GsmApplication *app,
+                 GtkBuilder     *builder)
+{
+  GtkBox *logo_box = GTK_BOX (gtk_builder_get_object (builder, "kast_logo_box"));
+  GtkWidget *logo = gtk_image_new_from_resource ("/io/github/tejaskhanna989/KastManager/kast-logo.svg");
+  gtk_image_set_pixel_size (GTK_IMAGE (logo), 56);
+  gtk_box_append (logo_box, logo);
+
+  app->nav_dashboard = GTK_BUTTON (gtk_builder_get_object (builder, "kast_nav_dashboard"));
+  app->nav_resources = GTK_BUTTON (gtk_builder_get_object (builder, "kast_nav_resources"));
+  app->nav_processes = GTK_BUTTON (gtk_builder_get_object (builder, "kast_nav_processes"));
+  app->nav_disks = GTK_BUTTON (gtk_builder_get_object (builder, "kast_nav_disks"));
+
+  g_signal_connect (app->nav_dashboard, "clicked",
+                    G_CALLBACK (kast_dashboard_go), (gpointer) "dashboard");
+  g_signal_connect (app->nav_resources, "clicked",
+                    G_CALLBACK (kast_dashboard_go), (gpointer) "resources");
+  g_signal_connect (app->nav_processes, "clicked",
+                    G_CALLBACK (kast_dashboard_go), (gpointer) "processes");
+  g_signal_connect (app->nav_disks, "clicked",
+                    G_CALLBACK (kast_dashboard_go), (gpointer) "disks");
+}
+
 void
 create_main_window (GsmApplication *app)
 {
@@ -1026,6 +1073,7 @@ create_main_window (GsmApplication *app)
   create_proc_view (app, builder);
   create_sys_view (app, builder);
   create_dashboard_view (app, builder);
+  create_kast_nav (app, builder);
   app->disk_list = GSM_DISKS_VIEW (gtk_builder_get_object (builder, "disks_view"));
 
   app->app_menu_button = GTK_MENU_BUTTON (gtk_builder_get_object (builder, "app_menu_button"));
@@ -1115,6 +1163,7 @@ create_main_window (GsmApplication *app)
   gtk_window_present (GTK_WINDOW (app->main_window));
 
   update_page_activities (app);
+  kast_nav_sync (app);
 
   g_object_unref (G_OBJECT (builder));
 }

@@ -6,15 +6,170 @@
     <property name="title" translatable="yes">Kast Manager</property>
     <property name="icon-name">io.github.tejaskhanna989.KastManager</property>
     <child>
+      <object class="GtkBox" id="main_layout">
+        <property name="orientation">horizontal</property>
+        <child>
+          <object class="GtkBox" id="kast_sidebar">
+            <property name="orientation">vertical</property>
+            <property name="spacing">4</property>
+            <property name="width-request">188</property>
+            <property name="margin-top">14</property>
+            <property name="margin-bottom">14</property>
+            <property name="margin-start">10</property>
+            <property name="margin-end">10</property>
+            <style>
+              <class name="kast-sidebar"/>
+            </style>
+            <child>
+              <object class="GtkBox" id="kast_logo_box">
+                <property name="orientation">vertical</property>
+                <property name="spacing">2</property>
+                <property name="margin-bottom">10</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkLabel" id="kast_brand">
+                <property name="label">KAST</property>
+                <property name="halign">center</property>
+                <style>
+                  <class name="kast-brand"/>
+                </style>
+              </object>
+            </child>
+            <child>
+              <object class="GtkSeparator">
+                <property name="margin-top">8</property>
+                <property name="margin-bottom">8</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkButton" id="kast_nav_dashboard">
+                <property name="halign">fill</property>
+                <property name="child">
+                  <object class="GtkBox">
+                    <property name="orientation">horizontal</property>
+                    <property name="spacing">10</property>
+                    <child>
+                      <object class="GtkImage">
+                        <property name="icon-name">view-grid-symbolic</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkLabel">
+                        <property name="label" translatable="yes">Dashboard</property>
+                        <property name="halign">start</property>
+                      </object>
+                    </child>
+                  </object>
+                </property>
+                <style>
+                  <class name="kast-nav"/>
+                </style>
+              </object>
+            </child>
+            <child>
+              <object class="GtkButton" id="kast_nav_resources">
+                <property name="halign">fill</property>
+                <property name="child">
+                  <object class="GtkBox">
+                    <property name="orientation">horizontal</property>
+                    <property name="spacing">10</property>
+                    <child>
+                      <object class="GtkImage">
+                        <property name="icon-name">resources-symbolic</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkLabel">
+                        <property name="label" translatable="yes">Resources</property>
+                        <property name="halign">start</property>
+                      </object>
+                    </child>
+                  </object>
+                </property>
+                <style>
+                  <class name="kast-nav"/>
+                </style>
+              </object>
+            </child>
+            <child>
+              <object class="GtkButton" id="kast_nav_processes">
+                <property name="halign">fill</property>
+                <property name="child">
+                  <object class="GtkBox">
+                    <property name="orientation">horizontal</property>
+                    <property name="spacing">10</property>
+                    <child>
+                      <object class="GtkImage">
+                        <property name="icon-name">processes-symbolic</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkLabel">
+                        <property name="label" translatable="yes">Processes</property>
+                        <property name="halign">start</property>
+                      </object>
+                    </child>
+                  </object>
+                </property>
+                <style>
+                  <class name="kast-nav"/>
+                </style>
+              </object>
+            </child>
+            <child>
+              <object class="GtkButton" id="kast_nav_disks">
+                <property name="halign">fill</property>
+                <property name="child">
+                  <object class="GtkBox">
+                    <property name="orientation">horizontal</property>
+                    <property name="spacing">10</property>
+                    <child>
+                      <object class="GtkImage">
+                        <property name="icon-name">drive-harddisk-symbolic</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkLabel">
+                        <property name="label" translatable="yes">File Systems</property>
+                        <property name="halign">start</property>
+                      </object>
+                    </child>
+                  </object>
+                </property>
+                <style>
+                  <class name="kast-nav"/>
+                </style>
+              </object>
+            </child>
+            <child>
+              <object class="GtkBox">
+                <property name="vexpand">True</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkLabel" id="kast_version">
+                <property name="label">v1.0.0</property>
+                <property name="halign">center</property>
+                <style>
+                  <class name="dim-label"/>
+                </style>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child>
       <object class="AdwToolbarView" id="main_box">
         <property name="width-request">620</property>
         <property name="height-request">480</property>
         <child type="top">
           <object class="AdwHeaderBar" id="header_bar">
             <child type="title">
-              <object class="AdwViewSwitcher" id="view_switcher">
-                <property name="policy">wide</property>
-                <property name="stack">stack</property>
+              <object class="GtkLabel" id="kast_header_title">
+                <property name="label" translatable="yes">Kast Manager</property>
+                <style>
+                  <class name="kast-header-title"/>
+                </style>
               </object>
             </child>
             <child type="start">
@@ -746,6 +901,8 @@
             </child>
           </object>
         </property>
+      </object>
+        </child>
       </object>
     </child>
     <style>
