@@ -253,6 +253,7 @@
                             <property name="selection-mode">none</property>
                             <child>
                               <object class="GtkButton" id="dash_cpu_card">
+                                <property name="focus-on-click">False</property>
                                 <property name="child">
                                   <object class="GtkBox">
                                     <property name="orientation">vertical</property>
@@ -308,6 +309,7 @@
                             </child>
                             <child>
                               <object class="GtkButton" id="dash_mem_card">
+                                <property name="focus-on-click">False</property>
                                 <property name="child">
                                   <object class="GtkBox">
                                     <property name="orientation">vertical</property>
@@ -363,6 +365,7 @@
                             </child>
                             <child>
                               <object class="GtkButton" id="dash_swap_card">
+                                <property name="focus-on-click">False</property>
                                 <property name="child">
                                   <object class="GtkBox">
                                     <property name="orientation">vertical</property>
@@ -418,6 +421,7 @@
                             </child>
                             <child>
                               <object class="GtkButton" id="dash_load_card">
+                                <property name="focus-on-click">False</property>
                                 <property name="child">
                                   <object class="GtkBox">
                                     <property name="orientation">vertical</property>
@@ -473,6 +477,7 @@
                             </child>
                             <child>
                               <object class="GtkButton" id="dash_uptime_card">
+                                <property name="focus-on-click">False</property>
                                 <property name="child">
                                   <object class="GtkBox">
                                     <property name="orientation">vertical</property>
@@ -520,6 +525,7 @@
                             </child>
                             <child>
                               <object class="GtkButton" id="dash_procs_card">
+                                <property name="focus-on-click">False</property>
                                 <property name="child">
                                   <object class="GtkBox">
                                     <property name="orientation">vertical</property>

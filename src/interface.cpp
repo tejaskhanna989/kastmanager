@@ -524,7 +524,8 @@ kast_dashboard_update (GsmApplication *app)
   gtk_label_set_text (app->dash_load_value, text);
   gtk_label_set_text (app->dash_load_detail, detail);
   if (app->config.num_cpus > 0)
-    gtk_level_bar_set_value (app->dash_load_bar, 100.0 * load.loadavg[0] / (gdouble) app->config.num_cpus);
+    gtk_level_bar_set_value (app->dash_load_bar,
+                             MIN (100.0, 100.0 * load.loadavg[0] / (gdouble) app->config.num_cpus));
   g_free (text);
   g_free (detail);
 
