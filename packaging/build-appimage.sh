@@ -11,6 +11,15 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$ROOT"
 
+# Rootless workaround for dev machines missing the system glib-mkenums tool:
+# redirect pkg-config to a user-local copy instead of requiring root.
+if [ ! -x /usr/bin/glib-mkenums ] && [ -x "$HOME/.local/bin/glib-mkenums" ]; then
+  mkdir -p "$ROOT/.tools/pkgconfig"
+  sed "s|glib_mkenums=\${bindir}/glib-mkenums|glib_mkenums=$HOME/.local/bin/glib-mkenums|" \
+    /usr/lib/pkgconfig/glib-2.0.pc > "$ROOT/.tools/pkgconfig/glib-2.0.pc" 2>/dev/null || true
+  export PKG_CONFIG_PATH="$ROOT/.tools/pkgconfig:${PKG_CONFIG_PATH:-}"
+fi
+
 APP_ID="io.github.tejaskhanna989.KastManager"
 BIN="kast-manager"
 APPDIR="$ROOT/AppDir"
