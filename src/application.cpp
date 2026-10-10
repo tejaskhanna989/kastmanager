@@ -506,6 +506,12 @@ GsmApplication::on_startup ()
 
   glibtop_init ();
 
+  /* Pin to stock Adwaita: third-party host themes (e.g. OneUI) fight the
+     Kast CSS and cause stray rendering artifacts. */
+  g_object_set (gtk_settings_get_default (),
+                "gtk-theme-name", "Adwaita",
+                NULL);
+
   style_manager = adw_style_manager_get_default ();
   adw_style_manager_set_color_scheme (style_manager, ADW_COLOR_SCHEME_PREFER_DARK);
 
