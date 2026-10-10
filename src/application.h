@@ -145,6 +145,11 @@ public:
   GtkButton *nav_processes;
   GtkButton *nav_disks;
 
+  GtkLevelBar *dash_cpu_bar;
+  GtkLevelBar *dash_mem_bar;
+  GtkLevelBar *dash_swap_bar;
+  GtkLevelBar *dash_load_bar;
+
   GsmDisksView *disk_list;
 
   GtkTreeSelection *selection;

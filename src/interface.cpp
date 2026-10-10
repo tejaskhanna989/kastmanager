@@ -484,6 +484,7 @@ kast_dashboard_update (GsmApplication *app)
   detail = g_strdup_printf (_("%d logical CPUs"), (int) app->config.num_cpus);
   gtk_label_set_text (app->dash_cpu_value, text);
   gtk_label_set_text (app->dash_cpu_detail, detail);
+  gtk_level_bar_set_value (app->dash_cpu_bar, pct);
   g_free (text);
   g_free (detail);
 
@@ -496,6 +497,7 @@ kast_dashboard_update (GsmApplication *app)
   detail = g_strdup_printf (_("%s of %s"), mem_used, mem_total);
   gtk_label_set_text (app->dash_mem_value, text);
   gtk_label_set_text (app->dash_mem_detail, detail);
+  gtk_level_bar_set_value (app->dash_mem_bar, mempct);
   g_free (text);
   g_free (detail);
   g_free (mem_used);
@@ -509,6 +511,7 @@ kast_dashboard_update (GsmApplication *app)
   detail = g_strdup_printf (_("%s of %s"), swap_used, swap_total);
   gtk_label_set_text (app->dash_swap_value, text);
   gtk_label_set_text (app->dash_swap_detail, detail);
+  gtk_level_bar_set_value (app->dash_swap_bar, swappct);
   g_free (text);
   g_free (detail);
   g_free (swap_used);
@@ -519,6 +522,8 @@ kast_dashboard_update (GsmApplication *app)
   detail = g_strdup_printf ("%.2f %.2f %.2f", load.loadavg[0], load.loadavg[1], load.loadavg[2]);
   gtk_label_set_text (app->dash_load_value, text);
   gtk_label_set_text (app->dash_load_detail, detail);
+  if (app->config.num_cpus > 0)
+    gtk_level_bar_set_value (app->dash_load_bar, 100.0 * load.loadavg[0] / (gdouble) app->config.num_cpus);
   g_free (text);
   g_free (detail);
 
@@ -590,6 +595,10 @@ create_dashboard_view (GsmApplication *app,
   app->dash_uptime_detail = GTK_LABEL (gtk_builder_get_object (builder, "dash_uptime_detail"));
   app->dash_procs_value = GTK_LABEL (gtk_builder_get_object (builder, "dash_procs_value"));
   app->dash_procs_detail = GTK_LABEL (gtk_builder_get_object (builder, "dash_procs_detail"));
+  app->dash_cpu_bar = GTK_LEVEL_BAR (gtk_builder_get_object (builder, "dash_cpu_bar"));
+  app->dash_mem_bar = GTK_LEVEL_BAR (gtk_builder_get_object (builder, "dash_mem_bar"));
+  app->dash_swap_bar = GTK_LEVEL_BAR (gtk_builder_get_object (builder, "dash_swap_bar"));
+  app->dash_load_bar = GTK_LEVEL_BAR (gtk_builder_get_object (builder, "dash_load_bar"));
 
   g_signal_connect (gtk_builder_get_object (builder, "dash_cpu_card"), "clicked",
                     G_CALLBACK (kast_dashboard_go), (gpointer) "resources");

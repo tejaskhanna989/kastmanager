@@ -283,6 +283,14 @@
                                       </object>
                                     </child>
                                     <child>
+                                      <object class="GtkLevelBar" id="dash_cpu_bar">
+                                        <property name="min-value">0</property>
+                                        <property name="max-value">100</property>
+                                        <property name="value">0</property>
+                                        <property name="margin-top">10</property>
+                                      </object>
+                                    </child>
+                                    <child>
                                       <object class="GtkLabel" id="dash_cpu_detail">
                                         <property name="label">—</property>
                                         <property name="halign">start</property>
@@ -327,6 +335,14 @@
                                           <class name="dash-value"/>
                                           <class name="dash-accent-mem"/>
                                         </style>
+                                      </object>
+                                    </child>
+                                    <child>
+                                      <object class="GtkLevelBar" id="dash_mem_bar">
+                                        <property name="min-value">0</property>
+                                        <property name="max-value">100</property>
+                                        <property name="value">0</property>
+                                        <property name="margin-top">10</property>
                                       </object>
                                     </child>
                                     <child>
@@ -377,6 +393,14 @@
                                       </object>
                                     </child>
                                     <child>
+                                      <object class="GtkLevelBar" id="dash_swap_bar">
+                                        <property name="min-value">0</property>
+                                        <property name="max-value">100</property>
+                                        <property name="value">0</property>
+                                        <property name="margin-top">10</property>
+                                      </object>
+                                    </child>
+                                    <child>
                                       <object class="GtkLabel" id="dash_swap_detail">
                                         <property name="label">—</property>
                                         <property name="halign">start</property>
@@ -421,6 +445,14 @@
                                           <class name="dash-value"/>
                                           <class name="dash-accent-load"/>
                                         </style>
+                                      </object>
+                                    </child>
+                                    <child>
+                                      <object class="GtkLevelBar" id="dash_load_bar">
+                                        <property name="min-value">0</property>
+                                        <property name="max-value">100</property>
+                                        <property name="value">0</property>
+                                        <property name="margin-top">10</property>
                                       </object>
                                     </child>
                                     <child>
