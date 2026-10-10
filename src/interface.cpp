@@ -36,6 +36,7 @@
 #include <glibtop/loadavg.h>
 #include <glibtop/uptime.h>
 #include <glibtop/proclist.h>
+#include <glibtop/procstate.h>
 #include "interface.h"
 #include "application.h"
 #include "procinfo.h"
@@ -549,10 +550,18 @@ kast_dashboard_update (GsmApplication *app)
   glibtop_proclist proclist;
   pid_t *pids = glibtop_get_proclist (&proclist, 0, 0);
   gsize nprocs = proclist.number;
+  guint nrunning = 0;
+  for (gsize i = 0; i < nprocs; i++)
+    {
+      glibtop_proc_state state;
+      glibtop_get_proc_state (&state, pids[i]);
+      if (state.state == GLIBTOP_PROCESS_RUNNING)
+        nrunning++;
+    }
   g_free (pids);
   text = g_strdup_printf ("%u", (guint) nprocs);
-  /* Translators: dashboard processes card detail */
-  detail = g_strdup (_("tap a card to dive in"));
+  /* Translators: dashboard processes card detail, e.g. "4 running" */
+  detail = g_strdup_printf (_("%u running"), nrunning);
   gtk_label_set_text (app->dash_procs_value, text);
   gtk_label_set_text (app->dash_procs_detail, detail);
   g_free (text);
