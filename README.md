@@ -1,65 +1,31 @@
 # Kast Manager
 
-> Fork of [GNOME System Monitor](https://gitlab.gnome.org/GNOME/gnome-system-monitor) rebranded as Kast Manager, licensed under GPL-3.0-or-later (upstream was GPL-2.0-or-later).
-Kast Manager is a process viewer and system monitor with an attractive, 
-easy-to-use interface, It has features, such as a tree view for process dependencies,
-icons for processes, the ability to hide processes that you don't want to see,
-graphical time histories of CPU/memory/swap usage,
-the ability to kill/renice processes needing root access,
-as well as the standard features that you might expect from a process viewer.
+> Fresh minimal system companion by **Tejas Khanna** — https://github.com/tejaskhanna989/kastmanager
+
+Kast Manager 2.x is written from scratch (C, GTK4, libadwaita, libgtop):
+no GNOME System Monitor code remains. Dark neon interface, sidebar layout.
+
+Features: live **Dashboard** stat cards, sortable/searchable **Processes**
+with End/Kill, hand-drawn **Graphs**, **File Systems** usage, and a minimal
+**Files** browser (navigate, open, new folder, trash).
 
 ## Author
 
 **Tejas Khanna** — https://github.com/tejaskhanna989/kastmanager
 
 ## License
-This project is licensed under the **GNU General Public License v3.0**. [Learn more](https://choosealicense.com/licenses/gpl-3.0/)
+
+GNU General Public License v3.0 or later. See `COPYING`.
 
 ## Building
-The steps described below show how to compile and install _Kast Manager_ from its source.
 
-### Install required dependencies
-To build the application, the following dependencies are required:
+```sh
+# Arch
+sudo pacman -S meson ninja gtk4 libadwaita libgtop librsvg
+# Debian/Ubuntu
+sudo apt install meson ninja-build libgtk-4-dev libadwaita-1-dev libgtop2-dev librsvg2-dev
+meson setup build --prefix=/usr
+ninja -C build
+```
 
-#### Apt (Debian/Ubuntu/Derivatives - Debian-Based Package Management)
-Use the following command to install dependencies:
-`sudo apt install meson gettext appstream-util catch2 itstool libglibmm-2.68-dev libgtkmm-4.0-dev libgtop2-dev librsvg2-dev libadwaita-1-dev libsystemd-dev uncrustify`
-
-#### DNF (Fedora/Centos/Derivatives - RPM-Based Package Management)
-Use the following command to install dependencies:
-`sudo dnf install meson gettext appstream itstool glibmm2.68-devel gtkmm4.0-devel libgtop2-devel librsvg2-devel libadwaita-devel systemd-devel catch catch-devel uncrustify`
-
-#### Optional dependencies:
-- polkit - recommended
-- gksu2
-- libgnomesu
-- libselinux
-- lsb_release in PATH - recommended on linux
-- libwnck
-
-
-### Building and installing
-Before following the steps below, clone the repository and change to its working directory.
-
-##### Configure and create the build directory with Meson.
-`meson setup build`
-
-Where `build` is just a directory name, and is up to your choosing.
-##### Build the application - this compiles the source.
-`ninja -C build`
- 
-##### Install the application on your system - required to run _Kast Manager_.
-`ninja -C build install`
-
-### Cleanup
-
-##### Use the following command to clean up the build directory and remove old build files.
-`ninja -C build -t clean`
-
-##### Remove the build directory to rebuild from scratch.
-`rm -rf build`
-
-## Bugs
-
-Please file System-Monitor bugs at:
-https://gitlab.gnome.org/GNOME/kast-manager/issues
+AppImage: `bash packaging/build-appimage.sh`, install with `bash install.sh`.

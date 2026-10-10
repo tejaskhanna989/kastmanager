@@ -28,7 +28,7 @@ OUTPUT="$ROOT/KastManager-x86_64.AppImage"
 
 echo "[1/5] Configuring (meson)..."
 rm -rf "$BUILD_DIR" "$APPDIR"
-meson setup "$BUILD_DIR" --prefix=/usr --buildtype=release -Ddevelopment=false
+meson setup "$BUILD_DIR" --prefix=/usr --buildtype=release
 
 echo "[2/5] Building..."
 ninja -C "$BUILD_DIR"

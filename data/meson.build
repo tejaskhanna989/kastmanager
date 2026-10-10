@@ -1,85 +1,14 @@
-################################################################################
-# Generate files
-
-desktop_files = []
-
-desktop_files += i18n.merge_file(
-        input: configure_file(
-                  input: 'io.github.tejaskhanna989.KastManager.desktop.in.in',
-                 output: '@0@.desktop.in'.format(app_id),
-          configuration: dataconf,
-        ),
-       output: '@0@.desktop'.format(app_id),
-         type: 'desktop',
-       po_dir: '../po',
-      install: true,
-  install_dir: join_paths(get_option('datadir'), 'applications')
+install_data(
+  'io.github.tejaskhanna989.KastManager.desktop',
+  install_dir: join_paths(get_option('datadir'), 'applications'),
 )
 
-desktop_files += i18n.merge_file(
-        input: configure_file(
-                  input: 'kast-manager-kde.desktop.in.in',
-                 output: 'kast-manager-kde.desktop.in',
-          configuration: dataconf,
-        ),
-       output: 'kast-manager-kde.desktop',
-         type: 'desktop',
-       po_dir: '../po',
-      install: true,
-  install_dir: join_paths(get_option('datadir'), 'applications')
-)
-
-metainfo_file = i18n.merge_file(
-  input : configure_file(
-  configuration: dataconf,
-  input : 'io.github.tejaskhanna989.KastManager.metainfo.xml.in.in',
-  output: '@0@.metainfo.xml.in'.format(app_id),
-  ),
-  output: '@0@.metainfo.xml'.format(app_id),
-  po_dir: '../po',
-  install: true,
+install_data(
+  'io.github.tejaskhanna989.KastManager.metainfo.xml',
   install_dir: join_paths(get_option('datadir'), 'metainfo'),
 )
 
-i18n.merge_file(
-  input : configure_file(
-  configuration: dataconf,
-  input : 'io.github.tejaskhanna989.KastManager.policy.in.in',
-  output: 'io.github.tejaskhanna989.KastManager.policy.in'
-  ),
-  output: 'io.github.tejaskhanna989.KastManager.policy',
-  po_dir: '../po',
-  data_dirs: '../po',
-  install: true,
-  install_dir: join_paths(get_option('datadir'), 'polkit-1', 'actions'),
+install_subdir(
+  join_paths('icons', 'public', 'hicolor'),
+  install_dir: join_paths(datadir, 'icons'),
 )
-
-configure_file(
-  input: 'io.github.tejaskhanna989.KastManager.service.in',
-  output: '@0@.service'.format(app_id),
-  configuration: dataconf,
-  install: true,
-  install_dir: join_paths(get_option('datadir'), 'dbus-1', 'services'),
-)
-
-################################################################################
-# Tests
-
-appstreamcli = find_program('appstreamcli', required: false)
-if appstreamcli.found()
-  test('validate_metainfo',
-    appstreamcli,
-    args: [ 'validate', '--no-net', '--explain', metainfo_file ],
-  )
-endif
-
-desktop_validate = find_program('desktop-file-validate', required: false)
-if desktop_validate.found()
-  test('validate_desktop',
-    desktop_validate,
-    args: [ desktop_files ],
-  )
-endif
-
-
-subdir('icons')

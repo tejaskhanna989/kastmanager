@@ -1,3 +1,10 @@
+New in 2.0.0 - 10 October 2026 (Kast Manager rewrite by Tejas Khanna)
+
+* Fresh minimal codebase from scratch: no GNOME System Monitor code left
+* Sidebar layout, dark neon theme, K-badge icon
+* Dashboard, sortable/searchable processes with End/Kill, hand-drawn graphs
+* File systems usage, minimal file management (browse/open/new-folder/trash)
+
 New in 1.0.0 - 7 October 2026 (Kast Manager fork by Tejas Khanna)
 
 * Full rebrand from GNOME System Monitor to Kast Manager

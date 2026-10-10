@@ -1,4 +1,4 @@
-/* Kast Manager — dark neon theme (Tejas Khanna) */
+/* Kast Manager 2.x — dark neon theme (Tejas Khanna) */
 
 /* Libadwaita named colors: re-theme every stock widget at once. */
 @define-color window_bg_color #0b0e14;
@@ -40,16 +40,6 @@ headerbar {
   border-bottom: 1px solid rgba(0, 240, 255, 0.22);
 }
 
-headerbar .title {
-  color: @kast_fg;
-  font-weight: 800;
-  letter-spacing: 0.4px;
-}
-
-headerbar button {
-  border-radius: 10px;
-}
-
 button.suggested-action {
   background: linear-gradient(135deg, @kast_neon_cyan, @kast_neon_magenta);
   color: #06090f;
@@ -64,73 +54,11 @@ button.destructive-action {
   border: none;
 }
 
-view,
-textview,
-treeview,
-listview {
-  background-color: @kast_view_bg;
-  color: @kast_fg;
-}
-
-treeview:selected,
-row:selected {
-  background: linear-gradient(90deg, rgba(0,240,255,0.28), rgba(201,91,255,0.28));
-  color: #ffffff;
-  border-radius: 8px;
-}
-
-treeview header button {
-  background-color: @kast_card_bg;
-  color: @kast_dim;
-  font-weight: 700;
-  border: none;
-}
-
-notebook header tabs tab:checked {
-  color: @kast_neon_cyan;
-  border-bottom: 2px solid @kast_neon_cyan;
-}
-
-.loadgraph {
-  background: linear-gradient(to bottom, #0b0e14, #11141c);
-  color: @kast_fg;
-  border: 1px solid rgba(0, 240, 255, 0.18);
-  border-radius: 12px;
-}
-
 .card {
   background-color: @kast_card_bg;
   border: 1px solid rgba(139, 148, 158, 0.22);
   border-radius: 14px;
-}
-
-progressbar trough,
-levelbar trough {
-  background-color: #1c2330;
-  border-radius: 999px;
-  min-height: 8px;
-}
-
-progressbar progress,
-levelbar .filled {
-  background: linear-gradient(90deg, @kast_neon_cyan, @kast_neon_magenta);
-  border-radius: 999px;
-}
-
-switch:checked {
-  background: linear-gradient(135deg, @kast_neon_cyan, @kast_neon_green);
-}
-
-entry {
-  background-color: #0d1117;
-  color: @kast_fg;
-  border: 1px solid rgba(0, 240, 255, 0.25);
-  border-radius: 10px;
-}
-
-entry:focus {
-  border-color: @kast_neon_cyan;
-  box-shadow: 0 0 0 2px rgba(0, 240, 255, 0.25);
+  padding: 12px;
 }
 
 .dim-label {
@@ -143,47 +71,6 @@ entry:focus {
   letter-spacing: 1px;
   color: @kast_neon_cyan;
 }
-
-/* ---- Kast dashboard cards ---- */
-
-.dash-value {
-  font-feature-settings: "tnum";
-  letter-spacing: 0.3px;
-}
-
-.dash-accent-cpu { color: #00f0ff; }
-.dash-accent-mem { color: #c95bff; }
-.dash-accent-swap { color: #3dff9e; }
-.dash-accent-load { color: #62a0ea; }
-.dash-accent-uptime { color: #ff8e3c; }
-.dash-accent-procs { color: #f6d32d; }
-
-#dash_grid > flowboxchild {
-  padding: 0;
-  background: transparent;
-  border: none;
-}
-
-#dash_grid button.card {
-  padding: 12px 18px;
-  border-radius: 18px;
-  border: 1px solid rgba(139, 148, 158, 0.22);
-  border-top-width: 3px;
-  background-color: @kast_card_bg;
-  transition: box-shadow 150ms ease-in-out, border-color 150ms ease-in-out;
-}
-
-#dash_grid button.card:hover {
-  border-color: rgba(0, 240, 255, 0.45);
-  box-shadow: 0 4px 24px rgba(0, 240, 255, 0.12);
-}
-
-#dash_cpu_card { border-top-color: #00f0ff; }
-#dash_mem_card { border-top-color: #c95bff; }
-#dash_swap_card { border-top-color: #3dff9e; }
-#dash_load_card { border-top-color: #62a0ea; }
-#dash_uptime_card { border-top-color: #ff8e3c; }
-#dash_procs_card { border-top-color: #f6d32d; }
 
 /* ---- Kast sidebar layout ---- */
 
@@ -232,50 +119,100 @@ button.kast-nav.kast-nav-active image {
   color: #06121a;
 }
 
-/* ---- Header switcher pill ---- */
+/* ---- Kast dashboard cards ---- */
 
-viewswitcher button.slider {
-  background: linear-gradient(135deg, rgba(0,240,255,0.9), rgba(201,91,255,0.9));
-  border-radius: 999px;
+.dash-value {
+  font-feature-settings: "tnum";
+  letter-spacing: 0.3px;
 }
 
-viewswitcher button {
-  border-radius: 999px;
-  padding: 4px 14px;
-  color: @kast_dim;
+.dash-accent-cpu { color: #00f0ff; }
+.dash-accent-mem { color: #c95bff; }
+.dash-accent-swap { color: #3dff9e; }
+.dash-accent-load { color: #62a0ea; }
+.dash-accent-uptime { color: #ff8e3c; }
+.dash-accent-procs { color: #f6d32d; }
+
+#dash_grid > flowboxchild {
+  padding: 0;
+  background: transparent;
+  border: none;
 }
 
-viewswitcher button:checked {
-  color: #06121a;
-  font-weight: 800;
-}
-
-/* ---- Resources sections ---- */
-
-expander {
+#dash_grid button.card {
+  padding: 12px 18px;
+  border-radius: 18px;
+  border: 1px solid rgba(139, 148, 158, 0.22);
+  border-top-width: 3px;
   background-color: @kast_card_bg;
-  border: 1px solid rgba(139, 148, 158, 0.20);
-  border-radius: 14px;
-  padding: 8px 10px;
+  transition: box-shadow 150ms ease-in-out, border-color 150ms ease-in-out;
 }
 
-expander > title {
-  color: @kast_fg;
-  font-weight: 800;
+#dash_grid button.card:hover {
+  border-color: rgba(0, 240, 255, 0.45);
+  box-shadow: 0 4px 24px rgba(0, 240, 255, 0.12);
 }
+
+#dash_cpu_card { border-top-color: #00f0ff; }
+#dash_mem_card { border-top-color: #c95bff; }
+#dash_swap_card { border-top-color: #3dff9e; }
+#dash_load_card { border-top-color: #62a0ea; }
+#dash_uptime_card { border-top-color: #ff8e3c; }
+#dash_procs_card { border-top-color: #f6d32d; }
 
 /* ---- Process table ---- */
 
-treeview {
+columnview {
+  background-color: @kast_view_bg;
   border-radius: 12px;
 }
 
-treeview header button {
-  padding: 6px 8px;
+columnview row:selected {
+  background: linear-gradient(90deg, rgba(0,240,255,0.28), rgba(201,91,255,0.28));
+  color: #ffffff;
 }
 
-treeview row {
-  padding: 2px 0;
+headerbutton {
+  background-color: @kast_card_bg;
+  color: @kast_dim;
+  font-weight: 700;
+}
+
+/* ---- Level bars / progress ---- */
+
+progressbar trough,
+levelbar trough {
+  background-color: #1c2330;
+  border-radius: 999px;
+  min-height: 8px;
+}
+
+progressbar progress,
+levelbar .filled {
+  background: linear-gradient(90deg, @kast_neon_cyan, @kast_neon_magenta);
+  border-radius: 999px;
+}
+
+levelbar .filled.low {
+  background: linear-gradient(90deg, @kast_neon_green, @kast_neon_cyan);
+}
+
+levelbar .filled.high {
+  background: linear-gradient(90deg, #ff8e3c, #ff5470);
+}
+
+/* ---- Inputs ---- */
+
+entry {
+  background-color: #0d1117;
+  color: @kast_fg;
+  border: 1px solid rgba(0, 240, 255, 0.25);
+  border-radius: 10px;
+}
+
+entry:focus {
+  border-color: @kast_neon_cyan;
+  box-shadow: 0 0 0 2px rgba(0, 240, 255, 0.25);
 }
 
 /* ---- Scrollbars ---- */

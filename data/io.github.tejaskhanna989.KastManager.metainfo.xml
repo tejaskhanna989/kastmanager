@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 2026 Tejas Khanna -->
+<component type="desktop-application">
+  <id>io.github.tejaskhanna989.KastManager</id>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>GPL-3.0-or-later</project_license>
+  <name>Kast Manager</name>
+  <summary>Processes, resources, disks and files in one dark place</summary>
+  <description>
+    <p>
+      Kast Manager is a fresh, minimal system companion with a dark neon
+      interface. It shows live system stats, processes, resource graphs,
+      file systems and a small file browser — written from scratch,
+      no GNOME System Monitor code inside.
+    </p>
+  </description>
+  <update_contact>khannatejas989_at_gmail.com</update_contact>
+  <developer id="io.github.tejaskhanna989">
+    <name>Tejas Khanna</name>
+  </developer>
+
+  <url type="homepage">https://github.com/tejaskhanna989/kastmanager</url>
+  <url type="bugtracker">https://github.com/tejaskhanna989/kastmanager/issues</url>
+  <url type="vcs-browser">https://github.com/tejaskhanna989/kastmanager</url>
+
+  <provides>
+    <binary>kast-manager</binary>
+    <id>io.github.tejaskhanna989.KastManager.desktop</id>
+  </provides>
+
+  <releases>
+    <release date="2026-10-10" version="2.0.0" type="stable">
+      <description>
+        <ul>
+          <li>Fresh minimal Kast Manager 2.x codebase by Tejas Khanna</li>
+          <li>Dashboard, processes with kill, graphs, disks, file management</li>
+        </ul>
+      </description>
+    </release>
+  </releases>
+
+  <content_rating type="oars-1.1" />
+</component>

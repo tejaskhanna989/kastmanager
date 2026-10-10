@@ -15,10 +15,9 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y meson ninja-build gettext appstream-util \
-            itstool libglibmm-2.68-dev libgtkmm-4.0-dev libgtop2-dev \
-            librsvg2-dev libadwaita-1-dev libsystemd-dev \
-            libglib2.0-dev-bin desktop-file-utils libfuse2
+          sudo apt-get install -y meson ninja-build libgtk-4-dev \
+            libadwaita-1-dev libgtop2-dev librsvg2-dev \
+            desktop-file-utils libfuse2
 
       - name: Configure
         run: meson setup build --prefix=/usr --buildtype=release
@@ -39,11 +38,9 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y meson ninja-build gettext appstream-util \
-            itstool libglibmm-2.68-dev libgtkmm-4.0-dev libgtop2-dev \
-            librsvg2-dev libadwaita-1-dev libsystemd-dev \
-            libglib2.0-dev-bin desktop-file-utils libfuse2 \
-            curl file zsync
+          sudo apt-get install -y meson ninja-build libgtk-4-dev \
+            libadwaita-1-dev libgtop2-dev librsvg2-dev \
+            desktop-file-utils libfuse2 curl file zsync
 
       - name: Build AppImage
         run: bash packaging/build-appimage.sh

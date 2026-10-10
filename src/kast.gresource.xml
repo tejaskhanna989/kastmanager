@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gresources>
+  <gresource prefix="/io/github/tejaskhanna989/KastManager">
+    <file preprocess="xml-stripblanks" alias="metainfo.xml">../data/io.github.tejaskhanna989.KastManager.metainfo.xml</file>
+    <file preprocess="xml-stripblanks" alias="kast-logo.svg">../data/icons/public/hicolor/scalable/apps/io.github.tejaskhanna989.KastManager.svg</file>
+    <file>style.css</file>
+  </gresource>
+</gresources>

@@ -1,0 +1,12 @@
+[Desktop Entry]
+Name=Kast Manager
+Comment=View processes, resources, disks and files
+TryExec=kast-manager
+Exec=kast-manager
+Icon=io.github.tejaskhanna989.KastManager
+Terminal=false
+Type=Application
+StartupNotify=true
+StartupWMClass=kast-manager
+Categories=GTK;System;Monitor;FileManager;
+Keywords=Monitor;System;Process;CPU;Memory;Network;History;Usage;Performance;Task;Manager;Activity;Files;Disks;
