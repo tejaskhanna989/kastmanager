@@ -419,7 +419,7 @@ kast_procs_page (KastUi *ui)
 
   GtkWidget *bar = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 8);
   k->search = GTK_SEARCH_ENTRY (gtk_search_entry_new ());
-  gtk_search_entry_set_placeholder_text (k->search, "Search processes");
+  gtk_entry_set_placeholder_text (GTK_ENTRY (k->search), "Search processes");
   gtk_widget_set_hexpand (GTK_WIDGET (k->search), TRUE);
   g_signal_connect (k->search, "search-changed", G_CALLBACK (on_search), k);
   gtk_box_append (GTK_BOX (bar), GTK_WIDGET (k->search));
