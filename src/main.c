@@ -48,17 +48,16 @@ on_about (GSimpleAction *, GVariant *, gpointer data)
 {
   KastUi *ui = data;
   const char *developers[] = { "Tejas Khanna", NULL };
-  GtkWidget *dlg = g_object_new (ADW_TYPE_ABOUT_WINDOW,
+  GtkWidget *dlg = gtk_about_dialog_new ();
+  g_object_set (dlg,
       "transient-for", ui->window,
-      "application-name", "Kast Manager",
-      "application-icon", APP_ID,
-      "developer-name", "Tejas Khanna",
+      "program-name", "Kast Manager",
+      "logo-icon-name", APP_ID,
       "version", VERSION,
-      "developers", developers,
+      "authors", developers,
       "copyright", "© 2026 Tejas Khanna",
       "license-type", GTK_LICENSE_GPL_3_0,
       "website", "https://github.com/tejaskhanna989/kastmanager",
-      "issue-url", "https://github.com/tejaskhanna989/kastmanager/issues",
       NULL);
   gtk_window_present (GTK_WINDOW (dlg));
 }
@@ -118,14 +117,31 @@ on_startup (GApplication *gapp, gpointer data)
   ui->nav_names[3] = KAST_PAGE_DISKS;
   ui->nav_names[4] = KAST_PAGE_FILES;
 
-  GtkWidget *win = adw_application_window_new (GTK_APPLICATION (gapp));
+  GtkWidget *win = gtk_application_window_new (GTK_APPLICATION (gapp));
   gtk_window_set_title (GTK_WINDOW (win), "Kast Manager");
   gtk_window_set_default_size (GTK_WINDOW (win), 980, 680);
   gtk_window_set_icon_name (GTK_WINDOW (win), APP_ID);
   ui->window = win;
 
+  GtkWidget *header = gtk_header_bar_new ();
+  gtk_window_set_titlebar (GTK_WINDOW (win), header);
+
+  GtkWidget *htitle = gtk_label_new ("Kast Manager");
+  gtk_widget_add_css_class (htitle, "kast-header-title");
+  gtk_header_bar_set_title_widget (GTK_HEADER_BAR (header), htitle);
+
+  GtkWidget *menu_btn = gtk_menu_button_new ();
+  gtk_menu_button_set_icon_name (GTK_MENU_BUTTON (menu_btn), "open-menu-symbolic");
+  gtk_widget_set_tooltip_text (menu_btn, "Main Menu");
+  gtk_header_bar_pack_end (GTK_HEADER_BAR (header), menu_btn);
+
+  GMenu *menu = g_menu_new ();
+  g_menu_append (menu, "About Kast Manager", "app.about");
+  g_menu_append (menu, "Quit", "app.quit");
+  gtk_menu_button_set_menu_model (GTK_MENU_BUTTON (menu_btn), G_MENU_MODEL (menu));
+
   GtkWidget *layout = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
-  adw_application_window_set_content (ADW_APPLICATION_WINDOW (win), layout);
+  gtk_window_set_child (GTK_WINDOW (win), layout);
 
   /* ---- sidebar ---- */
   GtkWidget *side = gtk_box_new (GTK_ORIENTATION_VERTICAL, 4);
@@ -169,31 +185,14 @@ on_startup (GApplication *gapp, gpointer data)
   gtk_box_append (GTK_BOX (side), ver);
 
   /* ---- main column ---- */
-  GtkWidget *tview = adw_toolbar_view_new ();
-  gtk_widget_set_hexpand (tview, TRUE);
-  gtk_box_append (GTK_BOX (layout), tview);
-
-  GtkWidget *header = adw_header_bar_new ();
-  adw_toolbar_view_add_top_bar (ADW_TOOLBAR_VIEW (tview), header);
-
-  GtkWidget *htitle = gtk_label_new ("Kast Manager");
-  gtk_widget_add_css_class (htitle, "kast-header-title");
-  adw_header_bar_set_title_widget (ADW_HEADER_BAR (header), htitle);
-
-  GtkWidget *menu_btn = gtk_menu_button_new ();
-  gtk_menu_button_set_icon_name (GTK_MENU_BUTTON (menu_btn), "open-menu-symbolic");
-  gtk_widget_set_tooltip_text (menu_btn, "Main Menu");
-  adw_header_bar_pack_end (ADW_HEADER_BAR (header), menu_btn);
-
-  GMenu *menu = g_menu_new ();
-  g_menu_append (menu, "About Kast Manager", "app.about");
-  g_menu_append (menu, "Quit", "app.quit");
-  gtk_menu_button_set_menu_model (GTK_MENU_BUTTON (menu_btn), G_MENU_MODEL (menu));
+  GtkWidget *right = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
+  gtk_widget_set_hexpand (right, TRUE);
+  gtk_box_append (GTK_BOX (layout), right);
 
   GtkWidget *stack = adw_view_stack_new ();
   gtk_widget_set_hexpand (stack, TRUE);
   gtk_widget_set_vexpand (stack, TRUE);
-  adw_toolbar_view_set_content (ADW_TOOLBAR_VIEW (tview), stack);
+  gtk_box_append (GTK_BOX (right), stack);
   ui->stack = ADW_VIEW_STACK (stack);
 
   adw_view_stack_add_titled (ui->stack, kast_dash_page (ui), KAST_PAGE_DASHBOARD, "Dashboard");
