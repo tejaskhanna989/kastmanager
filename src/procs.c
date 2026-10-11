@@ -293,11 +293,10 @@ typedef struct {
 } KastKillReq;
 
 static void
-on_kill_response (AdwMessageDialog *dlg, const char *resp, gpointer data)
+on_kill_response (GtkDialog *dlg, int resp, gpointer data)
 {
-  (void) dlg;
   KastKillReq *req = data;
-  if (!g_strcmp0 (resp, "ok"))
+  if (resp == GTK_RESPONSE_OK)
     {
       if (req->uid == (uid_t) geteuid ())
         {
@@ -331,25 +330,26 @@ do_signal (KastProcs *k, int sig)
     return;
 
   const char *signame = sig == SIGKILL ? "kill" : "end";
-  GtkWidget *dlg = adw_message_dialog_new (GTK_WINDOW (k->ui->window), NULL, NULL);
-  adw_message_dialog_set_heading (ADW_MESSAGE_DIALOG (dlg),
+  GtkWidget *dlg = gtk_message_dialog_new (GTK_WINDOW (k->ui->window),
+      GTK_DIALOG_MODAL,
+      GTK_MESSAGE_QUESTION,
+      GTK_BUTTONS_NONE,
+      "This will %s “%s” (PID %d).",
+      signame, p->name, p->pid);
+  gtk_window_set_title (GTK_WINDOW (dlg),
       sig == SIGKILL ? "Kill process?" : "End process?");
-  char *body = g_strdup_printf ("This will %s “%s” (PID %d).", signame, p->name, p->pid);
-  adw_message_dialog_set_body (ADW_MESSAGE_DIALOG (dlg), body);
-  g_free (body);
-  adw_message_dialog_add_responses (ADW_MESSAGE_DIALOG (dlg),
-      "cancel", "Cancel",
-      "ok", sig == SIGKILL ? "Kill" : "End",
-      NULL);
-  adw_message_dialog_set_response_appearance (ADW_MESSAGE_DIALOG (dlg), "ok",
-      ADW_RESPONSE_DESTRUCTIVE);
-  adw_message_dialog_set_default_response (ADW_MESSAGE_DIALOG (dlg), "cancel");
+  gtk_dialog_add_button (GTK_DIALOG (dlg), "Cancel", GTK_RESPONSE_CANCEL);
+  GtkWidget *ok_btn = gtk_dialog_add_button (GTK_DIALOG (dlg),
+      sig == SIGKILL ? "Kill" : "End", GTK_RESPONSE_OK);
+  gtk_widget_add_css_class (ok_btn, "destructive-action");
+  gtk_dialog_set_default_response (GTK_DIALOG (dlg), GTK_RESPONSE_CANCEL);
   KastKillReq *req = g_new (KastKillReq, 1);
   req->pid = p->pid;
   req->sig = sig;
   req->uid = p->uid;
   g_signal_connect (dlg, "response", G_CALLBACK (on_kill_response), req);
-  adw_dialog_present (ADW_DIALOG (dlg), GTK_WIDGET (k->ui->window));
+  g_signal_connect_swapped (dlg, "response", G_CALLBACK (gtk_window_destroy), dlg);
+  gtk_window_present (GTK_WINDOW (dlg));
 }
 
 static void

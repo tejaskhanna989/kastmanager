@@ -48,7 +48,8 @@ on_about (GSimpleAction *, GVariant *, gpointer data)
 {
   KastUi *ui = data;
   const char *developers[] = { "Tejas Khanna", NULL };
-  AdwDialog *dlg = ADW_DIALOG (g_object_new (ADW_TYPE_ABOUT_DIALOG,
+  GtkWidget *dlg = g_object_new (ADW_TYPE_ABOUT_WINDOW,
+      "transient-for", ui->window,
       "application-name", "Kast Manager",
       "application-icon", APP_ID,
       "developer-name", "Tejas Khanna",
@@ -58,8 +59,8 @@ on_about (GSimpleAction *, GVariant *, gpointer data)
       "license-type", GTK_LICENSE_GPL_3_0,
       "website", "https://github.com/tejaskhanna989/kastmanager",
       "issue-url", "https://github.com/tejaskhanna989/kastmanager/issues",
-      NULL));
-  adw_dialog_present (dlg, ui->window);
+      NULL);
+  gtk_window_present (GTK_WINDOW (dlg));
 }
 
 static void
@@ -222,7 +223,7 @@ main (int argc, char *argv[])
 
   KastUi *ui = g_new0 (KastUi, 1);
   GtkApplication *app = gtk_application_new (APP_ID,
-      G_APPLICATION_DEFAULT_FLAGS);
+      G_APPLICATION_FLAGS_NONE);
   g_application_set_resource_base_path (G_APPLICATION (app),
       "/io/github/tejaskhanna989/KastManager");
   g_signal_connect (app, "startup", G_CALLBACK (on_startup), ui);
