@@ -8,8 +8,6 @@
 #include "kast-resources.h"
 #include "kast.h"
 
-static void
-
 void
 kast_show_page (KastUi *ui, const char *page)
 {
