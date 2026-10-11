@@ -15,6 +15,7 @@
     </p>
   </description>
   <update_contact>khannatejas989_at_gmail.com</update_contact>
+  <launchable type="desktop-id">io.github.tejaskhanna989.KastManager.desktop</launchable>
   <developer id="io.github.tejaskhanna989">
     <name>Tejas Khanna</name>
   </developer>
