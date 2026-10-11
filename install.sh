@@ -35,7 +35,9 @@ for arg in "$@"; do
 done
 
 uninstall() {
-  rm -f "$DEST_FILE" "$DESKTOP_FILE"
+  rm -f "$DEST_FILE" "$DESKTOP_FILE" "$ICON_FILE"
+  rm -f "$HOME/.local/share/icons/hicolor/48x48/apps/$APP_ID.png"
+  rm -f "$HOME/.local/share/icons/hicolor/128x128/apps/$APP_ID.png"
   rmdir "$DEST_DIR" 2>/dev/null || true
   update-desktop-database "$DESKTOP_DIR" 2>/dev/null || true
   echo "Uninstalled $APP_NAME (removed $DEST_FILE and $DESKTOP_FILE)"

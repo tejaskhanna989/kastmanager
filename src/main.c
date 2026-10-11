@@ -8,10 +8,7 @@
 #include "kast-resources.h"
 #include "kast.h"
 
-static const char *page_names[KAST_NPAGES] = {
-  KAST_PAGE_DASHBOARD, KAST_PAGE_PROCESSES, KAST_PAGE_GRAPHS,
-  KAST_PAGE_DISKS, KAST_PAGE_FILES,
-};
+static void
 
 void
 kast_show_page (KastUi *ui, const char *page)
