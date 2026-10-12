@@ -92,6 +92,25 @@ button.suggested-action {
   padding: 8px 10px;
 }
 
+.kast-sidebar.ghost {
+  background-color: transparent;
+  border-right: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.kast-topbar.floating-bar {
+  background-color: #1e1e26;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 14px;
+  margin: 10px 14px 0 14px;
+}
+
+.kast-float-panel {
+  background-color: rgba(20, 20, 25, 0.96);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 16px;
+  padding: 10px;
+}
+
 .kast-brand {
   font-size: 13px;
   font-weight: 800;

@@ -25,6 +25,7 @@ typedef struct {
   GtkWidget *nav[KAST_NPAGES];
   const char *nav_names[KAST_NPAGES];
   GtkWidget *nav_labels[KAST_NPAGES];
+  GtkWidget *nav_imgs[KAST_NPAGES];
   GtkWidget *side_box;
   GtkWidget *side_logo;
   GtkWidget *side_brand;
@@ -57,7 +58,7 @@ void   kast_cfg_set (const char *key, int value);
 void kast_show_page (KastUi *ui, const char *page);
 void kast_nav_sync (KastUi *ui);
 void kast_side_apply (KastUi *ui, int mode);
-extern const char *kast_side_mode_names[10];
+extern const char *kast_side_mode_names[15];
 
 /* pages — each returns the widget to add to the stack */
 GtkWidget *kast_dash_page (KastUi *ui);

@@ -95,14 +95,17 @@ nav_button (KastUi *ui, int idx, const char *icon, const char *label)
 
   ui->nav[idx] = btn;
   ui->nav_labels[idx] = lab;
+  ui->nav_imgs[idx] = img;
   return btn;
 }
 
 /* sidebar modes: 0 Full, 1 Compact, 2 Hidden, 3 Top, 4 Bottom,
-   5 Wide, 6 Minimal, 7 Floating, 8 Right, 9 Auto-hide */
-const char *kast_side_mode_names[10] = {
+   5 Wide, 6 Minimal, 7 Floating, 8 Right, 9 Auto-hide,
+   10 Transparent, 11 Narrow, 12 Text-only, 13 Overlay, 14 Top-floating */
+const char *kast_side_mode_names[15] = {
   "Full", "Compact", "Hidden", "Top bar", "Bottom bar",
   "Wide", "Minimal", "Floating", "Right side", "Auto-hide",
+  "Transparent", "Narrow", "Text-only", "Overlay", "Top-floating",
 };
 
 static void
@@ -121,16 +124,20 @@ side_move_nav_home (KastUi *ui)
 void
 kast_side_apply (KastUi *ui, int mode)
 {
-  if (mode < 0 || mode > 9)
+  if (mode < 0 || mode > 14)
     mode = 0;
   ui->side_mode = mode;
   kast_cfg_set ("sidebar-mode", mode);
 
   side_move_nav_home (ui);
+  gtk_widget_set_visible (ui->float_panel, FALSE);
 
   GtkStyleContext *sctx = gtk_widget_get_style_context (ui->side_box);
   gtk_style_context_remove_class (sctx, "floating");
   gtk_style_context_remove_class (sctx, "rightside");
+  gtk_style_context_remove_class (sctx, "ghost");
+  GtkStyleContext *tctx = gtk_widget_get_style_context (ui->top_bar);
+  gtk_style_context_remove_class (tctx, "floating-bar");
 
   /* reset to full layout */
   gtk_widget_set_visible (ui->side_box, TRUE);
@@ -140,7 +147,10 @@ kast_side_apply (KastUi *ui, int mode)
   gtk_widget_set_visible (ui->side_toggle_btn, FALSE);
   gtk_widget_set_size_request (ui->side_box, 188, -1);
   for (int i = 0; i < KAST_NPAGES; i++)
-    gtk_widget_set_visible (ui->nav_labels[i], TRUE);
+    {
+      gtk_widget_set_visible (ui->nav_labels[i], TRUE);
+      gtk_widget_set_visible (ui->nav_imgs[i], TRUE);
+    }
   gtk_widget_set_visible (ui->side_logo, TRUE);
   gtk_widget_set_visible (ui->side_brand, TRUE);
   gtk_widget_set_visible (ui->side_ver, TRUE);
@@ -148,14 +158,14 @@ kast_side_apply (KastUi *ui, int mode)
 
   /* layout order back to sidebar-left */
   g_object_ref (ui->side_box);
-  g_object_ref (ui->right_col);
+  g_object_ref (ui->overlay);
   GtkWidget *layout = ui->layout;
   gtk_box_remove (GTK_BOX (layout), ui->side_box);
-  gtk_box_remove (GTK_BOX (layout), ui->right_col);
+  gtk_box_remove (GTK_BOX (layout), ui->overlay);
   gtk_box_append (GTK_BOX (layout), ui->side_box);
-  gtk_box_append (GTK_BOX (layout), ui->right_col);
+  gtk_box_append (GTK_BOX (layout), ui->overlay);
   g_object_unref (ui->side_box);
-  g_object_unref (ui->right_col);
+  g_object_unref (ui->overlay);
 
   switch (mode)
     {
@@ -195,18 +205,57 @@ kast_side_apply (KastUi *ui, int mode)
       break;
     case 8: /* Right side */
       g_object_ref (ui->side_box);
-      g_object_ref (ui->right_col);
+      g_object_ref (ui->overlay);
       gtk_box_remove (GTK_BOX (layout), ui->side_box);
-      gtk_box_remove (GTK_BOX (layout), ui->right_col);
-      gtk_box_append (GTK_BOX (layout), ui->right_col);
+      gtk_box_remove (GTK_BOX (layout), ui->overlay);
+      gtk_box_append (GTK_BOX (layout), ui->overlay);
       gtk_box_append (GTK_BOX (layout), ui->side_box);
       g_object_unref (ui->side_box);
-      g_object_unref (ui->right_col);
+      g_object_unref (ui->overlay);
       gtk_style_context_add_class (sctx, "rightside");
       break;
     case 9: /* Auto-hide */
       gtk_widget_set_visible (ui->side_box, FALSE);
       gtk_widget_set_visible (ui->side_toggle_btn, TRUE);
+      break;
+    case 10: /* Transparent */
+      gtk_style_context_add_class (sctx, "ghost");
+      break;
+    case 11: /* Narrow */
+      gtk_widget_set_size_request (ui->side_box, 48, -1);
+      for (int i = 0; i < KAST_NPAGES; i++)
+        gtk_widget_set_visible (ui->nav_labels[i], FALSE);
+      gtk_widget_set_visible (ui->side_brand, FALSE);
+      gtk_widget_set_visible (ui->side_ver, FALSE);
+      gtk_widget_set_visible (ui->side_logo, FALSE);
+      break;
+    case 12: /* Text-only */
+      for (int i = 0; i < KAST_NPAGES; i++)
+        gtk_widget_set_visible (ui->nav_imgs[i], FALSE);
+      break;
+    case 13: /* Overlay */
+      {
+        gtk_widget_set_visible (ui->side_box, FALSE);
+        for (int i = 0; i < KAST_NPAGES; i++)
+          {
+            gtk_box_remove (GTK_BOX (gtk_widget_get_parent (ui->nav[i])), ui->nav[i]);
+            gtk_box_append (GTK_BOX (ui->float_panel), ui->nav[i]);
+          }
+        gtk_widget_set_visible (ui->float_panel, TRUE);
+        gtk_widget_set_visible (ui->side_toggle_btn, TRUE);
+      }
+      break;
+    case 14: /* Top-floating */
+      {
+        gtk_widget_set_visible (ui->side_box, FALSE);
+        for (int i = 0; i < KAST_NPAGES; i++)
+          {
+            gtk_box_remove (GTK_BOX (gtk_widget_get_parent (ui->nav[i])), ui->nav[i]);
+            gtk_box_append (GTK_BOX (ui->top_bar), ui->nav[i]);
+          }
+        gtk_style_context_add_class (tctx, "floating-bar");
+        gtk_widget_set_visible (ui->top_bar, TRUE);
+      }
       break;
     default: /* Full */
       break;
@@ -218,8 +267,12 @@ static void
 on_side_toggle (GtkButton *, gpointer data)
 {
   KastUi *ui = data;
-  gtk_widget_set_visible (ui->side_box,
-      !gtk_widget_get_visible (ui->side_box));
+  if (ui->side_mode == 13)
+    gtk_widget_set_visible (ui->float_panel,
+        !gtk_widget_get_visible (ui->float_panel));
+  else
+    gtk_widget_set_visible (ui->side_box,
+        !gtk_widget_get_visible (ui->side_box));
 }
 
 static void
@@ -363,11 +416,27 @@ on_startup (GApplication *gapp, gpointer data)
   gtk_box_append (GTK_BOX (side), ver);
   ui->side_ver = ver;
 
-  /* ---- main column ---- */
+  /* ---- main column (wrapped in overlay for Overlay mode) ---- */
   GtkWidget *right = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
   gtk_widget_set_hexpand (right, TRUE);
-  gtk_box_append (GTK_BOX (layout), right);
   ui->right_col = right;
+
+  GtkWidget *overlay = gtk_overlay_new ();
+  gtk_widget_set_hexpand (overlay, TRUE);
+  gtk_box_append (GTK_BOX (layout), overlay);
+  ui->overlay = overlay;
+  gtk_overlay_set_child (GTK_OVERLAY (overlay), right);
+
+  ui->float_panel = gtk_box_new (GTK_ORIENTATION_VERTICAL, 4);
+  gtk_widget_add_css_class (ui->float_panel, "kast-float-panel");
+  gtk_widget_set_halign (ui->float_panel, GTK_ALIGN_START);
+  gtk_widget_set_valign (ui->float_panel, GTK_ALIGN_FILL);
+  gtk_widget_set_margin_top (ui->float_panel, 12);
+  gtk_widget_set_margin_bottom (ui->float_panel, 12);
+  gtk_widget_set_margin_start (ui->float_panel, 12);
+  gtk_widget_set_size_request (ui->float_panel, 200, -1);
+  gtk_widget_set_visible (ui->float_panel, FALSE);
+  gtk_overlay_add_overlay (GTK_OVERLAY (overlay), ui->float_panel);
 
   ui->top_bar = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
   gtk_widget_add_css_class (ui->top_bar, "kast-topbar");
