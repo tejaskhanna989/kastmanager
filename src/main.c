@@ -391,8 +391,15 @@ on_startup (GApplication *gapp, gpointer data)
   gtk_widget_set_margin_bottom (sep, 8);
   gtk_box_append (GTK_BOX (side), sep);
 
+  GtkWidget *navscroll = gtk_scrolled_window_new ();
+  gtk_widget_set_vexpand (navscroll, TRUE);
+  gtk_widget_set_hexpand (navscroll, TRUE);
+  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (navscroll),
+                                  GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
+  gtk_box_append (GTK_BOX (side), navscroll);
+
   GtkWidget *navbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 4);
-  gtk_box_append (GTK_BOX (side), navbox);
+  gtk_scrolled_window_set_child (GTK_SCROLLED_WINDOW (navscroll), navbox);
   ui->side_box = side;
   /* nav buttons live in navbox; top/bottom modes reparent them */
   g_object_set_data (G_OBJECT (side), "kast-navbox", navbox);
@@ -405,10 +412,6 @@ on_startup (GApplication *gapp, gpointer data)
   gtk_box_append (GTK_BOX (navbox), nav_button (ui, 5, "starred-symbolic", "Rating"));
   gtk_box_append (GTK_BOX (navbox), nav_button (ui, 6, "preferences-system-symbolic", "Controls"));
   gtk_box_append (GTK_BOX (navbox), nav_button (ui, 7, "dialog-information-symbolic", "Info"));
-
-  GtkWidget *spacer = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
-  gtk_widget_set_vexpand (spacer, TRUE);
-  gtk_box_append (GTK_BOX (side), spacer);
 
   GtkWidget *ver = gtk_label_new ("v" VERSION);
   gtk_widget_add_css_class (ver, "dim-label");
