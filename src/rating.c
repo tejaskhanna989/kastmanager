@@ -238,7 +238,7 @@ score_row (const char *title, GtkLabel **v_out, GtkLevelBar **b_out)
   pango_attr_list_unref (attrs);
   gtk_box_append (GTK_BOX (top), t);
 
-  GtkWidget *v = gtk_label_new ("—");
+  GtkWidget *v = gtk_label_new ("…");
   gtk_widget_add_css_class (v, "dash-value");
   gtk_box_append (GTK_BOX (top), v);
   gtk_box_append (GTK_BOX (card), top);
@@ -290,7 +290,7 @@ kast_rating_page (KastUi *ui)
   gtk_widget_add_css_class (ol, "dim-label");
   gtk_widget_set_halign (ol, GTK_ALIGN_START);
   gtk_box_append (GTK_BOX (ocard), ol);
-  r->overall_v = GTK_LABEL (gtk_label_new ("—"));
+  r->overall_v = GTK_LABEL (gtk_label_new ("…"));
   gtk_widget_add_css_class (GTK_WIDGET (r->overall_v), "dash-value");
   PangoAttrList *attrs = pango_attr_list_new ();
   pango_attr_list_insert (attrs, pango_attr_weight_new (PANGO_WEIGHT_BOLD));

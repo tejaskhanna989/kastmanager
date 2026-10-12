@@ -19,7 +19,7 @@ info_row (GtkBox *box, const char *key, const char *value)
   gtk_widget_set_halign (k, GTK_ALIGN_START);
   gtk_widget_set_size_request (k, 150, -1);
   gtk_box_append (GTK_BOX (row), k);
-  GtkWidget *v = gtk_label_new (value ? value : "—");
+  GtkWidget *v = gtk_label_new (value ? value : "n/a");
   gtk_widget_set_halign (v, GTK_ALIGN_START);
   gtk_widget_set_hexpand (v, TRUE);
   gtk_label_set_selectable (GTK_LABEL (v), TRUE);
@@ -106,7 +106,7 @@ kast_sysinfo_page (KastUi *ui)
 
   /* boot time via systemd-analyze, best effort:
      "Startup finished in 3.5s (kernel) + 12.8s (userspace) = ..." */
-  char *boottime = g_strdup ("—");
+  char *boottime = g_strdup ("n/a");
   {
     char *out = NULL;
     char *argv[] = { "systemd-analyze", "time", NULL };
@@ -168,7 +168,7 @@ kast_sysinfo_page (KastUi *ui)
   info_row (GTK_BOX (card), "Desktop", desk);
   info_row (GTK_BOX (card), "Uptime", uptime);
   info_row (GTK_BOX (card), "Boot time", boottime);
-  info_row (GTK_BOX (card), "IP addresses", ips->len ? ips->str : "—");
+  info_row (GTK_BOX (card), "IP addresses", ips->len ? ips->str : "n/a");
 
   g_free (host); g_free (kernel); g_free (cpu); g_free (cores);
   g_free (ram); g_free (desk); g_free (up); g_free (uptime);

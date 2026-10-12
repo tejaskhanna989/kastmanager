@@ -342,7 +342,7 @@ on_props (GtkButton *btn, gpointer data)
     }
   char *sz = kast_bytes (g_file_info_get_size (info));
   GDateTime *mt = g_file_info_get_modification_date_time (info);
-  char *mts = mt ? g_date_time_format (mt, "%Y-%m-%d %H:%M:%S") : g_strdup ("—");
+  char *mts = mt ? g_date_time_format (mt, "%Y-%m-%d %H:%M:%S") : g_strdup ("n/a");
   char *uri = g_file_get_uri (f);
   const char *owner = g_file_info_get_attribute_string (info, "owner::user");
   guint32 mode = g_file_info_get_attribute_uint32 (info, "unix::mode");

@@ -349,7 +349,7 @@ volume_row (void)
   GtkWidget *row = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 12);
   v->scale = GTK_SCALE (gtk_scale_new_with_range (GTK_ORIENTATION_HORIZONTAL, 0, 100, 1));
   gtk_widget_set_hexpand (GTK_WIDGET (v->scale), TRUE);
-  v->pct = GTK_LABEL (gtk_label_new ("—"));
+  v->pct = GTK_LABEL (gtk_label_new ("…"));
   gtk_widget_set_size_request (GTK_WIDGET (v->pct), 52, -1);
   g_signal_connect (v->scale, "value-changed", G_CALLBACK (on_vol_changed), v);
   gtk_box_append (GTK_BOX (row), GTK_WIDGET (v->scale));

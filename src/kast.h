@@ -33,6 +33,8 @@ typedef struct {
   GtkWidget *right_col;
   GtkWidget *top_bar;
   GtkWidget *bottom_bar;
+  GtkWidget *overlay;
+  GtkWidget *float_panel;
   GtkWidget *page_menu_btn;
   GtkWidget *side_toggle_btn;
   int side_mode; /* 0-9 */

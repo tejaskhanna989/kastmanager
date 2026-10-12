@@ -245,7 +245,7 @@ graph_card (const char *title, GtkDrawingArea **area_out, GtkLabel **now_out, gb
   pango_attr_list_unref (attrs);
   gtk_box_append (GTK_BOX (head), t);
 
-  GtkWidget *now = gtk_label_new ("—");
+  GtkWidget *now = gtk_label_new ("…");
   gtk_widget_add_css_class (now, "dash-value");
   gtk_widget_add_css_class (now, is_cpu ? "dash-accent-cpu" : "dash-accent-mem");
   gtk_box_append (GTK_BOX (head), now);

@@ -121,7 +121,7 @@ make_card (KastUi *ui, int idx, gboolean with_bar)
   gtk_widget_set_halign (cap, GTK_ALIGN_START);
   gtk_box_append (GTK_BOX (box), cap);
 
-  GtkWidget *val = gtk_label_new ("—");
+  GtkWidget *val = gtk_label_new ("…");
   gtk_widget_add_css_class (val, "dash-value");
   gtk_widget_set_halign (val, GTK_ALIGN_START);
   PangoAttrList *attrs = pango_attr_list_new ();
@@ -140,7 +140,7 @@ make_card (KastUi *ui, int idx, gboolean with_bar)
       bar = GTK_LEVEL_BAR (b);
     }
 
-  GtkWidget *det = gtk_label_new ("—");
+  GtkWidget *det = gtk_label_new ("…");
   gtk_widget_add_css_class (det, "dim-label");
   gtk_widget_set_halign (det, GTK_ALIGN_START);
   gtk_box_append (GTK_BOX (box), det);
@@ -253,7 +253,7 @@ dash_tick (gpointer data)
     }
   else
     {
-      gtk_label_set_text (ui->d_val[8], "—");
+      gtk_label_set_text (ui->d_val[8], "n/a");
       gtk_label_set_text (ui->d_det[8], "no battery");
     }
 
