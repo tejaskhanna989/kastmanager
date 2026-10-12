@@ -50,3 +50,18 @@ jobs:
         with:
           name: KastManager-x86_64.AppImage
           path: KastManager-x86_64.AppImage
+
+  snap:
+    runs-on: ubuntu-24.04
+    needs: build
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: snapcore/action-build@v1
+        id: snapcraft
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: kastmanager-snap
+          path: ${{ steps.snapcraft.outputs.snap }}

@@ -1,0 +1,60 @@
+name: kastmanager
+base: core24
+version: '2.6.0'
+summary: Processes, resources, disks and files in one dark place
+description: |
+  Kast Manager 2.x by Tejas Khanna — a fresh minimal system companion
+  with a dark restrained interface: live dashboard, sortable processes
+  with End/Kill, hand-drawn graphs, file systems, file browser,
+  PC rating, full controls, and 20+ more tools.
+  GPL-3.0-or-later. https://github.com/tejaskhanna989/kastmanager
+website: https://github.com/tejaskhanna989/kastmanager
+issues: https://github.com/tejaskhanna989/kastmanager/issues
+source-code: https://github.com/tejaskhanna989/kastmanager
+license: GPL-3.0-or-later
+grade: stable
+confinement: strict
+
+apps:
+  kastmanager:
+    command: usr/bin/kast-manager
+    common-id: io.github.tejaskhanna989.KastManager
+    extensions: [gnome]
+    plugs:
+      - desktop
+      - desktop-legacy
+      - wayland
+      - x11
+      - opengl
+      - home
+      - removable-media
+      - network
+      - network-observe
+      - mount-observe
+      - system-observe
+      - hardware-observe
+      - log-observe
+      - process-control
+
+parts:
+  kastmanager:
+    plugin: meson
+    source: .
+    meson-parameters:
+      - --prefix=/usr
+      - --buildtype=release
+    build-packages:
+      - libgtk-4-dev
+      - libadwaita-1-dev
+      - libgtop2-dev
+    stage-packages:
+      - libgtop-2-0
+      - librsvg2-2
+      - systemd
+      - power-profiles-daemon
+      - pciutils
+      - usbutils
+      - fontconfig
+      - cron
+      - coreutils
+      - adwaita-icon-theme
