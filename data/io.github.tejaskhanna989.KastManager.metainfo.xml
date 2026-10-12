@@ -30,6 +30,13 @@
   </provides>
 
   <releases>
+    <release date="2026-10-12" version="2.5.0" type="stable">
+      <description>
+        <ul>
+          <li>10 more tools: journal, connections, sensors, startup, usage, users, devices, modules, cron, battery</li>
+        </ul>
+      </description>
+    </release>
     <release date="2026-10-12" version="2.4.0" type="stable">
       <description>
         <ul>

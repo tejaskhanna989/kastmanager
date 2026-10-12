@@ -1,3 +1,9 @@
+New in 2.5.0 - 12 October 2026
+
+* 10 more tools: journal viewer, network connections, sensors,
+  startup analyzer, disk usage, users, devices, modules, cron, battery
+* 18 sidebar pages total
+
 New in 2.4.0 - 12 October 2026
 
 * 5 more sidebar modes: Transparent, Narrow, Text-only, Overlay, Top-floating

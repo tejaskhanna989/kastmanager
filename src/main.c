@@ -309,6 +309,16 @@ on_startup (GApplication *gapp, gpointer data)
   ui->nav_names[5] = KAST_PAGE_RATING;
   ui->nav_names[6] = KAST_PAGE_CONTROLS;
   ui->nav_names[7] = KAST_PAGE_INFO;
+  ui->nav_names[8] = KAST_PAGE_JOURNAL;
+  ui->nav_names[9] = KAST_PAGE_CONNS;
+  ui->nav_names[10] = KAST_PAGE_SENSORS;
+  ui->nav_names[11] = KAST_PAGE_STARTUP;
+  ui->nav_names[12] = KAST_PAGE_USAGE;
+  ui->nav_names[13] = KAST_PAGE_USERS;
+  ui->nav_names[14] = KAST_PAGE_DEVICES;
+  ui->nav_names[15] = KAST_PAGE_MODULES;
+  ui->nav_names[16] = KAST_PAGE_CRON;
+  ui->nav_names[17] = KAST_PAGE_BATTERY;
 
   GtkWidget *win = gtk_application_window_new (GTK_APPLICATION (gapp));
   gtk_window_set_title (GTK_WINDOW (win), "Kast Manager");
@@ -350,6 +360,16 @@ on_startup (GApplication *gapp, gpointer data)
   g_menu_append (pagemenu, "Rating", "app.show-page::rating");
   g_menu_append (pagemenu, "Controls", "app.show-page::controls");
   g_menu_append (pagemenu, "Info", "app.show-page::info");
+  g_menu_append (pagemenu, "Journal", "app.show-page::journal");
+  g_menu_append (pagemenu, "Connections", "app.show-page::conns");
+  g_menu_append (pagemenu, "Sensors", "app.show-page::sensors");
+  g_menu_append (pagemenu, "Startup", "app.show-page::startup");
+  g_menu_append (pagemenu, "Disk usage", "app.show-page::usage");
+  g_menu_append (pagemenu, "Users", "app.show-page::users");
+  g_menu_append (pagemenu, "Devices", "app.show-page::devices");
+  g_menu_append (pagemenu, "Modules", "app.show-page::modules");
+  g_menu_append (pagemenu, "Cron", "app.show-page::cron");
+  g_menu_append (pagemenu, "Battery", "app.show-page::battery");
   gtk_menu_button_set_menu_model (GTK_MENU_BUTTON (ui->page_menu_btn),
                                   G_MENU_MODEL (pagemenu));
 
@@ -412,6 +432,16 @@ on_startup (GApplication *gapp, gpointer data)
   gtk_box_append (GTK_BOX (navbox), nav_button (ui, 5, "starred-symbolic", "Rating"));
   gtk_box_append (GTK_BOX (navbox), nav_button (ui, 6, "preferences-system-symbolic", "Controls"));
   gtk_box_append (GTK_BOX (navbox), nav_button (ui, 7, "dialog-information-symbolic", "Info"));
+  gtk_box_append (GTK_BOX (navbox), nav_button (ui, 8, "document-properties-symbolic", "Journal"));
+  gtk_box_append (GTK_BOX (navbox), nav_button (ui, 9, "network-wired-symbolic", "Connections"));
+  gtk_box_append (GTK_BOX (navbox), nav_button (ui, 10, "computer-symbolic", "Sensors"));
+  gtk_box_append (GTK_BOX (navbox), nav_button (ui, 11, "system-run-symbolic", "Startup"));
+  gtk_box_append (GTK_BOX (navbox), nav_button (ui, 12, "drive-harddisk-symbolic", "Disk usage"));
+  gtk_box_append (GTK_BOX (navbox), nav_button (ui, 13, "user-info-symbolic", "Users"));
+  gtk_box_append (GTK_BOX (navbox), nav_button (ui, 14, "video-display-symbolic", "Devices"));
+  gtk_box_append (GTK_BOX (navbox), nav_button (ui, 15, "utilities-terminal-symbolic", "Modules"));
+  gtk_box_append (GTK_BOX (navbox), nav_button (ui, 16, "dialog-information-symbolic", "Cron"));
+  gtk_box_append (GTK_BOX (navbox), nav_button (ui, 17, "battery-symbolic", "Battery"));
 
   GtkWidget *ver = gtk_label_new ("v" VERSION);
   gtk_widget_add_css_class (ver, "dim-label");
@@ -465,6 +495,16 @@ on_startup (GApplication *gapp, gpointer data)
   adw_view_stack_add_titled (ui->stack, kast_rating_page (ui), KAST_PAGE_RATING, "Rating");
   adw_view_stack_add_titled (ui->stack, kast_controls_page (ui), KAST_PAGE_CONTROLS, "Controls");
   adw_view_stack_add_titled (ui->stack, kast_sysinfo_page (ui), KAST_PAGE_INFO, "Info");
+  adw_view_stack_add_titled (ui->stack, kast_journal_page (ui), KAST_PAGE_JOURNAL, "Journal");
+  adw_view_stack_add_titled (ui->stack, kast_conns_page (ui), KAST_PAGE_CONNS, "Connections");
+  adw_view_stack_add_titled (ui->stack, kast_sensors_page (ui), KAST_PAGE_SENSORS, "Sensors");
+  adw_view_stack_add_titled (ui->stack, kast_startup_page (ui), KAST_PAGE_STARTUP, "Startup");
+  adw_view_stack_add_titled (ui->stack, kast_usage_page (ui), KAST_PAGE_USAGE, "Disk usage");
+  adw_view_stack_add_titled (ui->stack, kast_users_page (ui), KAST_PAGE_USERS, "Users");
+  adw_view_stack_add_titled (ui->stack, kast_devices_page (ui), KAST_PAGE_DEVICES, "Devices");
+  adw_view_stack_add_titled (ui->stack, kast_modules_page (ui), KAST_PAGE_MODULES, "Modules");
+  adw_view_stack_add_titled (ui->stack, kast_cron_page (ui), KAST_PAGE_CRON, "Cron");
+  adw_view_stack_add_titled (ui->stack, kast_battery_page (ui), KAST_PAGE_BATTERY, "Battery");
   adw_view_stack_set_visible_child_name (ui->stack, KAST_PAGE_DASHBOARD);
   g_signal_connect (stack, "notify::visible-child", G_CALLBACK (on_page_changed), ui);
 

@@ -14,7 +14,17 @@
 #define KAST_PAGE_RATING    "rating"
 #define KAST_PAGE_CONTROLS  "controls"
 #define KAST_PAGE_INFO      "info"
-#define KAST_NPAGES 8
+#define KAST_PAGE_JOURNAL   "journal"
+#define KAST_PAGE_CONNS     "conns"
+#define KAST_PAGE_SENSORS   "sensors"
+#define KAST_PAGE_STARTUP   "startup"
+#define KAST_PAGE_USAGE     "usage"
+#define KAST_PAGE_USERS     "users"
+#define KAST_PAGE_DEVICES   "devices"
+#define KAST_PAGE_MODULES   "modules"
+#define KAST_PAGE_CRON      "cron"
+#define KAST_PAGE_BATTERY   "battery"
+#define KAST_NPAGES 18
 
 typedef struct {
   GtkApplication *app;
@@ -69,6 +79,16 @@ GtkWidget *kast_files_page (KastUi *ui);
 GtkWidget *kast_rating_page (KastUi *ui);
 GtkWidget *kast_controls_page (KastUi *ui);
 GtkWidget *kast_sysinfo_page (KastUi *ui);
+GtkWidget *kast_journal_page (KastUi *ui);
+GtkWidget *kast_conns_page (KastUi *ui);
+GtkWidget *kast_sensors_page (KastUi *ui);
+GtkWidget *kast_startup_page (KastUi *ui);
+GtkWidget *kast_usage_page (KastUi *ui);
+GtkWidget *kast_users_page (KastUi *ui);
+GtkWidget *kast_devices_page (KastUi *ui);
+GtkWidget *kast_modules_page (KastUi *ui);
+GtkWidget *kast_cron_page (KastUi *ui);
+GtkWidget *kast_battery_page (KastUi *ui);
 void kast_widget_toggle (KastUi *ui);
 
 #endif /* KAST_H */
