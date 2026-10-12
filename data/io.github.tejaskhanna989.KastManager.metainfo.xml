@@ -30,6 +30,13 @@
   </provides>
 
   <releases>
+    <release date="2026-10-12" version="2.3.0" type="stable">
+      <description>
+        <ul>
+          <li>10 sidebar modes with persistence</li>
+        </ul>
+      </description>
+    </release>
     <release date="2026-10-12" version="2.2.0" type="stable">
       <description>
         <ul>

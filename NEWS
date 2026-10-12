@@ -1,3 +1,8 @@
+New in 2.3.0 - 12 October 2026
+
+* 10 sidebar modes (Full/Compact/Hidden/Top/Bottom/Wide/Minimal/Floating/Right/Auto)
+* Appearance picker in Controls, mode saved across restarts
+
 New in 2.2.0 - 12 October 2026
 
 * New Info page: hostname, kernel, CPU, IPs, boot time
