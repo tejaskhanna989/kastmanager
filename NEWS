@@ -1,3 +1,9 @@
+New in 2.1.0 - 12 October 2026
+
+* PC Rating: CPU/memory/disk benchmarks with overall score
+* Full controls: power, systemd services, autostart switches
+* Mini widget window from the app menu
+
 New in 2.0.0 - 10 October 2026 (Kast Manager rewrite by Tejas Khanna)
 
 * Fresh minimal codebase from scratch: no GNOME System Monitor code left

@@ -11,12 +11,15 @@
 #define KAST_PAGE_GRAPHS    "graphs"
 #define KAST_PAGE_DISKS     "disks"
 #define KAST_PAGE_FILES     "files"
-#define KAST_NPAGES 5
+#define KAST_PAGE_RATING    "rating"
+#define KAST_PAGE_CONTROLS  "controls"
+#define KAST_NPAGES 7
 
 typedef struct {
   GtkApplication *app;
   GtkWidget *window;
   AdwViewStack *stack;
+  GtkWidget *mini; /* widget window, may be NULL/hidden */
 
   GtkWidget *nav[KAST_NPAGES];
   const char *nav_names[KAST_NPAGES];
@@ -42,5 +45,8 @@ GtkWidget *kast_procs_page (KastUi *ui);
 GtkWidget *kast_graphs_page (KastUi *ui);
 GtkWidget *kast_disks_page (KastUi *ui);
 GtkWidget *kast_files_page (KastUi *ui);
+GtkWidget *kast_rating_page (KastUi *ui);
+GtkWidget *kast_controls_page (KastUi *ui);
+void kast_widget_toggle (KastUi *ui);
 
 #endif /* KAST_H */

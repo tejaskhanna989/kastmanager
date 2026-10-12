@@ -30,6 +30,13 @@
   </provides>
 
   <releases>
+    <release date="2026-10-12" version="2.1.0" type="stable">
+      <description>
+        <ul>
+          <li>PC Rating benchmarks, Full controls, mini widget</li>
+        </ul>
+      </description>
+    </release>
     <release date="2026-10-10" version="2.0.0" type="stable">
       <description>
         <ul>

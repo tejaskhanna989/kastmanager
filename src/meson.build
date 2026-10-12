@@ -6,7 +6,12 @@ kast_sources = files(
   'graphs.c',
   'disks.c',
   'files.c',
+  'rating.c',
+  'controls.c',
+  'widget.c',
 )
+
+math = cc.find_library('m', required: true)
 
 kast_resource = gnome.compile_resources(
   'kast-resources',
@@ -18,6 +23,6 @@ kast_resource = gnome.compile_resources(
 executable('kast-manager',
   [config_h, kast_sources, kast_resource],
   include_directories: rootInclude,
-  dependencies: [gtk4, libadwaita, libgtop, glib, gio, gmodule],
+  dependencies: [gtk4, libadwaita, libgtop, glib, gio, gmodule, math],
   install: true,
 )

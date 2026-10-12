@@ -69,6 +69,12 @@ on_quit (GSimpleAction *, GVariant *, gpointer data)
   gtk_window_close (GTK_WINDOW (ui->window));
 }
 
+static void
+on_widget (GSimpleAction *, GVariant *, gpointer data)
+{
+  kast_widget_toggle (data);
+}
+
 static GtkWidget *
 nav_button (KastUi *ui, int idx, const char *icon, const char *label)
 {
@@ -116,6 +122,8 @@ on_startup (GApplication *gapp, gpointer data)
   ui->nav_names[2] = KAST_PAGE_GRAPHS;
   ui->nav_names[3] = KAST_PAGE_DISKS;
   ui->nav_names[4] = KAST_PAGE_FILES;
+  ui->nav_names[5] = KAST_PAGE_RATING;
+  ui->nav_names[6] = KAST_PAGE_CONTROLS;
 
   GtkWidget *win = gtk_application_window_new (GTK_APPLICATION (gapp));
   gtk_window_set_title (GTK_WINDOW (win), "Kast Manager");
@@ -136,6 +144,7 @@ on_startup (GApplication *gapp, gpointer data)
   gtk_header_bar_pack_end (GTK_HEADER_BAR (header), menu_btn);
 
   GMenu *menu = g_menu_new ();
+  g_menu_append (menu, "Mini widget", "app.widget");
   g_menu_append (menu, "About Kast Manager", "app.about");
   g_menu_append (menu, "Quit", "app.quit");
   gtk_menu_button_set_menu_model (GTK_MENU_BUTTON (menu_btn), G_MENU_MODEL (menu));
@@ -174,6 +183,8 @@ on_startup (GApplication *gapp, gpointer data)
   gtk_box_append (GTK_BOX (side), nav_button (ui, 2, "resources-symbolic", "Graphs"));
   gtk_box_append (GTK_BOX (side), nav_button (ui, 3, "drive-harddisk-symbolic", "File Systems"));
   gtk_box_append (GTK_BOX (side), nav_button (ui, 4, "folder-symbolic", "Files"));
+  gtk_box_append (GTK_BOX (side), nav_button (ui, 5, "starred-symbolic", "Rating"));
+  gtk_box_append (GTK_BOX (side), nav_button (ui, 6, "preferences-system-symbolic", "Controls"));
 
   GtkWidget *spacer = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
   gtk_widget_set_vexpand (spacer, TRUE);
@@ -200,14 +211,17 @@ on_startup (GApplication *gapp, gpointer data)
   adw_view_stack_add_titled (ui->stack, kast_graphs_page (ui), KAST_PAGE_GRAPHS, "Graphs");
   adw_view_stack_add_titled (ui->stack, kast_disks_page (ui), KAST_PAGE_DISKS, "File Systems");
   adw_view_stack_add_titled (ui->stack, kast_files_page (ui), KAST_PAGE_FILES, "Files");
+  adw_view_stack_add_titled (ui->stack, kast_rating_page (ui), KAST_PAGE_RATING, "Rating");
+  adw_view_stack_add_titled (ui->stack, kast_controls_page (ui), KAST_PAGE_CONTROLS, "Controls");
   adw_view_stack_set_visible_child_name (ui->stack, KAST_PAGE_DASHBOARD);
   g_signal_connect (stack, "notify::visible-child", G_CALLBACK (on_page_changed), ui);
 
   const GActionEntry app_actions[] = {
     { "about", on_about, NULL, NULL, NULL, { 0 } },
+    { "widget", on_widget, NULL, NULL, NULL, { 0 } },
     { "quit", on_quit, NULL, NULL, NULL, { 0 } },
   };
-  g_action_map_add_action_entries (G_ACTION_MAP (gapp), app_actions, 2, ui);
+  g_action_map_add_action_entries (G_ACTION_MAP (gapp), app_actions, 3, ui);
 
   kast_nav_sync (ui);
   gtk_window_present (GTK_WINDOW (win));

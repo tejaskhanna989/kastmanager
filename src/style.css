@@ -35,6 +35,13 @@ button.destructive-action {
   border: none;
 }
 
+button.suggested-action {
+  background-color: #2dd4bf;
+  color: #06251f;
+  font-weight: 700;
+  border: none;
+}
+
 .card {
   background-color: #1e1e26;
   border: 1px solid rgba(255, 255, 255, 0.08);
