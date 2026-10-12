@@ -96,6 +96,9 @@ nav_button (KastUi *ui, int idx, const char *icon, const char *label)
   ui->nav[idx] = btn;
   ui->nav_labels[idx] = lab;
   ui->nav_imgs[idx] = img;
+  /* owned ref: buttons are reparented between sidebar/bars/panel,
+     a bare remove would finalize them */
+  g_object_ref (btn);
   return btn;
 }
 
@@ -114,7 +117,7 @@ side_move_nav_home (KastUi *ui)
   GtkWidget *navbox = g_object_get_data (G_OBJECT (ui->side_box), "kast-navbox");
   for (int i = 0; i < KAST_NPAGES; i++)
     {
-      GtkWidget *parent = gtk_widget_get_parent (ui->nav[i]);
+          GtkWidget *parent = gtk_widget_get_parent (ui->nav[i]);
       if (parent)
         gtk_box_remove (GTK_BOX (parent), ui->nav[i]);
       gtk_box_append (GTK_BOX (navbox), ui->nav[i]);
