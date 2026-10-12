@@ -55,3 +55,40 @@ kast_uptime_str (void)
     return g_strdup_printf ("%uh %um", hours, mins);
   return g_strdup_printf ("%um", mins);
 }
+
+static char *
+cfg_path (void)
+{
+  return g_build_filename (g_get_user_config_dir (), "kastmanager.ini", NULL);
+}
+
+int
+kast_cfg_get (const char *key, int fallback)
+{
+  char *path = cfg_path ();
+  GKeyFile *kf = g_key_file_new ();
+  GError *err = NULL;
+  int v = fallback;
+  if (g_key_file_load_from_file (kf, path, G_KEY_FILE_NONE, NULL))
+    v = g_key_file_get_integer (kf, "ui", key, &err);
+  if (err)
+    {
+      v = fallback;
+      g_clear_error (&err);
+    }
+  g_key_file_free (kf);
+  g_free (path);
+  return v;
+}
+
+void
+kast_cfg_set (const char *key, int value)
+{
+  char *path = cfg_path ();
+  GKeyFile *kf = g_key_file_new ();
+  g_key_file_load_from_file (kf, path, G_KEY_FILE_KEEP_COMMENTS, NULL);
+  g_key_file_set_integer (kf, "ui", key, value);
+  g_key_file_save_to_file (kf, path, NULL);
+  g_key_file_free (kf);
+  g_free (path);
+}

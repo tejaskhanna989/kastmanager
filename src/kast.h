@@ -24,6 +24,18 @@ typedef struct {
 
   GtkWidget *nav[KAST_NPAGES];
   const char *nav_names[KAST_NPAGES];
+  GtkWidget *nav_labels[KAST_NPAGES];
+  GtkWidget *side_box;
+  GtkWidget *side_logo;
+  GtkWidget *side_brand;
+  GtkWidget *side_ver;
+  GtkWidget *layout;
+  GtkWidget *right_col;
+  GtkWidget *top_bar;
+  GtkWidget *bottom_bar;
+  GtkWidget *page_menu_btn;
+  GtkWidget *side_toggle_btn;
+  int side_mode; /* 0-9 */
 
   /* dashboard cards: 0 cpu, 1 mem, 2 swap, 3 load, 4 uptime, 5 procs,
      6 net-up, 7 net-down, 8 battery */
@@ -36,10 +48,14 @@ typedef struct {
 double kast_cpu_percent (void);          /* total CPU %, keeps its own history */
 char  *kast_bytes (guint64 size);        /* g_format_size, must g_free */
 char  *kast_uptime_str (void);           /* e.g. "3h 24m", must g_free */
+int    kast_cfg_get (const char *key, int fallback);
+void   kast_cfg_set (const char *key, int value);
 
 /* main.c */
 void kast_show_page (KastUi *ui, const char *page);
 void kast_nav_sync (KastUi *ui);
+void kast_side_apply (KastUi *ui, int mode);
+extern const char *kast_side_mode_names[10];
 
 /* pages — each returns the widget to add to the stack */
 GtkWidget *kast_dash_page (KastUi *ui);

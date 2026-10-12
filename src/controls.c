@@ -246,6 +246,12 @@ refresh_services (KastControls *k)
 static void
 on_svc_refresh (GtkButton *, gpointer data) { refresh_services (data); }
 
+static void
+on_side_mode (GtkDropDown *drop, GParamSpec *, gpointer data)
+{
+  kast_side_apply (data, (int) gtk_drop_down_get_selected (drop));
+}
+
 /* ---- volume ---- */
 
 typedef struct {
@@ -503,6 +509,31 @@ kast_controls_page (KastUi *ui)
   GtkWidget *vol = volume_row ();
   if (vol)
     gtk_box_append (GTK_BOX (box), vol);
+
+  /* appearance: sidebar mode */
+  GtkWidget *vpcard = gtk_box_new (GTK_ORIENTATION_VERTICAL, 8);
+  gtk_widget_add_css_class (vpcard, "card");
+  GtkWidget *vpt = gtk_label_new ("Appearance");
+  PangoAttrList *vpa = pango_attr_list_new ();
+  pango_attr_list_insert (vpa, pango_attr_weight_new (PANGO_WEIGHT_BOLD));
+  gtk_label_set_attributes (GTK_LABEL (vpt), vpa);
+  pango_attr_list_unref (vpa);
+  gtk_widget_set_halign (vpt, GTK_ALIGN_START);
+  gtk_box_append (GTK_BOX (vpcard), vpt);
+  GtkWidget *vprow = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 12);
+  GtkWidget *vplab = gtk_label_new ("Sidebar mode");
+  gtk_widget_set_halign (vplab, GTK_ALIGN_START);
+  gtk_widget_set_hexpand (vplab, TRUE);
+  gtk_box_append (GTK_BOX (vprow), vplab);
+  const char *modes[10];
+  for (int i = 0; i < 10; i++)
+    modes[i] = kast_side_mode_names[i];
+  GtkWidget *drop = gtk_drop_down_new_from_strings (modes);
+  gtk_drop_down_set_selected (GTK_DROP_DOWN (drop), (guint) k->ui->side_mode);
+  g_signal_connect (drop, "notify::selected", G_CALLBACK (on_side_mode), k->ui);
+  gtk_box_append (GTK_BOX (vprow), drop);
+  gtk_box_append (GTK_BOX (vpcard), vprow);
+  gtk_box_append (GTK_BOX (box), vpcard);
 
   /* services */
   GtkWidget *scard = gtk_box_new (GTK_ORIENTATION_VERTICAL, 8);

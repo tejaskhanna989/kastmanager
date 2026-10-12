@@ -64,6 +64,32 @@ button.suggested-action {
 .kast-sidebar {
   background-color: #101016;
   border-right: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 0 16px 16px 0;
+}
+
+.kast-sidebar.floating {
+  background-color: #1e1e26;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  margin-top: 12px;
+  margin-bottom: 12px;
+  margin-start: 12px;
+}
+
+.kast-sidebar.rightside {
+  border-right: none;
+  border-left: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 16px 0 0 16px;
+}
+
+.kast-topbar {
+  background-color: #101016;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  padding: 8px 12px;
+}
+
+.kast-topbar button.kast-nav {
+  padding: 8px 10px;
 }
 
 .kast-brand {

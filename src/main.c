@@ -94,7 +94,138 @@ nav_button (KastUi *ui, int idx, const char *icon, const char *label)
   gtk_button_set_child (GTK_BUTTON (btn), row);
 
   ui->nav[idx] = btn;
+  ui->nav_labels[idx] = lab;
   return btn;
+}
+
+/* sidebar modes: 0 Full, 1 Compact, 2 Hidden, 3 Top, 4 Bottom,
+   5 Wide, 6 Minimal, 7 Floating, 8 Right, 9 Auto-hide */
+const char *kast_side_mode_names[10] = {
+  "Full", "Compact", "Hidden", "Top bar", "Bottom bar",
+  "Wide", "Minimal", "Floating", "Right side", "Auto-hide",
+};
+
+static void
+side_move_nav_home (KastUi *ui)
+{
+  GtkWidget *navbox = g_object_get_data (G_OBJECT (ui->side_box), "kast-navbox");
+  for (int i = 0; i < KAST_NPAGES; i++)
+    {
+      GtkWidget *parent = gtk_widget_get_parent (ui->nav[i]);
+      if (parent)
+        gtk_box_remove (GTK_BOX (parent), ui->nav[i]);
+      gtk_box_append (GTK_BOX (navbox), ui->nav[i]);
+    }
+}
+
+void
+kast_side_apply (KastUi *ui, int mode)
+{
+  if (mode < 0 || mode > 9)
+    mode = 0;
+  ui->side_mode = mode;
+  kast_cfg_set ("sidebar-mode", mode);
+
+  side_move_nav_home (ui);
+
+  GtkStyleContext *sctx = gtk_widget_get_style_context (ui->side_box);
+  gtk_style_context_remove_class (sctx, "floating");
+  gtk_style_context_remove_class (sctx, "rightside");
+
+  /* reset to full layout */
+  gtk_widget_set_visible (ui->side_box, TRUE);
+  gtk_widget_set_visible (ui->top_bar, FALSE);
+  gtk_widget_set_visible (ui->bottom_bar, FALSE);
+  gtk_widget_set_visible (ui->page_menu_btn, FALSE);
+  gtk_widget_set_visible (ui->side_toggle_btn, FALSE);
+  gtk_widget_set_size_request (ui->side_box, 188, -1);
+  for (int i = 0; i < KAST_NPAGES; i++)
+    gtk_widget_set_visible (ui->nav_labels[i], TRUE);
+  gtk_widget_set_visible (ui->side_logo, TRUE);
+  gtk_widget_set_visible (ui->side_brand, TRUE);
+  gtk_widget_set_visible (ui->side_ver, TRUE);
+  gtk_image_set_pixel_size (GTK_IMAGE (ui->side_logo), 56);
+
+  /* layout order back to sidebar-left */
+  g_object_ref (ui->side_box);
+  g_object_ref (ui->right_col);
+  GtkWidget *layout = ui->layout;
+  gtk_box_remove (GTK_BOX (layout), ui->side_box);
+  gtk_box_remove (GTK_BOX (layout), ui->right_col);
+  gtk_box_append (GTK_BOX (layout), ui->side_box);
+  gtk_box_append (GTK_BOX (layout), ui->right_col);
+  g_object_unref (ui->side_box);
+  g_object_unref (ui->right_col);
+
+  switch (mode)
+    {
+    case 1: /* Compact */
+    case 6: /* Minimal */
+      gtk_widget_set_size_request (ui->side_box, 64, -1);
+      for (int i = 0; i < KAST_NPAGES; i++)
+        gtk_widget_set_visible (ui->nav_labels[i], FALSE);
+      gtk_widget_set_visible (ui->side_brand, FALSE);
+      gtk_widget_set_visible (ui->side_ver, FALSE);
+      gtk_image_set_pixel_size (GTK_IMAGE (ui->side_logo), 32);
+      if (mode == 6)
+        gtk_widget_set_visible (ui->side_logo, FALSE);
+      break;
+    case 2: /* Hidden */
+      gtk_widget_set_visible (ui->side_box, FALSE);
+      gtk_widget_set_visible (ui->page_menu_btn, TRUE);
+      break;
+    case 3: /* Top bar */
+    case 4: /* Bottom bar */
+      {
+        gtk_widget_set_visible (ui->side_box, FALSE);
+        GtkWidget *bar = mode == 3 ? ui->top_bar : ui->bottom_bar;
+        for (int i = 0; i < KAST_NPAGES; i++)
+          {
+            gtk_box_remove (GTK_BOX (gtk_widget_get_parent (ui->nav[i])), ui->nav[i]);
+            gtk_box_append (GTK_BOX (bar), ui->nav[i]);
+          }
+        gtk_widget_set_visible (bar, TRUE);
+      }
+      break;
+    case 5: /* Wide */
+      gtk_widget_set_size_request (ui->side_box, 250, -1);
+      break;
+    case 7: /* Floating */
+      gtk_style_context_add_class (sctx, "floating");
+      break;
+    case 8: /* Right side */
+      g_object_ref (ui->side_box);
+      g_object_ref (ui->right_col);
+      gtk_box_remove (GTK_BOX (layout), ui->side_box);
+      gtk_box_remove (GTK_BOX (layout), ui->right_col);
+      gtk_box_append (GTK_BOX (layout), ui->right_col);
+      gtk_box_append (GTK_BOX (layout), ui->side_box);
+      g_object_unref (ui->side_box);
+      g_object_unref (ui->right_col);
+      gtk_style_context_add_class (sctx, "rightside");
+      break;
+    case 9: /* Auto-hide */
+      gtk_widget_set_visible (ui->side_box, FALSE);
+      gtk_widget_set_visible (ui->side_toggle_btn, TRUE);
+      break;
+    default: /* Full */
+      break;
+    }
+  kast_nav_sync (ui);
+}
+
+static void
+on_side_toggle (GtkButton *, gpointer data)
+{
+  KastUi *ui = data;
+  gtk_widget_set_visible (ui->side_box,
+      !gtk_widget_get_visible (ui->side_box));
+}
+
+static void
+on_show_page (GSimpleAction *, GVariant *param, gpointer data)
+{
+  kast_show_page (data, g_variant_get_string (param, NULL));
 }
 
 static void
@@ -144,6 +275,31 @@ on_startup (GApplication *gapp, gpointer data)
   gtk_widget_set_tooltip_text (menu_btn, "Main Menu");
   gtk_header_bar_pack_end (GTK_HEADER_BAR (header), menu_btn);
 
+  ui->side_toggle_btn = gtk_toggle_button_new ();
+  gtk_button_set_icon_name (GTK_BUTTON (ui->side_toggle_btn), "pan-start-symbolic");
+  gtk_widget_set_tooltip_text (ui->side_toggle_btn, "Toggle sidebar");
+  gtk_widget_set_visible (ui->side_toggle_btn, FALSE);
+  g_signal_connect (ui->side_toggle_btn, "clicked", G_CALLBACK (on_side_toggle), ui);
+  gtk_header_bar_pack_start (GTK_HEADER_BAR (header), ui->side_toggle_btn);
+
+  ui->page_menu_btn = gtk_menu_button_new ();
+  gtk_menu_button_set_icon_name (GTK_MENU_BUTTON (ui->page_menu_btn), "view-grid-symbolic");
+  gtk_widget_set_tooltip_text (ui->page_menu_btn, "Go to page");
+  gtk_widget_set_visible (ui->page_menu_btn, FALSE);
+  gtk_header_bar_pack_start (GTK_HEADER_BAR (header), ui->page_menu_btn);
+
+  GMenu *pagemenu = g_menu_new ();
+  g_menu_append (pagemenu, "Dashboard", "app.show-page::dashboard");
+  g_menu_append (pagemenu, "Processes", "app.show-page::processes");
+  g_menu_append (pagemenu, "Graphs", "app.show-page::graphs");
+  g_menu_append (pagemenu, "File Systems", "app.show-page::disks");
+  g_menu_append (pagemenu, "Files", "app.show-page::files");
+  g_menu_append (pagemenu, "Rating", "app.show-page::rating");
+  g_menu_append (pagemenu, "Controls", "app.show-page::controls");
+  g_menu_append (pagemenu, "Info", "app.show-page::info");
+  gtk_menu_button_set_menu_model (GTK_MENU_BUTTON (ui->page_menu_btn),
+                                  G_MENU_MODEL (pagemenu));
+
   GMenu *menu = g_menu_new ();
   g_menu_append (menu, "Mini widget", "app.widget");
   g_menu_append (menu, "About Kast Manager", "app.about");
@@ -152,6 +308,7 @@ on_startup (GApplication *gapp, gpointer data)
 
   GtkWidget *layout = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
   gtk_window_set_child (GTK_WINDOW (win), layout);
+  ui->layout = layout;
 
   /* ---- sidebar ---- */
   GtkWidget *side = gtk_box_new (GTK_ORIENTATION_VERTICAL, 4);
@@ -168,25 +325,33 @@ on_startup (GApplication *gapp, gpointer data)
   gtk_widget_set_halign (logo, GTK_ALIGN_CENTER);
   gtk_widget_set_margin_bottom (logo, 6);
   gtk_box_append (GTK_BOX (side), logo);
+  ui->side_logo = logo;
 
   GtkWidget *brand = gtk_label_new ("KAST");
   gtk_widget_add_css_class (brand, "kast-brand");
   gtk_widget_set_halign (brand, GTK_ALIGN_CENTER);
   gtk_box_append (GTK_BOX (side), brand);
+  ui->side_brand = brand;
 
   GtkWidget *sep = gtk_separator_new (GTK_ORIENTATION_HORIZONTAL);
   gtk_widget_set_margin_top (sep, 8);
   gtk_widget_set_margin_bottom (sep, 8);
   gtk_box_append (GTK_BOX (side), sep);
 
-  gtk_box_append (GTK_BOX (side), nav_button (ui, 0, "view-grid-symbolic", "Dashboard"));
-  gtk_box_append (GTK_BOX (side), nav_button (ui, 1, "processes-symbolic", "Processes"));
-  gtk_box_append (GTK_BOX (side), nav_button (ui, 2, "resources-symbolic", "Graphs"));
-  gtk_box_append (GTK_BOX (side), nav_button (ui, 3, "drive-harddisk-symbolic", "File Systems"));
-  gtk_box_append (GTK_BOX (side), nav_button (ui, 4, "folder-symbolic", "Files"));
-  gtk_box_append (GTK_BOX (side), nav_button (ui, 5, "starred-symbolic", "Rating"));
-  gtk_box_append (GTK_BOX (side), nav_button (ui, 6, "preferences-system-symbolic", "Controls"));
-  gtk_box_append (GTK_BOX (side), nav_button (ui, 7, "dialog-information-symbolic", "Info"));
+  GtkWidget *navbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 4);
+  gtk_box_append (GTK_BOX (side), navbox);
+  ui->side_box = side;
+  /* nav buttons live in navbox; top/bottom modes reparent them */
+  g_object_set_data (G_OBJECT (side), "kast-navbox", navbox);
+
+  gtk_box_append (GTK_BOX (navbox), nav_button (ui, 0, "view-grid-symbolic", "Dashboard"));
+  gtk_box_append (GTK_BOX (navbox), nav_button (ui, 1, "processes-symbolic", "Processes"));
+  gtk_box_append (GTK_BOX (navbox), nav_button (ui, 2, "resources-symbolic", "Graphs"));
+  gtk_box_append (GTK_BOX (navbox), nav_button (ui, 3, "drive-harddisk-symbolic", "File Systems"));
+  gtk_box_append (GTK_BOX (navbox), nav_button (ui, 4, "folder-symbolic", "Files"));
+  gtk_box_append (GTK_BOX (navbox), nav_button (ui, 5, "starred-symbolic", "Rating"));
+  gtk_box_append (GTK_BOX (navbox), nav_button (ui, 6, "preferences-system-symbolic", "Controls"));
+  gtk_box_append (GTK_BOX (navbox), nav_button (ui, 7, "dialog-information-symbolic", "Info"));
 
   GtkWidget *spacer = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
   gtk_widget_set_vexpand (spacer, TRUE);
@@ -196,17 +361,29 @@ on_startup (GApplication *gapp, gpointer data)
   gtk_widget_add_css_class (ver, "dim-label");
   gtk_widget_set_halign (ver, GTK_ALIGN_CENTER);
   gtk_box_append (GTK_BOX (side), ver);
+  ui->side_ver = ver;
 
   /* ---- main column ---- */
   GtkWidget *right = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
   gtk_widget_set_hexpand (right, TRUE);
   gtk_box_append (GTK_BOX (layout), right);
+  ui->right_col = right;
+
+  ui->top_bar = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
+  gtk_widget_add_css_class (ui->top_bar, "kast-topbar");
+  gtk_widget_set_visible (ui->top_bar, FALSE);
+  gtk_box_append (GTK_BOX (right), ui->top_bar);
 
   GtkWidget *stack = adw_view_stack_new ();
   gtk_widget_set_hexpand (stack, TRUE);
   gtk_widget_set_vexpand (stack, TRUE);
   gtk_box_append (GTK_BOX (right), stack);
   ui->stack = ADW_VIEW_STACK (stack);
+
+  ui->bottom_bar = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
+  gtk_widget_add_css_class (ui->bottom_bar, "kast-topbar");
+  gtk_widget_set_visible (ui->bottom_bar, FALSE);
+  gtk_box_append (GTK_BOX (right), ui->bottom_bar);
 
   adw_view_stack_add_titled (ui->stack, kast_dash_page (ui), KAST_PAGE_DASHBOARD, "Dashboard");
   adw_view_stack_add_titled (ui->stack, kast_procs_page (ui), KAST_PAGE_PROCESSES, "Processes");
@@ -222,11 +399,13 @@ on_startup (GApplication *gapp, gpointer data)
   const GActionEntry app_actions[] = {
     { "about", on_about, NULL, NULL, NULL, { 0 } },
     { "widget", on_widget, NULL, NULL, NULL, { 0 } },
+    { "show-page", on_show_page, "s", NULL, NULL, { 0 } },
     { "quit", on_quit, NULL, NULL, NULL, { 0 } },
   };
-  g_action_map_add_action_entries (G_ACTION_MAP (gapp), app_actions, 3, ui);
+  g_action_map_add_action_entries (G_ACTION_MAP (gapp), app_actions, 4, ui);
 
   kast_nav_sync (ui);
+  kast_side_apply (ui, kast_cfg_get ("sidebar-mode", 0));
   gtk_window_present (GTK_WINDOW (win));
 }
 
