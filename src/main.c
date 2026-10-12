@@ -322,6 +322,18 @@ on_startup (GApplication *gapp, gpointer data)
   ui->nav_names[15] = KAST_PAGE_MODULES;
   ui->nav_names[16] = KAST_PAGE_CRON;
   ui->nav_names[17] = KAST_PAGE_BATTERY;
+  ui->nav_names[18] = KAST_PAGE_NETIF;
+  ui->nav_names[19] = KAST_PAGE_BLUE;
+  ui->nav_names[20] = KAST_PAGE_PRINTERS;
+  ui->nav_names[21] = KAST_PAGE_AUDIO;
+  ui->nav_names[22] = KAST_PAGE_DISPLAYS;
+  ui->nav_names[23] = KAST_PAGE_INPUT;
+  ui->nav_names[24] = KAST_PAGE_POWER;
+  ui->nav_names[25] = KAST_PAGE_FONTS;
+  ui->nav_names[26] = KAST_PAGE_ENV;
+  ui->nav_names[27] = KAST_PAGE_TRASH;
+  ui->nav_names[28] = KAST_PAGE_CLIP;
+  ui->nav_names[29] = KAST_PAGE_KEYS;
 
   GtkWidget *win = gtk_application_window_new (GTK_APPLICATION (gapp));
   gtk_window_set_title (GTK_WINDOW (win), "Kast Manager");
@@ -373,6 +385,18 @@ on_startup (GApplication *gapp, gpointer data)
   g_menu_append (pagemenu, "Modules", "app.show-page::modules");
   g_menu_append (pagemenu, "Cron", "app.show-page::cron");
   g_menu_append (pagemenu, "Battery", "app.show-page::battery");
+  g_menu_append (pagemenu, "Network", "app.show-page::netif");
+  g_menu_append (pagemenu, "Bluetooth", "app.show-page::blue");
+  g_menu_append (pagemenu, "Printers", "app.show-page::printers");
+  g_menu_append (pagemenu, "Audio", "app.show-page::audio");
+  g_menu_append (pagemenu, "Displays", "app.show-page::displays");
+  g_menu_append (pagemenu, "Input", "app.show-page::input");
+  g_menu_append (pagemenu, "Power", "app.show-page::power");
+  g_menu_append (pagemenu, "Fonts", "app.show-page::fonts");
+  g_menu_append (pagemenu, "Environment", "app.show-page::env");
+  g_menu_append (pagemenu, "Trash", "app.show-page::trash");
+  g_menu_append (pagemenu, "Clipboard", "app.show-page::clip");
+  g_menu_append (pagemenu, "Shortcuts", "app.show-page::keys");
   gtk_menu_button_set_menu_model (GTK_MENU_BUTTON (ui->page_menu_btn),
                                   G_MENU_MODEL (pagemenu));
 
@@ -445,6 +469,18 @@ on_startup (GApplication *gapp, gpointer data)
   gtk_box_append (GTK_BOX (navbox), nav_button (ui, 15, "utilities-terminal-symbolic", "Modules"));
   gtk_box_append (GTK_BOX (navbox), nav_button (ui, 16, "dialog-information-symbolic", "Cron"));
   gtk_box_append (GTK_BOX (navbox), nav_button (ui, 17, "battery-symbolic", "Battery"));
+  gtk_box_append (GTK_BOX (navbox), nav_button (ui, 18, "network-wired-symbolic", "Network"));
+  gtk_box_append (GTK_BOX (navbox), nav_button (ui, 19, "bluetooth-symbolic", "Bluetooth"));
+  gtk_box_append (GTK_BOX (navbox), nav_button (ui, 20, "printer-symbolic", "Printers"));
+  gtk_box_append (GTK_BOX (navbox), nav_button (ui, 21, "multimedia-player-symbolic", "Audio"));
+  gtk_box_append (GTK_BOX (navbox), nav_button (ui, 22, "video-display-symbolic", "Displays"));
+  gtk_box_append (GTK_BOX (navbox), nav_button (ui, 23, "input-keyboard-symbolic", "Input"));
+  gtk_box_append (GTK_BOX (navbox), nav_button (ui, 24, "system-run-symbolic", "Power"));
+  gtk_box_append (GTK_BOX (navbox), nav_button (ui, 25, "user-info-symbolic", "Fonts"));
+  gtk_box_append (GTK_BOX (navbox), nav_button (ui, 26, "utilities-terminal-symbolic", "Environment"));
+  gtk_box_append (GTK_BOX (navbox), nav_button (ui, 27, "user-trash-symbolic", "Trash"));
+  gtk_box_append (GTK_BOX (navbox), nav_button (ui, 28, "edit-copy-symbolic", "Clipboard"));
+  gtk_box_append (GTK_BOX (navbox), nav_button (ui, 29, "dialog-information-symbolic", "Shortcuts"));
 
   GtkWidget *ver = gtk_label_new ("v" VERSION);
   gtk_widget_add_css_class (ver, "dim-label");
@@ -508,6 +544,18 @@ on_startup (GApplication *gapp, gpointer data)
   adw_view_stack_add_titled (ui->stack, kast_modules_page (ui), KAST_PAGE_MODULES, "Modules");
   adw_view_stack_add_titled (ui->stack, kast_cron_page (ui), KAST_PAGE_CRON, "Cron");
   adw_view_stack_add_titled (ui->stack, kast_battery_page (ui), KAST_PAGE_BATTERY, "Battery");
+  adw_view_stack_add_titled (ui->stack, kast_netif_page (ui), KAST_PAGE_NETIF, "Network");
+  adw_view_stack_add_titled (ui->stack, kast_blue_page (ui), KAST_PAGE_BLUE, "Bluetooth");
+  adw_view_stack_add_titled (ui->stack, kast_printers_page (ui), KAST_PAGE_PRINTERS, "Printers");
+  adw_view_stack_add_titled (ui->stack, kast_audio_page (ui), KAST_PAGE_AUDIO, "Audio");
+  adw_view_stack_add_titled (ui->stack, kast_displays_page (ui), KAST_PAGE_DISPLAYS, "Displays");
+  adw_view_stack_add_titled (ui->stack, kast_input_page (ui), KAST_PAGE_INPUT, "Input");
+  adw_view_stack_add_titled (ui->stack, kast_power_page (ui), KAST_PAGE_POWER, "Power");
+  adw_view_stack_add_titled (ui->stack, kast_fonts_page (ui), KAST_PAGE_FONTS, "Fonts");
+  adw_view_stack_add_titled (ui->stack, kast_env_page (ui), KAST_PAGE_ENV, "Environment");
+  adw_view_stack_add_titled (ui->stack, kast_trash_page (ui), KAST_PAGE_TRASH, "Trash");
+  adw_view_stack_add_titled (ui->stack, kast_clipboard_page (ui), KAST_PAGE_CLIP, "Clipboard");
+  adw_view_stack_add_titled (ui->stack, kast_shortcuts_page (ui), KAST_PAGE_KEYS, "Shortcuts");
   adw_view_stack_set_visible_child_name (ui->stack, KAST_PAGE_DASHBOARD);
   g_signal_connect (stack, "notify::visible-child", G_CALLBACK (on_page_changed), ui);
 

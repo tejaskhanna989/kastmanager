@@ -279,11 +279,6 @@ kast_dash_page (KastUi *ui)
   gtk_widget_set_halign (title, GTK_ALIGN_START);
   gtk_box_append (GTK_BOX (box), title);
 
-  GtkWidget *sub = gtk_label_new ("System overview. Select a card to dive in.");
-  gtk_widget_add_css_class (sub, "dim-label");
-  gtk_widget_set_halign (sub, GTK_ALIGN_START);
-  gtk_box_append (GTK_BOX (box), sub);
-
   GtkWidget *flow = gtk_flow_box_new ();
   gtk_flow_box_set_homogeneous (GTK_FLOW_BOX (flow), TRUE);
   gtk_flow_box_set_min_children_per_line (GTK_FLOW_BOX (flow), 2);

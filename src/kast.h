@@ -24,7 +24,19 @@
 #define KAST_PAGE_MODULES   "modules"
 #define KAST_PAGE_CRON      "cron"
 #define KAST_PAGE_BATTERY   "battery"
-#define KAST_NPAGES 18
+#define KAST_PAGE_NETIF     "netif"
+#define KAST_PAGE_BLUE      "blue"
+#define KAST_PAGE_PRINTERS  "printers"
+#define KAST_PAGE_AUDIO     "audio"
+#define KAST_PAGE_DISPLAYS  "displays"
+#define KAST_PAGE_INPUT     "input"
+#define KAST_PAGE_POWER     "power"
+#define KAST_PAGE_FONTS     "fonts"
+#define KAST_PAGE_ENV       "env"
+#define KAST_PAGE_TRASH     "trash"
+#define KAST_PAGE_CLIP      "clip"
+#define KAST_PAGE_KEYS      "keys"
+#define KAST_NPAGES 30
 
 typedef struct {
   GtkApplication *app;
@@ -64,6 +76,12 @@ char  *kast_uptime_str (void);           /* e.g. "3h 24m", must g_free */
 int    kast_cfg_get (const char *key, int fallback);
 void   kast_cfg_set (const char *key, int value);
 
+/* extra.c shared row helpers */
+GtkWidget *kast_tool_shell (const char *title, GtkWidget **list_out);
+void kast_tool_row (GtkWidget *list, const char *a, const char *b);
+void kast_tool_clear (GtkWidget *list);
+gboolean kast_have_tool (const char *name);
+
 /* main.c */
 void kast_show_page (KastUi *ui, const char *page);
 void kast_nav_sync (KastUi *ui);
@@ -89,6 +107,18 @@ GtkWidget *kast_devices_page (KastUi *ui);
 GtkWidget *kast_modules_page (KastUi *ui);
 GtkWidget *kast_cron_page (KastUi *ui);
 GtkWidget *kast_battery_page (KastUi *ui);
+GtkWidget *kast_netif_page (KastUi *ui);
+GtkWidget *kast_blue_page (KastUi *ui);
+GtkWidget *kast_printers_page (KastUi *ui);
+GtkWidget *kast_audio_page (KastUi *ui);
+GtkWidget *kast_displays_page (KastUi *ui);
+GtkWidget *kast_input_page (KastUi *ui);
+GtkWidget *kast_power_page (KastUi *ui);
+GtkWidget *kast_fonts_page (KastUi *ui);
+GtkWidget *kast_env_page (KastUi *ui);
+GtkWidget *kast_trash_page (KastUi *ui);
+GtkWidget *kast_clipboard_page (KastUi *ui);
+GtkWidget *kast_shortcuts_page (KastUi *ui);
 void kast_widget_toggle (KastUi *ui);
 
 #endif /* KAST_H */

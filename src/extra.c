@@ -9,8 +9,8 @@
 
 /* ---------- shared bits ---------- */
 
-static GtkWidget *
-tool_shell (const char *title, GtkWidget **list_out)
+GtkWidget *
+kast_tool_shell (const char *title, GtkWidget **list_out)
 {
   GtkWidget *scroll = gtk_scrolled_window_new ();
   gtk_widget_set_hexpand (scroll, TRUE);
@@ -39,8 +39,8 @@ tool_shell (const char *title, GtkWidget **list_out)
   return scroll;
 }
 
-static void
-tool_row (GtkWidget *list, const char *a, const char *b)
+void
+kast_tool_row (GtkWidget *list, const char *a, const char *b)
 {
   GtkWidget *row = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 12);
   gtk_widget_set_margin_top (row, 3);
@@ -64,8 +64,8 @@ tool_row (GtkWidget *list, const char *a, const char *b)
   gtk_list_box_append (GTK_LIST_BOX (list), row);
 }
 
-static void
-tool_clear (GtkWidget *list)
+void
+kast_tool_clear (GtkWidget *list)
 {
   GtkWidget *child = gtk_widget_get_first_child (list);
   while (child)
@@ -76,8 +76,8 @@ tool_clear (GtkWidget *list)
     }
 }
 
-static gboolean
-have_tool (const char *name)
+gboolean
+kast_have_tool (const char *name)
 {
   char *p = g_find_program_in_path (name);
   gboolean ok = p != NULL;
@@ -95,10 +95,10 @@ typedef struct {
 static void
 journal_fill (KastJournal *j)
 {
-  tool_clear (j->list);
-  if (!have_tool ("journalctl"))
+  kast_tool_clear (j->list);
+  if (!kast_have_tool ("journalctl"))
     {
-      tool_row (j->list, "journalctl not found", NULL);
+      kast_tool_row (j->list, "journalctl not found", NULL);
       return;
     }
   const char *pri = j->errors_only ? "-p" : "-p";
@@ -109,7 +109,7 @@ journal_fill (KastJournal *j)
   if (!g_spawn_sync (NULL, argv, NULL, G_SPAWN_SEARCH_PATH, NULL, NULL,
                      &out, NULL, NULL, NULL) || !out)
     {
-      tool_row (j->list, "Cannot read journal (try as your own logs only)", NULL);
+      kast_tool_row (j->list, "Cannot read journal (try as your own logs only)", NULL);
       return;
     }
   char **lines = g_strsplit (out, "\n", -1);
@@ -118,11 +118,11 @@ journal_fill (KastJournal *j)
     {
       if (!*g_strstrip (lines[i]))
         continue;
-      tool_row (j->list, lines[i], NULL);
+      kast_tool_row (j->list, lines[i], NULL);
       n++;
     }
   if (!n)
-    tool_row (j->list, "Journal is empty", NULL);
+    kast_tool_row (j->list, "Journal is empty", NULL);
   g_strfreev (lines);
   g_free (out);
 }
@@ -142,7 +142,7 @@ kast_journal_page (KastUi *ui)
   KastJournal *j = g_new0 (KastJournal, 1);
   j->errors_only = TRUE;
   GtkWidget *list = NULL;
-  GtkWidget *page = tool_shell ("System journal", &list);
+  GtkWidget *page = kast_tool_shell ("System journal", &list);
   j->list = list;
 
   GtkWidget *box = gtk_widget_get_parent (gtk_widget_get_parent (list));
@@ -288,7 +288,7 @@ conns_file (GtkWidget *list, const char *path, const char *proto)
       char *proc = inode_proc (inode);
       char *left = g_strdup_printf ("%s %s:%d → %s:%d", proto, lip, lport, rip, rport);
       char *right = g_strdup_printf ("%s · %s", stname, proc);
-      tool_row (list, left, right);
+      kast_tool_row (list, left, right);
       g_free (left); g_free (right); g_free (proc);
       g_strfreev (tok);
     }
@@ -299,7 +299,7 @@ conns_file (GtkWidget *list, const char *path, const char *proto)
 static void
 conns_fill (GtkWidget *list)
 {
-  tool_clear (list);
+  kast_tool_clear (list);
   conns_file (list, "/proc/net/tcp", "tcp");
   conns_file (list, "/proc/net/tcp6", "tcp6");
   conns_file (list, "/proc/net/udp", "udp");
@@ -317,7 +317,7 @@ kast_conns_page (KastUi *ui)
 {
   (void) ui;
   GtkWidget *list = NULL;
-  GtkWidget *page = tool_shell ("Network connections", &list);
+  GtkWidget *page = kast_tool_shell ("Network connections", &list);
   GtkWidget *box = gtk_widget_get_parent (gtk_widget_get_parent (list));
   GtkWidget *row = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 8);
   GtkWidget *b = gtk_button_new_with_label ("Refresh");
@@ -334,7 +334,7 @@ kast_conns_page (KastUi *ui)
 static void
 sensors_fill (GtkWidget *list)
 {
-  tool_clear (list);
+  kast_tool_clear (list);
   GDir *hw = g_dir_open ("/sys/class/hwmon", 0, NULL);
   int n = 0;
   if (hw)
@@ -361,7 +361,7 @@ sensors_fill (GtkWidget *list)
                   char *left = g_strdup_printf ("%s %s", chip ? g_strstrip (chip) : h,
                                                lab ? g_strstrip (lab) : "");
                   char *right = g_strdup_printf ("%.1f °C", c);
-                  tool_row (list, left, right);
+                  kast_tool_row (list, left, right);
                   g_free (left); g_free (right);
                   g_free (lab);
                   n++;
@@ -375,7 +375,7 @@ sensors_fill (GtkWidget *list)
                   char *left = g_strdup_printf ("%s fan%d",
                       chip ? g_strstrip (chip) : h, i);
                   char *right = g_strdup_printf ("%s RPM", g_strstrip (fv));
-                  tool_row (list, left, right);
+                  kast_tool_row (list, left, right);
                   g_free (left); g_free (right);
                   n++;
                 }
@@ -405,7 +405,7 @@ sensors_fill (GtkWidget *list)
                 {
                   g_file_get_contents (typ, &tn, NULL, NULL);
                   char *right = g_strdup_printf ("%.1f °C", atol (g_strstrip (tv)) / 1000.0);
-                  tool_row (list, tn ? g_strstrip (tn) : z, right);
+                  kast_tool_row (list, tn ? g_strstrip (tn) : z, right);
                   g_free (right);
                   n++;
                 }
@@ -415,7 +415,7 @@ sensors_fill (GtkWidget *list)
         }
     }
   if (!n)
-    tool_row (list, "No sensors found", NULL);
+    kast_tool_row (list, "No sensors found", NULL);
 }
 
 static void
@@ -429,7 +429,7 @@ kast_sensors_page (KastUi *ui)
 {
   (void) ui;
   GtkWidget *list = NULL;
-  GtkWidget *page = tool_shell ("Temperatures and fans", &list);
+  GtkWidget *page = kast_tool_shell ("Temperatures and fans", &list);
   GtkWidget *box = gtk_widget_get_parent (gtk_widget_get_parent (list));
   GtkWidget *row = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 8);
   GtkWidget *b = gtk_button_new_with_label ("Refresh");
@@ -448,10 +448,10 @@ kast_startup_page (KastUi *ui)
 {
   (void) ui;
   GtkWidget *list = NULL;
-  GtkWidget *page = tool_shell ("Startup analyzer", &list);
-  if (!have_tool ("systemd-analyze"))
+  GtkWidget *page = kast_tool_shell ("Startup analyzer", &list);
+  if (!kast_have_tool ("systemd-analyze"))
     {
-      tool_row (list, "systemd-analyze not found", NULL);
+      kast_tool_row (list, "systemd-analyze not found", NULL);
       return page;
     }
   char *out = NULL;
@@ -471,7 +471,7 @@ kast_startup_page (KastUi *ui)
           if (!sp)
             continue;
           *sp = '\0';
-          tool_row (list, sp + 1, line);
+          kast_tool_row (list, sp + 1, line);
           n++;
         }
       g_strfreev (lines);
@@ -565,7 +565,7 @@ du_poll (gpointer data)
   if (!done)
     return G_SOURCE_CONTINUE;
   g_thread_join (d->thread);
-  tool_clear (d->list);
+  kast_tool_clear (d->list);
   if (d->result && *d->result)
     {
       char **lines = g_strsplit (d->result, "\n", -1);
@@ -577,12 +577,12 @@ du_poll (gpointer data)
           if (!tab)
             continue;
           *tab = '\0';
-          tool_row (d->list, tab + 1, lines[i]);
+          kast_tool_row (d->list, tab + 1, lines[i]);
         }
       g_strfreev (lines);
     }
   else
-    tool_row (d->list, "Nothing measured (du missing?)", NULL);
+    kast_tool_row (d->list, "Nothing measured (du missing?)", NULL);
   gtk_label_set_text (GTK_LABEL (d->status), "Top 30 folders under home.");
   g_free (d->result);
   g_mutex_clear (&d->lock);
@@ -598,8 +598,8 @@ on_du_scan (GtkButton *, gpointer data)
   d->list = pack[0];
   d->status = pack[1];
   g_mutex_init (&d->lock);
-  tool_clear (d->list);
-  tool_row (d->list, "Scanning home folder…", NULL);
+  kast_tool_clear (d->list);
+  kast_tool_row (d->list, "Scanning home folder…", NULL);
   d->thread = g_thread_new ("kast-du", du_thread, d);
   g_timeout_add (500, du_poll, d);
 }
@@ -609,7 +609,7 @@ kast_usage_page (KastUi *ui)
 {
   (void) ui;
   GtkWidget *list = NULL;
-  GtkWidget *page = tool_shell ("Disk usage (home)", &list);
+  GtkWidget *page = kast_tool_shell ("Disk usage (home)", &list);
   GtkWidget *box = gtk_widget_get_parent (gtk_widget_get_parent (list));
   GtkWidget *row = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 8);
   GtkWidget *b = gtk_button_new_with_label ("Scan now");
@@ -635,7 +635,7 @@ kast_users_page (KastUi *ui)
 {
   (void) ui;
   GtkWidget *list = NULL;
-  GtkWidget *page = tool_shell ("Users and sessions", &list);
+  GtkWidget *page = kast_tool_shell ("Users and sessions", &list);
 
   char *text = NULL;
   if (g_file_get_contents ("/etc/passwd", &text, NULL, NULL))
@@ -650,7 +650,7 @@ kast_users_page (KastUi *ui)
           if (g_strv_length (f) >= 7)
             {
               char *right = g_strdup_printf ("uid %s · %s", f[2], f[6]);
-              tool_row (list, f[0], right);
+              kast_tool_row (list, f[0], right);
               g_free (right);
             }
           g_strfreev (f);
@@ -659,20 +659,20 @@ kast_users_page (KastUi *ui)
       g_free (text);
     }
 
-  if (have_tool ("loginctl"))
+  if (kast_have_tool ("loginctl"))
     {
       char *out = NULL;
       char *argv[] = { "loginctl", "list-sessions", "--no-legend", "--no-pager", NULL };
       if (g_spawn_sync (NULL, argv, NULL, G_SPAWN_SEARCH_PATH, NULL, NULL,
                         &out, NULL, NULL, NULL) && out && *g_strstrip (out))
         {
-          tool_row (list, "— active sessions —", NULL);
+          kast_tool_row (list, "— active sessions —", NULL);
           char **lines = g_strsplit (out, "\n", -1);
           for (int i = 0; lines[i]; i++)
             {
               if (!*g_strstrip (lines[i]))
                 continue;
-              tool_row (list, g_strstrip (lines[i]), NULL);
+              kast_tool_row (list, g_strstrip (lines[i]), NULL);
             }
           g_strfreev (lines);
         }
@@ -688,40 +688,40 @@ kast_devices_page (KastUi *ui)
 {
   (void) ui;
   GtkWidget *list = NULL;
-  GtkWidget *page = tool_shell ("PCI and USB devices", &list);
-  if (have_tool ("lspci"))
+  GtkWidget *page = kast_tool_shell ("PCI and USB devices", &list);
+  if (kast_have_tool ("lspci"))
     {
       char *out = NULL;
       char *argv[] = { "lspci", "-mm", NULL };
       if (g_spawn_sync (NULL, argv, NULL, G_SPAWN_SEARCH_PATH, NULL, NULL,
                         &out, NULL, NULL, NULL) && out)
         {
-          tool_row (list, "— PCI —", NULL);
+          kast_tool_row (list, "— PCI —", NULL);
           char **lines = g_strsplit (out, "\n", -1);
           for (int i = 0; lines[i]; i++)
             {
               if (!*g_strstrip (lines[i]))
                 continue;
-              tool_row (list, g_strstrip (lines[i]), NULL);
+              kast_tool_row (list, g_strstrip (lines[i]), NULL);
             }
           g_strfreev (lines);
         }
       g_free (out);
     }
-  if (have_tool ("lsusb"))
+  if (kast_have_tool ("lsusb"))
     {
       char *out = NULL;
       char *argv[] = { "lsusb", NULL };
       if (g_spawn_sync (NULL, argv, NULL, G_SPAWN_SEARCH_PATH, NULL, NULL,
                         &out, NULL, NULL, NULL) && out)
         {
-          tool_row (list, "— USB —", NULL);
+          kast_tool_row (list, "— USB —", NULL);
           char **lines = g_strsplit (out, "\n", -1);
           for (int i = 0; lines[i]; i++)
             {
               if (!*g_strstrip (lines[i]))
                 continue;
-              tool_row (list, g_strstrip (lines[i]), NULL);
+              kast_tool_row (list, g_strstrip (lines[i]), NULL);
             }
           g_strfreev (lines);
         }
@@ -737,7 +737,7 @@ kast_modules_page (KastUi *ui)
 {
   (void) ui;
   GtkWidget *list = NULL;
-  GtkWidget *page = tool_shell ("Kernel modules", &list);
+  GtkWidget *page = kast_tool_shell ("Kernel modules", &list);
   char *text = NULL;
   if (g_file_get_contents ("/proc/modules", &text, NULL, NULL))
     {
@@ -756,7 +756,7 @@ kast_modules_page (KastUi *ui)
           if (n >= 3)
             {
               char *right = g_strdup_printf ("%s bytes · used by %s", c[1], c[2]);
-              tool_row (list, c[0], right);
+              kast_tool_row (list, c[0], right);
               g_free (right);
             }
           g_strfreev (tok);
@@ -765,7 +765,7 @@ kast_modules_page (KastUi *ui)
       g_free (text);
     }
   else
-    tool_row (list, "Cannot read /proc/modules", NULL);
+    kast_tool_row (list, "Cannot read /proc/modules", NULL);
   return page;
 }
 
@@ -776,26 +776,26 @@ kast_cron_page (KastUi *ui)
 {
   (void) ui;
   GtkWidget *list = NULL;
-  GtkWidget *page = tool_shell ("Scheduled tasks (cron)", &list);
-  if (have_tool ("crontab"))
+  GtkWidget *page = kast_tool_shell ("Scheduled tasks (cron)", &list);
+  if (kast_have_tool ("crontab"))
     {
       char *out = NULL, *err = NULL;
       char *argv[] = { "crontab", "-l", NULL };
       if (g_spawn_sync (NULL, argv, NULL, G_SPAWN_SEARCH_PATH, NULL, NULL,
                         &out, &err, NULL, NULL) && out && *g_strstrip (out))
         {
-          tool_row (list, "— my crontab —", NULL);
+          kast_tool_row (list, "— my crontab —", NULL);
           char **lines = g_strsplit (out, "\n", -1);
           for (int i = 0; lines[i]; i++)
             {
               if (!*g_strstrip (lines[i]) || lines[i][0] == '#')
                 continue;
-              tool_row (list, g_strstrip (lines[i]), NULL);
+              kast_tool_row (list, g_strstrip (lines[i]), NULL);
             }
           g_strfreev (lines);
         }
       else
-        tool_row (list, "No personal crontab", NULL);
+        kast_tool_row (list, "No personal crontab", NULL);
       g_free (out);
       g_free (err);
     }
@@ -806,10 +806,10 @@ kast_cron_page (KastUi *ui)
       GDir *dir = g_dir_open (dirs[d], 0, NULL);
       if (!dir)
         continue;
-      tool_row (list, dirs[d], NULL);
+      kast_tool_row (list, dirs[d], NULL);
       const char *name;
       while ((name = g_dir_read_name (dir)) != NULL)
-        tool_row (list, name, NULL);
+        kast_tool_row (list, name, NULL);
       g_dir_close (dir);
     }
   return page;
@@ -827,7 +827,7 @@ batt_kv (GtkWidget *list, const char *dir, const char *file, const char *label,
     {
       double num = atol (g_strstrip (v)) / div;
       char *right = g_strdup_printf ("%.1f %s", num, unit);
-      tool_row (list, label, right);
+      kast_tool_row (list, label, right);
       g_free (right);
     }
   g_free (p);
@@ -840,7 +840,7 @@ batt_txt (GtkWidget *list, const char *dir, const char *file, const char *label)
   char *p = g_build_filename ("/sys/class/power_supply", dir, file, NULL);
   char *v = NULL;
   if (g_file_get_contents (p, &v, NULL, NULL))
-    tool_row (list, label, g_strstrip (v));
+    kast_tool_row (list, label, g_strstrip (v));
   g_free (p);
   g_free (v);
 }
@@ -850,7 +850,7 @@ kast_battery_page (KastUi *ui)
 {
   (void) ui;
   GtkWidget *list = NULL;
-  GtkWidget *page = tool_shell ("Battery details", &list);
+  GtkWidget *page = kast_tool_shell ("Battery details", &list);
   GDir *d = g_dir_open ("/sys/class/power_supply", 0, NULL);
   int n = 0;
   if (d)
@@ -867,7 +867,7 @@ kast_battery_page (KastUi *ui)
           if (!is_batt)
             continue;
           n++;
-          tool_row (list, name, NULL);
+          kast_tool_row (list, name, NULL);
           batt_kv (list, name, "capacity", "Charge", "%", 1.0);
           batt_txt (list, name, "status", "Status");
           batt_txt (list, name, "health", "Health");
@@ -885,6 +885,6 @@ kast_battery_page (KastUi *ui)
       g_dir_close (d);
     }
   if (!n)
-    tool_row (list, "No battery found", NULL);
+    kast_tool_row (list, "No battery found", NULL);
   return page;
 }

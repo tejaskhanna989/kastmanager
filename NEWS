@@ -1,3 +1,9 @@
+New in 2.6.0 - 12 October 2026
+
+* 30 entries: network, bluetooth, printers, audio, displays, input,
+  power profiles, fonts, environment, trash, clipboard, shortcuts
+* Sidebar ownership fix: entries can no longer vanish
+
 New in 2.5.0 - 12 October 2026
 
 * 10 more tools: journal viewer, network connections, sensors,

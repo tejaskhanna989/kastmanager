@@ -11,6 +11,7 @@ kast_sources = files(
   'widget.c',
   'sysinfo.c',
   'extra.c',
+  'extra2.c',
 )
 
 math = cc.find_library('m', required: true)
