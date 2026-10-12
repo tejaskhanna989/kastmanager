@@ -525,9 +525,10 @@ kast_controls_page (KastUi *ui)
   gtk_widget_set_halign (vplab, GTK_ALIGN_START);
   gtk_widget_set_hexpand (vplab, TRUE);
   gtk_box_append (GTK_BOX (vprow), vplab);
-  const char *modes[10];
+  const char *modes[11];
   for (int i = 0; i < 10; i++)
     modes[i] = kast_side_mode_names[i];
+  modes[10] = NULL;
   GtkWidget *drop = gtk_drop_down_new_from_strings (modes);
   gtk_drop_down_set_selected (GTK_DROP_DOWN (drop), (guint) k->ui->side_mode);
   g_signal_connect (drop, "notify::selected", G_CALLBACK (on_side_mode), k->ui);
