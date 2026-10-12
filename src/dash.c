@@ -4,13 +4,85 @@
 #include <glibtop/loadavg.h>
 #include <glibtop/proclist.h>
 #include <glibtop/procstate.h>
+#include <glibtop/netlist.h>
+#include <glibtop/netload.h>
 
 #include "kast.h"
 
-static const char *captions[6] = { "CPU", "Memory", "Swap", "Load average", "Uptime", "Processes" };
-static const char *targets[6] = {
+static guint64 net_in_last = 0;
+static guint64 net_out_last = 0;
+static gboolean net_have = FALSE;
+
+static void
+sample_net (guint64 *up_bps, guint64 *down_bps)
+{
+  glibtop_netlist netlist;
+  char **ifs = glibtop_get_netlist (&netlist);
+  guint64 in = 0, out = 0;
+  for (char **p = ifs; p && *p; p++)
+    {
+      if (!g_strcmp0 (*p, "lo"))
+        continue;
+      glibtop_netload nl;
+      glibtop_get_netload (&nl, *p);
+      in += nl.bytes_in;
+      out += nl.bytes_out;
+    }
+  g_strfreev (ifs);
+  if (net_have)
+    {
+      *down_bps = in >= net_in_last ? (in - net_in_last) / 2 : 0;
+      *up_bps = out >= net_out_last ? (out - net_out_last) / 2 : 0;
+    }
+  else
+    *up_bps = *down_bps = 0;
+  net_in_last = in;
+  net_out_last = out;
+  net_have = TRUE;
+}
+
+static gboolean
+read_battery (int *pct, char **status)
+{
+  GDir *d = g_dir_open ("/sys/class/power_supply", 0, NULL);
+  if (!d)
+    return FALSE;
+  const char *name;
+  gboolean ok = FALSE;
+  while ((name = g_dir_read_name (d)) != NULL)
+    {
+      if (!g_str_has_prefix (name, "BAT"))
+        continue;
+      char *cap = g_build_filename ("/sys/class/power_supply", name, "capacity", NULL);
+      char *st = g_build_filename ("/sys/class/power_supply", name, "status", NULL);
+      char *caps = NULL, *sts = NULL;
+      if (g_file_get_contents (cap, &caps, NULL, NULL))
+        {
+          *pct = atoi (g_strstrip (caps));
+          g_free (caps);
+          if (g_file_get_contents (st, &sts, NULL, NULL))
+            {
+              *status = g_strdup (g_strstrip (sts));
+              g_free (sts);
+            }
+          else
+            *status = g_strdup ("");
+          ok = TRUE;
+        }
+      g_free (cap);
+      g_free (st);
+      break;
+    }
+  g_dir_close (d);
+  return ok;
+}
+
+static const char *captions[9] = { "CPU", "Memory", "Swap", "Load average",
+    "Uptime", "Processes", "Network up", "Network down", "Battery" };
+static const char *targets[9] = {
   KAST_PAGE_GRAPHS, KAST_PAGE_GRAPHS, KAST_PAGE_GRAPHS,
   KAST_PAGE_GRAPHS, KAST_PAGE_DASHBOARD, KAST_PAGE_PROCESSES,
+  KAST_PAGE_GRAPHS, KAST_PAGE_GRAPHS, KAST_PAGE_DASHBOARD,
 };
 
 static void
@@ -27,9 +99,10 @@ make_card (KastUi *ui, int idx, gboolean with_bar)
   GtkWidget *btn = gtk_button_new ();
   gtk_widget_add_css_class (btn, "card");
   /* per-card accent border via widget name */
-  const char *names[6] = {
+  const char *names[9] = {
     "dash_cpu_card", "dash_mem_card", "dash_swap_card",
     "dash_load_card", "dash_uptime_card", "dash_procs_card",
+    "dash_netup_card", "dash_netdown_card", "dash_batt_card",
   };
   gtk_widget_set_name (btn, names[idx]);
   gtk_button_set_has_frame (GTK_BUTTON (btn), FALSE);
@@ -74,8 +147,7 @@ make_card (KastUi *ui, int idx, gboolean with_bar)
 
   ui->d_val[idx] = GTK_LABEL (val);
   ui->d_det[idx] = GTK_LABEL (det);
-  if (idx < 4)
-    ui->d_bar[idx] = bar;
+  ui->d_bar[idx] = bar;
   return btn;
 }
 
@@ -151,6 +223,40 @@ dash_tick (gpointer data)
   gtk_label_set_text (ui->d_det[5], detail);
   g_free (text); g_free (detail);
 
+  guint64 up_bps, down_bps;
+  sample_net (&up_bps, &down_bps);
+  char *ub = kast_bytes (up_bps);
+  char *db = kast_bytes (down_bps);
+  text = g_strdup_printf ("%s/s", ub);
+  detail = g_strdup ("upload rate");
+  gtk_label_set_text (ui->d_val[6], text);
+  gtk_label_set_text (ui->d_det[6], detail);
+  g_free (text); g_free (detail); g_free (ub);
+  text = g_strdup_printf ("%s/s", db);
+  detail = g_strdup ("download rate");
+  gtk_label_set_text (ui->d_val[7], text);
+  gtk_label_set_text (ui->d_det[7], detail);
+  g_free (text); g_free (detail); g_free (db);
+
+  int bpct = 0;
+  char *bstatus = NULL;
+  if (read_battery (&bpct, &bstatus))
+    {
+      text = g_strdup_printf ("%d%%", bpct);
+      detail = g_strdup (bstatus);
+      gtk_label_set_text (ui->d_val[8], text);
+      gtk_label_set_text (ui->d_det[8], detail);
+      if (ui->d_bar[8])
+        gtk_level_bar_set_value (ui->d_bar[8], CLAMP (bpct, 0, 100));
+      g_free (text); g_free (detail);
+      g_free (bstatus);
+    }
+  else
+    {
+      gtk_label_set_text (ui->d_val[8], "—");
+      gtk_label_set_text (ui->d_det[8], "no battery");
+    }
+
   return G_SOURCE_CONTINUE;
 }
 
@@ -189,8 +295,8 @@ kast_dash_page (KastUi *ui)
   gtk_widget_set_name (flow, "dash_grid");
   gtk_box_append (GTK_BOX (box), flow);
 
-  for (int i = 0; i < 6; i++)
-    gtk_flow_box_append (GTK_FLOW_BOX (flow), make_card (ui, i, i < 4));
+  for (int i = 0; i < 9; i++)
+    gtk_flow_box_append (GTK_FLOW_BOX (flow), make_card (ui, i, i < 4 || i == 8));
 
   dash_tick (ui);
   g_timeout_add_seconds (2, dash_tick, ui);

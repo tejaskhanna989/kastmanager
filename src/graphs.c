@@ -1,5 +1,7 @@
 /* Kast Manager 2.x — resource graphs, hand-drawn (Tejas Khanna, GPL-3.0-or-later). */
 #include <glibtop/mem.h>
+#include <glibtop/netlist.h>
+#include <glibtop/netload.h>
 
 #include "kast.h"
 
@@ -8,11 +10,47 @@
 typedef struct {
   double cpu[HIST];
   double mem[HIST];
+  double down[HIST];
+  double up[HIST];
+  double net_max;
   GtkDrawingArea *cpu_area;
   GtkDrawingArea *mem_area;
+  GtkDrawingArea *net_area;
   GtkLabel *cpu_now;
   GtkLabel *mem_now;
+  GtkLabel *net_now;
 } KastGraphs;
+
+static guint64 g_in_last = 0;
+static guint64 g_out_last = 0;
+static gboolean g_net_have = FALSE;
+
+static void
+sample_net_rate (double *down_bps, double *up_bps)
+{
+  glibtop_netlist netlist;
+  char **ifs = glibtop_get_netlist (&netlist);
+  guint64 in = 0, out = 0;
+  for (char **p = ifs; p && *p; p++)
+    {
+      if (!g_strcmp0 (*p, "lo"))
+        continue;
+      glibtop_netload nl;
+      glibtop_get_netload (&nl, *p);
+      in += nl.bytes_in;
+      out += nl.bytes_out;
+    }
+  g_strfreev (ifs);
+  *down_bps = *up_bps = 0.0;
+  if (g_net_have)
+    {
+      *down_bps = in >= g_in_last ? (double) (in - g_in_last) : 0.0;
+      *up_bps = out >= g_out_last ? (double) (out - g_out_last) : 0.0;
+    }
+  g_in_last = in;
+  g_out_last = out;
+  g_net_have = TRUE;
+}
 
 static void
 draw_history (GtkDrawingArea *area, cairo_t *cr, int width, int height, gpointer data)
@@ -103,7 +141,92 @@ graphs_tick (gpointer data)
 
   gtk_widget_queue_draw (GTK_WIDGET (g->cpu_area));
   gtk_widget_queue_draw (GTK_WIDGET (g->mem_area));
+
+  double down_bps, up_bps;
+  sample_net_rate (&down_bps, &up_bps);
+  memmove (g->down, g->down + 1, sizeof (double) * (HIST - 1));
+  memmove (g->up, g->up + 1, sizeof (double) * (HIST - 1));
+  g->down[HIST - 1] = down_bps;
+  g->up[HIST - 1] = up_bps;
+  double peak = 1024.0;
+  for (int i = 0; i < HIST; i++)
+    {
+      peak = MAX (peak, g->down[i]);
+      peak = MAX (peak, g->up[i]);
+    }
+  g->net_max = peak;
+  char *db = kast_bytes ((guint64) down_bps);
+  char *ub = kast_bytes ((guint64) up_bps);
+  text = g_strdup_printf ("↓ %s/s · ↑ %s/s", db, ub);
+  gtk_label_set_text (g->net_now, text);
+  g_free (text); g_free (db); g_free (ub);
+  gtk_widget_queue_draw (GTK_WIDGET (g->net_area));
   return G_SOURCE_CONTINUE;
+}
+
+static void
+draw_net (GtkDrawingArea *area, cairo_t *cr, int width, int height, gpointer data)
+{
+  KastGraphs *g = data;
+  (void) area;
+  const double pad = 8.0;
+  double w = width - 2 * pad, h = height - 2 * pad;
+  double max = g->net_max > 0 ? g->net_max : 1.0;
+
+  cairo_set_source_rgba (cr, 1.0, 1.0, 1.0, 0.07);
+  cairo_set_line_width (cr, 1.0);
+  for (int i = 1; i < 4; i++)
+    {
+      double y = pad + h * i / 4.0;
+      cairo_move_to (cr, pad, y);
+      cairo_line_to (cr, pad + w, y);
+      cairo_stroke (cr);
+    }
+
+  /* download: teal fill + line */
+  cairo_pattern_t *grad = cairo_pattern_create_linear (0, pad, 0, pad + h);
+  cairo_pattern_add_color_stop_rgba (grad, 0.0, 0.18, 0.83, 0.75, 0.35);
+  cairo_pattern_add_color_stop_rgba (grad, 1.0, 0.18, 0.83, 0.75, 0.03);
+  cairo_move_to (cr, pad, pad + h);
+  for (int i = 0; i < HIST; i++)
+    {
+      double x = pad + w * i / (HIST - 1);
+      double y = pad + h * (1.0 - CLAMP (g->down[i] / max, 0.0, 1.0));
+      cairo_line_to (cr, x, y);
+    }
+  cairo_line_to (cr, pad + w, pad + h);
+  cairo_close_path (cr);
+  cairo_set_source (cr, grad);
+  cairo_fill (cr);
+  cairo_pattern_destroy (grad);
+
+  cairo_set_source_rgb (cr, 0.18, 0.83, 0.75);
+  cairo_set_line_width (cr, 2.0);
+  cairo_set_line_join (cr, CAIRO_LINE_JOIN_ROUND);
+  for (int i = 0; i < HIST; i++)
+    {
+      double x = pad + w * i / (HIST - 1);
+      double y = pad + h * (1.0 - CLAMP (g->down[i] / max, 0.0, 1.0));
+      if (i == 0)
+        cairo_move_to (cr, x, y);
+      else
+        cairo_line_to (cr, x, y);
+    }
+  cairo_stroke (cr);
+
+  /* upload: periwinkle line */
+  cairo_set_source_rgb (cr, 0.49, 0.61, 0.96);
+  cairo_set_line_width (cr, 1.5);
+  for (int i = 0; i < HIST; i++)
+    {
+      double x = pad + w * i / (HIST - 1);
+      double y = pad + h * (1.0 - CLAMP (g->up[i] / max, 0.0, 1.0));
+      if (i == 0)
+        cairo_move_to (cr, x, y);
+      else
+        cairo_line_to (cr, x, y);
+    }
+  cairo_stroke (cr);
 }
 
 static GtkWidget *
@@ -166,8 +289,12 @@ kast_graphs_page (KastUi *ui)
   gtk_box_append (GTK_BOX (box), cpu_card);
   gtk_box_append (GTK_BOX (box), mem_card);
 
+  GtkWidget *net_card = graph_card ("Network history", &g->net_area, &g->net_now, TRUE);
+  gtk_box_append (GTK_BOX (box), net_card);
+
   gtk_drawing_area_set_draw_func (g->cpu_area, draw_history, g->cpu, NULL);
   gtk_drawing_area_set_draw_func (g->mem_area, draw_history, g->mem, NULL);
+  gtk_drawing_area_set_draw_func (g->net_area, draw_net, g, NULL);
 
   graphs_tick (g);
   g_timeout_add_seconds (1, graphs_tick, g);

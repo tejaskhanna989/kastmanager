@@ -9,6 +9,7 @@ kast_sources = files(
   'rating.c',
   'controls.c',
   'widget.c',
+  'sysinfo.c',
 )
 
 math = cc.find_library('m', required: true)

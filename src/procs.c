@@ -9,6 +9,8 @@
 #include <string.h>
 #include <errno.h>
 #include <sys/types.h>
+#include <sys/time.h>
+#include <sys/resource.h>
 #include <unistd.h>
 
 #include "kast.h"
@@ -26,6 +28,8 @@ struct _KastProc {
   uid_t uid;
   double cpu;
   guint64 mem;
+  guint64 cputime; /* seconds */
+  int nice;
 };
 
 G_DEFINE_TYPE (KastProc, kast_proc, G_TYPE_OBJECT)
@@ -54,7 +58,7 @@ kast_proc_init (KastProc *p)
 
 /* ---- page state ---- */
 
-enum { SORT_NAME, SORT_USER, SORT_CPU, SORT_MEM, SORT_PID };
+enum { SORT_NAME, SORT_USER, SORT_CPU, SORT_MEM, SORT_PID, SORT_TIME, SORT_NICE };
 
 typedef struct {
   KastUi *ui;
@@ -62,7 +66,9 @@ typedef struct {
   GtkSearchEntry *search;
   GtkButton *end_btn;
   GtkButton *kill_btn;
-  GtkButton *sort_btns[5];
+  GtkButton *prio_btn;
+  GtkButton *tree_btn;
+  GtkButton *sort_btns[7];
   GPtrArray *rows; /* KastProc*, ref'd */
   GHashTable *last; /* pid -> ProcTimes* */
   guint64 total_last;
@@ -100,6 +106,8 @@ cmp_rows (gconstpointer a, gconstpointer b, gpointer data)
     case SORT_MEM: r = (pa->mem > pb->mem) - (pa->mem < pb->mem); break;
     case SORT_PID:
     default: r = (pa->pid > pb->pid) - (pa->pid < pb->pid); break;
+    case SORT_TIME: r = (pa->cputime > pb->cputime) - (pa->cputime < pb->cputime); break;
+    case SORT_NICE: r = (pa->nice > pb->nice) - (pa->nice < pb->nice); break;
     }
   return k->sort_desc ? -r : r;
 }
@@ -196,6 +204,23 @@ refill_rows (KastProcs *k)
       gtk_widget_set_size_request (pid, 70, -1);
       gtk_grid_attach (GTK_GRID (grid), pid, 4, 0, 1, 1);
 
+      guint h = p->cputime / 3600, m = (p->cputime % 3600) / 60, s = p->cputime % 60;
+      char *time_txt = h ? g_strdup_printf ("%uh %02um", h, m) : g_strdup_printf ("%um %02us", m, s);
+      GtkWidget *ctime = gtk_label_new (time_txt);
+      g_free (time_txt);
+      gtk_widget_add_css_class (ctime, "dim-label");
+      gtk_widget_set_halign (ctime, GTK_ALIGN_END);
+      gtk_widget_set_size_request (ctime, 80, -1);
+      gtk_grid_attach (GTK_GRID (grid), ctime, 5, 0, 1, 1);
+
+      char *nice_txt = g_strdup_printf ("%d", p->nice);
+      GtkWidget *nice = gtk_label_new (nice_txt);
+      g_free (nice_txt);
+      gtk_widget_add_css_class (nice, "dim-label");
+      gtk_widget_set_halign (nice, GTK_ALIGN_END);
+      gtk_widget_set_size_request (nice, 44, -1);
+      gtk_grid_attach (GTK_GRID (grid), nice, 6, 0, 1, 1);
+
       gtk_list_box_append (k->list, row);
       if (p->pid == sel_pid)
         gtk_list_box_select_row (k->list, GTK_LIST_BOX_ROW (row));
@@ -252,6 +277,10 @@ enumerate_procs (KastProcs *k)
       row->uid = state.uid;
       row->cpu = pct;
       row->mem = pmem.rss;
+      row->cputime = (guint64) ((ptime.utime + ptime.stime) / sysconf (_SC_CLK_TCK));
+      errno = 0;
+      int nz = getpriority (PRIO_PROCESS, pids[i]);
+      row->nice = errno ? 0 : nz;
       g_ptr_array_add (k->rows, row);
     }
   g_free (pids);
@@ -358,6 +387,8 @@ update_buttons (KastProcs *k)
   gboolean has = selected_proc (k) != NULL;
   gtk_widget_set_sensitive (GTK_WIDGET (k->end_btn), has);
   gtk_widget_set_sensitive (GTK_WIDGET (k->kill_btn), has);
+  gtk_widget_set_sensitive (GTK_WIDGET (k->prio_btn), has);
+  gtk_widget_set_sensitive (GTK_WIDGET (k->tree_btn), has);
 }
 
 static void
@@ -370,6 +401,231 @@ static void
 on_end (GtkButton *, gpointer data) { do_signal (data, SIGTERM); }
 static void
 on_kill (GtkButton *, gpointer data) { do_signal (data, SIGKILL); }
+
+/* ---- priority (renice) ---- */
+
+static void
+on_prio_response (GtkDialog *dlg, int resp, gpointer data)
+{
+  KastProcs *k = data;
+  if (resp == GTK_RESPONSE_OK)
+    {
+      KastProc *p = selected_proc (k);
+      GtkSpinButton *spin = g_object_get_data (G_OBJECT (dlg), "kast-spin");
+      int val = gtk_spin_button_get_value_as_int (spin);
+      if (p)
+        {
+          if (p->uid == (uid_t) geteuid ())
+            {
+              if (setpriority (PRIO_PROCESS, p->pid, val) != 0)
+                g_warning ("setpriority failed: %s", g_strerror (errno));
+            }
+          else
+            {
+              char *narg = g_strdup_printf ("%d", val);
+              char *pidarg = g_strdup_printf ("%d", p->pid);
+              char *argv[] = { "pkexec", "renice", "-n", narg, "-p", pidarg, NULL };
+              g_spawn_async (NULL, argv, NULL, G_SPAWN_SEARCH_PATH, NULL, NULL, NULL, NULL);
+              g_free (narg);
+              g_free (pidarg);
+            }
+          refresh_procs (k);
+        }
+    }
+  gtk_window_destroy (GTK_WINDOW (dlg));
+}
+
+static void
+on_priority (GtkButton *, gpointer data)
+{
+  KastProcs *k = data;
+  KastProc *p = selected_proc (k);
+  if (!p)
+    return;
+  GtkWidget *dlg = gtk_message_dialog_new (GTK_WINDOW (k->ui->window),
+      GTK_DIALOG_MODAL, GTK_MESSAGE_QUESTION, GTK_BUTTONS_NONE,
+      "Change priority of “%s” (PID %d). Lower runs first.", p->name, p->pid);
+  gtk_window_set_title (GTK_WINDOW (dlg), "Process priority");
+  GtkWidget *spin = gtk_spin_button_new_with_range (-20, 19, 1);
+  gtk_spin_button_set_value (GTK_SPIN_BUTTON (spin), p->nice);
+  gtk_widget_set_halign (spin, GTK_ALIGN_CENTER);
+  gtk_widget_set_margin_top (spin, 8);
+  gtk_box_append (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dlg))), spin);
+  g_object_set_data (G_OBJECT (dlg), "kast-spin", spin);
+  gtk_dialog_add_button (GTK_DIALOG (dlg), "Cancel", GTK_RESPONSE_CANCEL);
+  gtk_dialog_add_button (GTK_DIALOG (dlg), "Apply", GTK_RESPONSE_OK);
+  gtk_dialog_set_default_response (GTK_DIALOG (dlg), GTK_RESPONSE_OK);
+  g_signal_connect (dlg, "response", G_CALLBACK (on_prio_response), k);
+  gtk_window_present (GTK_WINDOW (dlg));
+}
+
+/* ---- kill process tree ---- */
+
+static int
+proc_ppid (int pid)
+{
+  char *path = g_strdup_printf ("/proc/%d/stat", pid);
+  char *text = NULL;
+  int ppid = -1;
+  if (g_file_get_contents (path, &text, NULL, NULL))
+    {
+      char *rparen = strrchr (text, ')');
+      if (rparen)
+        {
+          /* state ppid pgrp ... */
+          char state = 0;
+          if (sscanf (rparen + 1, " %c %d", &state, &ppid) != 2)
+            ppid = -1;
+        }
+      g_free (text);
+    }
+  g_free (path);
+  return ppid;
+}
+
+static void
+collect_tree (int pid, GArray *out)
+{
+  g_array_append_val (out, pid);
+  GDir *proc = g_dir_open ("/proc", 0, NULL);
+  if (!proc)
+    return;
+  const char *name;
+  while ((name = g_dir_read_name (proc)) != NULL)
+    {
+      char *end = NULL;
+      long other = strtol (name, &end, 10);
+      if (!end || *end || other <= 0 || other == pid)
+        continue;
+      if (proc_ppid ((int) other) == pid)
+        collect_tree ((int) other, out);
+    }
+  g_dir_close (proc);
+}
+
+static void
+on_tree_response (GtkDialog *dlg, int resp, gpointer data)
+{
+  KastProcs *k = data;
+  if (resp == GTK_RESPONSE_OK)
+    {
+      KastProc *p = selected_proc (k);
+      if (p)
+        {
+          GArray *tree = g_array_new (FALSE, FALSE, sizeof (int));
+          collect_tree (p->pid, tree);
+          GString *foreign = g_string_new (NULL);
+          for (guint i = 0; i < tree->len; i++)
+            {
+              int pid = g_array_index (tree, int, i);
+              char *statp = g_strdup_printf ("/proc/%d", pid);
+              /* crude ownership: try direct kill, pkexec on EPERM */
+              if (kill (pid, SIGKILL) != 0 && errno == EPERM)
+                g_string_append_printf (foreign, "%d ", pid);
+              g_free (statp);
+            }
+          if (foreign->len)
+            {
+              char **parts = g_strsplit_set (g_strstrip (foreign->str), " ", -1);
+              GPtrArray *argv = g_ptr_array_new ();
+              g_ptr_array_add (argv, "pkexec");
+              g_ptr_array_add (argv, "kill");
+              g_ptr_array_add (argv, "-KILL");
+              for (int i = 0; parts[i]; i++)
+                g_ptr_array_add (argv, parts[i]);
+              g_ptr_array_add (argv, NULL);
+              g_spawn_async (NULL, (char **) argv->pdata, NULL,
+                             G_SPAWN_SEARCH_PATH, NULL, NULL, NULL, NULL);
+              g_strfreev (parts);
+              g_ptr_array_free (argv, TRUE);
+            }
+          g_string_free (foreign, TRUE);
+          g_array_free (tree, TRUE);
+          refresh_procs (k);
+        }
+    }
+  gtk_window_destroy (GTK_WINDOW (dlg));
+}
+
+static void
+on_open_files (GtkButton *, gpointer data)
+{
+  KastProcs *k = data;
+  KastProc *p = selected_proc (k);
+  if (!p)
+    return;
+
+  GtkWidget *dlg = gtk_message_dialog_new (GTK_WINDOW (k->ui->window),
+      GTK_DIALOG_MODAL, GTK_MESSAGE_INFO, GTK_BUTTONS_CLOSE,
+      "Open files of “%s” (PID %d)", p->name, p->pid);
+  gtk_window_set_title (GTK_WINDOW (dlg), "Open files");
+  gtk_window_set_default_size (GTK_WINDOW (dlg), 520, 380);
+
+  GtkWidget *scroll = gtk_scrolled_window_new ();
+  gtk_widget_set_size_request (scroll, -1, 260);
+  gtk_widget_set_margin_top (scroll, 8);
+  gtk_box_append (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dlg))), scroll);
+
+  GtkWidget *list = gtk_list_box_new ();
+  gtk_scrolled_window_set_child (GTK_SCROLLED_WINDOW (scroll), list);
+
+  char *fddir = g_strdup_printf ("/proc/%d/fd", p->pid);
+  GDir *d = g_dir_open (fddir, 0, NULL);
+  int n = 0;
+  if (d)
+    {
+      const char *name;
+      while ((name = g_dir_read_name (d)) != NULL && n < 200)
+        {
+          char *linkp = g_build_filename (fddir, name, NULL);
+          char *target = g_file_read_link (linkp, NULL);
+          if (target)
+            {
+              char *row_txt = g_strdup_printf ("%s → %s", name, target);
+              GtkWidget *row = gtk_label_new (row_txt);
+              gtk_widget_set_halign (row, GTK_ALIGN_START);
+              gtk_label_set_ellipsize (GTK_LABEL (row), PANGO_ELLIPSIZE_MIDDLE);
+              gtk_widget_set_margin_start (row, 10);
+              gtk_list_box_append (GTK_LIST_BOX (list), row);
+              g_free (row_txt);
+              g_free (target);
+              n++;
+            }
+          g_free (linkp);
+        }
+      g_dir_close (d);
+    }
+  g_free (fddir);
+  if (n == 0)
+    {
+      GtkWidget *row = gtk_label_new ("No accessible open files (try your own processes).");
+      gtk_widget_add_css_class (row, "dim-label");
+      gtk_list_box_append (GTK_LIST_BOX (list), row);
+    }
+
+  g_signal_connect_swapped (dlg, "response", G_CALLBACK (gtk_window_destroy), dlg);
+  gtk_window_present (GTK_WINDOW (dlg));
+}
+
+static void
+on_kill_tree (GtkButton *, gpointer data)
+{
+  KastProcs *k = data;
+  KastProc *p = selected_proc (k);
+  if (!p)
+    return;
+  GtkWidget *dlg = gtk_message_dialog_new (GTK_WINDOW (k->ui->window),
+      GTK_DIALOG_MODAL, GTK_MESSAGE_QUESTION, GTK_BUTTONS_NONE,
+      "Kill “%s” (PID %d) and all of its child processes?",
+      p->name, p->pid);
+  gtk_window_set_title (GTK_WINDOW (dlg), "Kill process tree");
+  gtk_dialog_add_button (GTK_DIALOG (dlg), "Cancel", GTK_RESPONSE_CANCEL);
+  GtkWidget *ok = gtk_dialog_add_button (GTK_DIALOG (dlg), "Kill tree", GTK_RESPONSE_OK);
+  gtk_widget_add_css_class (ok, "destructive-action");
+  gtk_dialog_set_default_response (GTK_DIALOG (dlg), GTK_RESPONSE_CANCEL);
+  g_signal_connect (dlg, "response", G_CALLBACK (on_tree_response), k);
+  gtk_window_present (GTK_WINDOW (dlg));
+}
 static void
 on_refresh_btn (GtkButton *, gpointer data) { refresh_procs (data); }
 static void
@@ -388,8 +644,8 @@ on_sort_btn (GtkButton *btn, gpointer data)
       k->sort_key = key;
       k->sort_desc = (key == SORT_CPU || key == SORT_MEM);
     }
-  static const char *names[5] = { "Process", "User", "CPU %", "Memory", "PID" };
-  for (int i = 0; i < 5; i++)
+  static const char *names[7] = { "Process", "User", "CPU %", "Memory", "PID", "Time", "Nice" };
+  for (int i = 0; i < 7; i++)
     {
       char *t = (i == k->sort_key)
           ? g_strdup_printf ("%s %s", names[i], k->sort_desc ? "▼" : "▲")
@@ -437,6 +693,19 @@ kast_procs_page (KastUi *ui)
   gtk_widget_add_css_class (GTK_WIDGET (k->kill_btn), "destructive-action");
   g_signal_connect (k->kill_btn, "clicked", G_CALLBACK (on_kill), k);
   gtk_box_append (GTK_BOX (bar), GTK_WIDGET (k->kill_btn));
+
+  k->prio_btn = GTK_BUTTON (gtk_button_new_with_label ("Priority"));
+  g_signal_connect (k->prio_btn, "clicked", G_CALLBACK (on_priority), k);
+  gtk_box_append (GTK_BOX (bar), GTK_WIDGET (k->prio_btn));
+
+  k->tree_btn = GTK_BUTTON (gtk_button_new_with_label ("Kill tree"));
+  gtk_widget_add_css_class (GTK_WIDGET (k->tree_btn), "destructive-action");
+  g_signal_connect (k->tree_btn, "clicked", G_CALLBACK (on_kill_tree), k);
+  gtk_box_append (GTK_BOX (bar), GTK_WIDGET (k->tree_btn));
+
+  GtkWidget *files_btn = gtk_button_new_with_label ("Files");
+  g_signal_connect (files_btn, "clicked", G_CALLBACK (on_open_files), k);
+  gtk_box_append (GTK_BOX (bar), files_btn);
   gtk_box_append (GTK_BOX (box), bar);
 
   /* sortable header */
@@ -444,10 +713,13 @@ kast_procs_page (KastUi *ui)
   gtk_grid_set_column_spacing (GTK_GRID (header), 12);
   gtk_widget_set_margin_start (header, 10);
   gtk_widget_set_margin_end (header, 10);
-  const char *names[5] = { "Process", "User", "CPU %", "Memory", "PID" };
-  for (int i = 0; i < 5; i++)
+  const char *names[7] = { "Process", "User", "CPU %", "Memory", "PID", "Time", "Nice" };
+  const int widths[7] = { -1, 90, 70, 90, 70, 80, 44 };
+  for (int i = 0; i < 7; i++)
     {
       GtkWidget *b = gtk_button_new_with_label (i == SORT_CPU ? "CPU % ▼" : names[i]);
+      if (widths[i] > 0)
+        gtk_widget_set_size_request (b, widths[i], -1);
       gtk_button_set_has_frame (GTK_BUTTON (b), FALSE);
       gtk_widget_add_css_class (b, "dim-label");
       g_object_set_data (G_OBJECT (b), "kast-sort", GINT_TO_POINTER (i));

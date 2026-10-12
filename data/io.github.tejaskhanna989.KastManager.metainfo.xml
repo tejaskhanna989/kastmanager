@@ -30,6 +30,15 @@
   </provides>
 
   <releases>
+    <release date="2026-10-12" version="2.2.0" type="stable">
+      <description>
+        <ul>
+          <li>System info, network + battery cards, network graph</li>
+          <li>Process time/nice columns, renice, kill tree, open files</li>
+          <li>File rename/properties/copy-path/hidden/search, volume control</li>
+        </ul>
+      </description>
+    </release>
     <release date="2026-10-12" version="2.1.0" type="stable">
       <description>
         <ul>

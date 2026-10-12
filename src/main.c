@@ -124,6 +124,7 @@ on_startup (GApplication *gapp, gpointer data)
   ui->nav_names[4] = KAST_PAGE_FILES;
   ui->nav_names[5] = KAST_PAGE_RATING;
   ui->nav_names[6] = KAST_PAGE_CONTROLS;
+  ui->nav_names[7] = KAST_PAGE_INFO;
 
   GtkWidget *win = gtk_application_window_new (GTK_APPLICATION (gapp));
   gtk_window_set_title (GTK_WINDOW (win), "Kast Manager");
@@ -185,6 +186,7 @@ on_startup (GApplication *gapp, gpointer data)
   gtk_box_append (GTK_BOX (side), nav_button (ui, 4, "folder-symbolic", "Files"));
   gtk_box_append (GTK_BOX (side), nav_button (ui, 5, "starred-symbolic", "Rating"));
   gtk_box_append (GTK_BOX (side), nav_button (ui, 6, "preferences-system-symbolic", "Controls"));
+  gtk_box_append (GTK_BOX (side), nav_button (ui, 7, "dialog-information-symbolic", "Info"));
 
   GtkWidget *spacer = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
   gtk_widget_set_vexpand (spacer, TRUE);
@@ -213,6 +215,7 @@ on_startup (GApplication *gapp, gpointer data)
   adw_view_stack_add_titled (ui->stack, kast_files_page (ui), KAST_PAGE_FILES, "Files");
   adw_view_stack_add_titled (ui->stack, kast_rating_page (ui), KAST_PAGE_RATING, "Rating");
   adw_view_stack_add_titled (ui->stack, kast_controls_page (ui), KAST_PAGE_CONTROLS, "Controls");
+  adw_view_stack_add_titled (ui->stack, kast_sysinfo_page (ui), KAST_PAGE_INFO, "Info");
   adw_view_stack_set_visible_child_name (ui->stack, KAST_PAGE_DASHBOARD);
   g_signal_connect (stack, "notify::visible-child", G_CALLBACK (on_page_changed), ui);
 

@@ -10,6 +10,8 @@ typedef struct {
   GtkListBox *list;
   GtkLabel *status;
   GtkEntry *path_entry;
+  GtkSearchEntry *fsearch;
+  gboolean show_hidden;
 } KastFiles;
 
 static char *
@@ -100,9 +102,28 @@ files_navigate (KastFiles *k, GFile *dir)
     }
 
   GFileInfo *info;
+  const char *fq = k->fsearch
+      ? gtk_editable_get_text (GTK_EDITABLE (k->fsearch)) : "";
+  char *fqn = (fq && *fq) ? g_utf8_casefold (fq, -1) : NULL;
   while ((info = g_file_enumerator_next_file (en, NULL, &err)) != NULL)
     {
       const char *name = g_file_info_get_name (info);
+      if (name[0] == '.' && !k->show_hidden)
+        {
+          g_object_unref (info);
+          continue;
+        }
+      if (fqn)
+        {
+          char *nn = g_utf8_casefold (name, -1);
+          gboolean hit = strstr (nn, fqn) != NULL;
+          g_free (nn);
+          if (!hit)
+            {
+              g_object_unref (info);
+              continue;
+            }
+        }
       GFileType type = g_file_info_get_file_type (info);
       GFile *child_f = g_file_get_child (dir, name);
 
@@ -146,6 +167,7 @@ files_navigate (KastFiles *k, GFile *dir)
       gtk_label_set_text (k->status, err->message);
       g_clear_error (&err);
     }
+  g_free (fqn);
   g_file_enumerator_close (en, NULL, NULL);
   g_object_unref (en);
 }
@@ -186,6 +208,21 @@ on_go (GtkButton *, gpointer data)
 }
 
 static void
+on_fsearch (GtkSearchEntry *, gpointer data)
+{
+  KastFiles *k = data;
+  files_navigate (k, k->dir);
+}
+
+static void
+on_hidden_toggle (GtkToggleButton *btn, gpointer data)
+{
+  KastFiles *k = data;
+  k->show_hidden = gtk_toggle_button_get_active (btn);
+  files_navigate (k, k->dir);
+}
+
+static void
 on_new_folder (GtkButton *, gpointer data)
 {
   KastFiles *k = data;
@@ -223,6 +260,127 @@ on_trash (GtkButton *, gpointer data)
     files_navigate (k, k->dir);
 }
 
+static GtkListBoxRow *
+files_selected (KastFiles *k)
+{
+  GtkListBoxRow *row = gtk_list_box_get_selected_row (GTK_LIST_BOX (k->list));
+  if (!row)
+    gtk_label_set_text (k->status, "Select a file first");
+  return row;
+}
+
+static void
+on_rename_response (GtkDialog *dlg, int resp, gpointer data)
+{
+  KastFiles *k = data;
+  if (resp == GTK_RESPONSE_OK)
+    {
+      GtkEntry *entry = g_object_get_data (G_OBJECT (dlg), "kast-entry");
+      GtkListBoxRow *row = files_selected (k);
+      const char *name = entry ? gtk_editable_get_text (GTK_EDITABLE (entry)) : "";
+      if (row && name && *name)
+        {
+          GFile *f = g_object_get_data (G_OBJECT (row), "kast-file");
+          GError *err = NULL;
+          if (!g_file_set_display_name (f, name, NULL, &err))
+            {
+              gtk_label_set_text (k->status, err ? err->message : "Cannot rename");
+              g_clear_error (&err);
+            }
+          else
+            files_navigate (k, k->dir);
+        }
+    }
+  gtk_window_destroy (GTK_WINDOW (dlg));
+}
+
+static void
+on_rename (GtkButton *btn, gpointer data)
+{
+  KastFiles *k = data;
+  (void) btn;
+  GtkListBoxRow *row = files_selected (k);
+  if (!row)
+    return;
+  const char *old = g_object_get_data (G_OBJECT (row), "kast-name");
+  GtkWidget *dlg = gtk_message_dialog_new (GTK_WINDOW (k->ui->window),
+      GTK_DIALOG_MODAL, GTK_MESSAGE_QUESTION, GTK_BUTTONS_NONE,
+      "Rename “%s” to:", old ? old : "");
+  gtk_window_set_title (GTK_WINDOW (dlg), "Rename");
+  GtkWidget *entry = gtk_entry_new ();
+  if (old)
+    gtk_editable_set_text (GTK_EDITABLE (entry), old);
+  gtk_widget_set_margin_top (entry, 8);
+  gtk_box_append (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dlg))), entry);
+  g_object_set_data (G_OBJECT (dlg), "kast-entry", entry);
+  gtk_dialog_add_button (GTK_DIALOG (dlg), "Cancel", GTK_RESPONSE_CANCEL);
+  gtk_dialog_add_button (GTK_DIALOG (dlg), "Rename", GTK_RESPONSE_OK);
+  gtk_dialog_set_default_response (GTK_DIALOG (dlg), GTK_RESPONSE_OK);
+  g_signal_connect (dlg, "response", G_CALLBACK (on_rename_response), k);
+  gtk_window_present (GTK_WINDOW (dlg));
+}
+
+static void
+on_props (GtkButton *btn, gpointer data)
+{
+  KastFiles *k = data;
+  (void) btn;
+  GtkListBoxRow *row = files_selected (k);
+  if (!row)
+    return;
+  GFile *f = g_object_get_data (G_OBJECT (row), "kast-file");
+  const char *name = g_object_get_data (G_OBJECT (row), "kast-name");
+  GError *err = NULL;
+  GFileInfo *info = g_file_query_info (f,
+      "standard::size,time::modified,standard::type,unix::mode,owner::user",
+      G_FILE_QUERY_INFO_NONE, NULL, &err);
+  if (!info)
+    {
+      gtk_label_set_text (k->status, err ? err->message : "Cannot read info");
+      g_clear_error (&err);
+      return;
+    }
+  char *sz = kast_bytes (g_file_info_get_size (info));
+  GDateTime *mt = g_file_info_get_modification_date_time (info);
+  char *mts = mt ? g_date_time_format (mt, "%Y-%m-%d %H:%M:%S") : g_strdup ("—");
+  char *uri = g_file_get_uri (f);
+  const char *owner = g_file_info_get_attribute_string (info, "owner::user");
+  guint32 mode = g_file_info_get_attribute_uint32 (info, "unix::mode");
+  char *body = g_strdup_printf ("Location: %s\nSize: %s\nModified: %s\nOwner: %s\nPermissions: %04o",
+      uri, sz, mts, owner ? owner : "?", mode & 07777);
+
+  GtkWidget *dlg = gtk_message_dialog_new (GTK_WINDOW (k->ui->window),
+      GTK_DIALOG_MODAL, GTK_MESSAGE_INFO, GTK_BUTTONS_CLOSE,
+      "Properties of %s", name ? name : "");
+  GtkWidget *bl = gtk_label_new (body);
+  gtk_label_set_selectable (GTK_LABEL (bl), TRUE);
+  gtk_widget_set_halign (bl, GTK_ALIGN_START);
+  gtk_widget_set_margin_top (bl, 8);
+  gtk_box_append (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dlg))), bl);
+  g_signal_connect_swapped (dlg, "response", G_CALLBACK (gtk_window_destroy), dlg);
+  gtk_window_present (GTK_WINDOW (dlg));
+
+  g_free (sz); g_free (mts); g_free (uri); g_free (body);
+  g_object_unref (info);
+}
+
+static void
+on_copy_path (GtkButton *btn, gpointer data)
+{
+  KastFiles *k = data;
+  (void) btn;
+  GtkListBoxRow *row = files_selected (k);
+  if (!row)
+    return;
+  GFile *f = g_object_get_data (G_OBJECT (row), "kast-file");
+  char *path = g_file_get_path (f);
+  if (!path)
+    path = g_file_get_uri (f);
+  gdk_clipboard_set_text (gtk_widget_get_clipboard (GTK_WIDGET (k->list)), path);
+  gtk_label_set_text (k->status, "Path copied to clipboard");
+  g_free (path);
+}
+
 GtkWidget *
 kast_files_page (KastUi *ui)
 {
@@ -256,6 +414,17 @@ kast_files_page (KastUi *ui)
   g_signal_connect (go, "clicked", G_CALLBACK (on_go), k);
   gtk_box_append (GTK_BOX (toolbar), go);
 
+  k->fsearch = GTK_SEARCH_ENTRY (gtk_search_entry_new ());
+  gtk_entry_set_placeholder_text (GTK_ENTRY (k->fsearch), "Filter here");
+  gtk_widget_set_size_request (GTK_WIDGET (k->fsearch), 150, -1);
+  g_signal_connect (k->fsearch, "search-changed", G_CALLBACK (on_fsearch), k);
+  gtk_box_append (GTK_BOX (toolbar), GTK_WIDGET (k->fsearch));
+
+  GtkWidget *hidden = gtk_toggle_button_new_with_label ("Hidden");
+  gtk_widget_set_tooltip_text (hidden, "Show hidden files");
+  g_signal_connect (hidden, "toggled", G_CALLBACK (on_hidden_toggle), k);
+  gtk_box_append (GTK_BOX (toolbar), hidden);
+
   GtkWidget *newf = gtk_button_new_from_icon_name ("folder-new-symbolic");
   gtk_widget_set_tooltip_text (newf, "New folder");
   g_signal_connect (newf, "clicked", G_CALLBACK (on_new_folder), k);
@@ -265,6 +434,21 @@ kast_files_page (KastUi *ui)
   gtk_widget_set_tooltip_text (trash, "Move selected to trash");
   g_signal_connect (trash, "clicked", G_CALLBACK (on_trash), k);
   gtk_box_append (GTK_BOX (toolbar), trash);
+
+  GtkWidget *rename = gtk_button_new_from_icon_name ("document-edit-symbolic");
+  gtk_widget_set_tooltip_text (rename, "Rename selected");
+  g_signal_connect (rename, "clicked", G_CALLBACK (on_rename), k);
+  gtk_box_append (GTK_BOX (toolbar), rename);
+
+  GtkWidget *props = gtk_button_new_from_icon_name ("document-properties-symbolic");
+  gtk_widget_set_tooltip_text (props, "Properties of selected");
+  g_signal_connect (props, "clicked", G_CALLBACK (on_props), k);
+  gtk_box_append (GTK_BOX (toolbar), props);
+
+  GtkWidget *copy = gtk_button_new_from_icon_name ("edit-copy-symbolic");
+  gtk_widget_set_tooltip_text (copy, "Copy selected path");
+  g_signal_connect (copy, "clicked", G_CALLBACK (on_copy_path), k);
+  gtk_box_append (GTK_BOX (toolbar), copy);
   gtk_box_append (GTK_BOX (box), toolbar);
 
   GtkWidget *scroll = gtk_scrolled_window_new ();

@@ -13,7 +13,8 @@
 #define KAST_PAGE_FILES     "files"
 #define KAST_PAGE_RATING    "rating"
 #define KAST_PAGE_CONTROLS  "controls"
-#define KAST_NPAGES 7
+#define KAST_PAGE_INFO      "info"
+#define KAST_NPAGES 8
 
 typedef struct {
   GtkApplication *app;
@@ -24,10 +25,11 @@ typedef struct {
   GtkWidget *nav[KAST_NPAGES];
   const char *nav_names[KAST_NPAGES];
 
-  /* dashboard cards: 0 cpu, 1 mem, 2 swap, 3 load, 4 uptime, 5 procs */
-  GtkLabel *d_val[6];
-  GtkLabel *d_det[6];
-  GtkLevelBar *d_bar[4]; /* cpu, mem, swap, load */
+  /* dashboard cards: 0 cpu, 1 mem, 2 swap, 3 load, 4 uptime, 5 procs,
+     6 net-up, 7 net-down, 8 battery */
+  GtkLabel *d_val[9];
+  GtkLabel *d_det[9];
+  GtkLevelBar *d_bar[9]; /* NULL when the card has no bar */
 } KastUi;
 
 /* util.c — stat samplers + formatting */
@@ -47,6 +49,7 @@ GtkWidget *kast_disks_page (KastUi *ui);
 GtkWidget *kast_files_page (KastUi *ui);
 GtkWidget *kast_rating_page (KastUi *ui);
 GtkWidget *kast_controls_page (KastUi *ui);
+GtkWidget *kast_sysinfo_page (KastUi *ui);
 void kast_widget_toggle (KastUi *ui);
 
 #endif /* KAST_H */

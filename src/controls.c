@@ -246,7 +246,123 @@ refresh_services (KastControls *k)
 static void
 on_svc_refresh (GtkButton *, gpointer data) { refresh_services (data); }
 
-/* ---- autostart ---- */
+/* ---- volume ---- */
+
+typedef struct {
+  gboolean use_wpctl;
+  GtkScale *scale;
+  GtkLabel *pct;
+  gboolean setting;
+} KastVolume;
+
+static gboolean
+have_tool (const char *name)
+{
+  char *p = g_find_program_in_path (name);
+  gboolean ok = p != NULL;
+  g_free (p);
+  return ok;
+}
+
+static double
+vol_get (KastVolume *v)
+{
+  char *out = NULL;
+  const char *cmd = v->use_wpctl
+      ? "wpctl get-volume @DEFAULT_AUDIO_SINK@"
+      : "pactl get-sink-volume @DEFAULT_SINK@";
+  char *argv[] = { "sh", "-c", (char *) cmd, NULL };
+  if (!g_spawn_sync (NULL, argv, NULL, G_SPAWN_SEARCH_PATH, NULL, NULL,
+                     &out, NULL, NULL, NULL) || !out)
+    return -1.0;
+  double vol = -1.0;
+  if (v->use_wpctl)
+    sscanf (out, "Volume: %lf", &vol); /* 0.0-1.0+ */
+  else
+    {
+      /* "... / 75% / ..." take first percent */
+      char *pct = strchr (out, '%');
+      if (pct)
+        {
+          char *start = pct;
+          while (start > out && (g_ascii_isdigit (start[-1]) || start[-1] == '.'))
+            start--;
+          vol = g_ascii_strtod (start, NULL) / 100.0;
+        }
+    }
+  g_free (out);
+  return vol;
+}
+
+static void
+vol_set (KastVolume *v, double val)
+{
+  char *cmd = v->use_wpctl
+      ? g_strdup_printf ("wpctl set-volume @DEFAULT_AUDIO_SINK@ %.2f", val)
+      : g_strdup_printf ("pactl set-sink-volume @DEFAULT_SINK@ %d%%", (int) (val * 100));
+  char *argv[] = { "sh", "-c", cmd, NULL };
+  g_spawn_async (NULL, argv, NULL, G_SPAWN_SEARCH_PATH, NULL, NULL, NULL, NULL);
+  g_free (cmd);
+}
+
+static void
+on_vol_changed (GtkRange *, gpointer data)
+{
+  KastVolume *v = data;
+  if (v->setting)
+    return;
+  double val = gtk_range_get_value (GTK_RANGE (v->scale)) / 100.0;
+  vol_set (v, val);
+  char *t = g_strdup_printf ("%d%%", (int) (val * 100));
+  gtk_label_set_text (v->pct, t);
+  g_free (t);
+}
+
+static GtkWidget *
+volume_row (void)
+{
+  KastVolume *v = g_new0 (KastVolume, 1);
+  if (have_tool ("wpctl"))
+    v->use_wpctl = TRUE;
+  else if (!have_tool ("pactl"))
+    {
+      g_free (v);
+      return NULL;
+    }
+
+  GtkWidget *card = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
+  gtk_widget_add_css_class (card, "card");
+  GtkWidget *t = gtk_label_new ("Output volume");
+  PangoAttrList *pa = pango_attr_list_new ();
+  pango_attr_list_insert (pa, pango_attr_weight_new (PANGO_WEIGHT_BOLD));
+  gtk_label_set_attributes (GTK_LABEL (t), pa);
+  pango_attr_list_unref (pa);
+  gtk_widget_set_halign (t, GTK_ALIGN_START);
+  gtk_box_append (GTK_BOX (card), t);
+
+  GtkWidget *row = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 12);
+  v->scale = GTK_SCALE (gtk_scale_new_with_range (GTK_ORIENTATION_HORIZONTAL, 0, 100, 1));
+  gtk_widget_set_hexpand (GTK_WIDGET (v->scale), TRUE);
+  v->pct = GTK_LABEL (gtk_label_new ("—"));
+  gtk_widget_set_size_request (GTK_WIDGET (v->pct), 52, -1);
+  g_signal_connect (v->scale, "value-changed", G_CALLBACK (on_vol_changed), v);
+  gtk_box_append (GTK_BOX (row), GTK_WIDGET (v->scale));
+  gtk_box_append (GTK_BOX (row), GTK_WIDGET (v->pct));
+  gtk_box_append (GTK_BOX (card), row);
+
+  double cur = vol_get (v);
+  if (cur >= 0)
+    {
+      v->setting = TRUE;
+      gtk_range_set_value (GTK_RANGE (v->scale), CLAMP (cur * 100.0, 0, 100));
+      v->setting = FALSE;
+      char *t2 = g_strdup_printf ("%d%%", (int) (cur * 100));
+      gtk_label_set_text (v->pct, t2);
+      g_free (t2);
+    }
+  g_object_set_data_full (G_OBJECT (card), "kast-vol", v, g_free);
+  return card;
+}
 
 static gboolean on_autostart_toggle (GtkSwitch *, gboolean, gpointer);
 
@@ -383,6 +499,10 @@ kast_controls_page (KastUi *ui)
     }
   gtk_box_append (GTK_BOX (pcard), prow);
   gtk_box_append (GTK_BOX (box), pcard);
+
+  GtkWidget *vol = volume_row ();
+  if (vol)
+    gtk_box_append (GTK_BOX (box), vol);
 
   /* services */
   GtkWidget *scard = gtk_box_new (GTK_ORIENTATION_VERTICAL, 8);

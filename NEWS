@@ -1,3 +1,11 @@
+New in 2.2.0 - 12 October 2026
+
+* New Info page: hostname, kernel, CPU, IPs, boot time
+* Dashboard network up/down + battery cards; network history graph
+* Processes: CPU time + nice columns, renice dialog, kill tree, open files
+* Files: rename, properties, copy path, hidden toggle, in-folder search
+* Controls: output volume slider
+
 New in 2.1.0 - 12 October 2026
 
 * PC Rating: CPU/memory/disk benchmarks with overall score
