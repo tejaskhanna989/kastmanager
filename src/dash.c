@@ -8,10 +8,6 @@
 #include "kast.h"
 
 static const char *captions[6] = { "CPU", "Memory", "Swap", "Load average", "Uptime", "Processes" };
-static const char *accents[6] = {
-  "dash-accent-cpu", "dash-accent-mem", "dash-accent-swap",
-  "dash-accent-load", "dash-accent-uptime", "dash-accent-procs",
-};
 static const char *targets[6] = {
   KAST_PAGE_GRAPHS, KAST_PAGE_GRAPHS, KAST_PAGE_GRAPHS,
   KAST_PAGE_GRAPHS, KAST_PAGE_DASHBOARD, KAST_PAGE_PROCESSES,
@@ -54,7 +50,6 @@ make_card (KastUi *ui, int idx, gboolean with_bar)
 
   GtkWidget *val = gtk_label_new ("—");
   gtk_widget_add_css_class (val, "dash-value");
-  gtk_widget_add_css_class (val, accents[idx]);
   gtk_widget_set_halign (val, GTK_ALIGN_START);
   PangoAttrList *attrs = pango_attr_list_new ();
   pango_attr_list_insert (attrs, pango_attr_weight_new (PANGO_WEIGHT_BOLD));

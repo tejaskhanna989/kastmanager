@@ -22,7 +22,7 @@ draw_history (GtkDrawingArea *area, cairo_t *cr, int width, int height, gpointer
   double w = width - 2 * pad, h = height - 2 * pad;
 
   /* grid */
-  cairo_set_source_rgba (cr, 0.55, 0.58, 0.62, 0.18);
+  cairo_set_source_rgba (cr, 1.0, 1.0, 1.0, 0.07);
   cairo_set_line_width (cr, 1.0);
   for (int i = 1; i < 4; i++)
     {
@@ -37,13 +37,13 @@ draw_history (GtkDrawingArea *area, cairo_t *cr, int width, int height, gpointer
   gboolean is_cpu = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (area), "kast-is-cpu"));
   if (is_cpu)
     {
-      cairo_pattern_add_color_stop_rgba (grad, 0.0, 0.0, 0.94, 1.0, 0.45);
-      cairo_pattern_add_color_stop_rgba (grad, 1.0, 0.0, 0.94, 1.0, 0.03);
+      cairo_pattern_add_color_stop_rgba (grad, 0.0, 0.18, 0.83, 0.75, 0.35);
+      cairo_pattern_add_color_stop_rgba (grad, 1.0, 0.18, 0.83, 0.75, 0.03);
     }
   else
     {
-      cairo_pattern_add_color_stop_rgba (grad, 0.0, 0.79, 0.36, 1.0, 0.45);
-      cairo_pattern_add_color_stop_rgba (grad, 1.0, 0.79, 0.36, 1.0, 0.03);
+      cairo_pattern_add_color_stop_rgba (grad, 0.0, 0.49, 0.61, 0.96, 0.35);
+      cairo_pattern_add_color_stop_rgba (grad, 1.0, 0.49, 0.61, 0.96, 0.03);
     }
 
   cairo_move_to (cr, pad, pad + h);
@@ -61,9 +61,9 @@ draw_history (GtkDrawingArea *area, cairo_t *cr, int width, int height, gpointer
 
   /* line */
   if (is_cpu)
-    cairo_set_source_rgb (cr, 0.0, 0.94, 1.0);
+    cairo_set_source_rgb (cr, 0.18, 0.83, 0.75);
   else
-    cairo_set_source_rgb (cr, 0.79, 0.36, 1.0);
+    cairo_set_source_rgb (cr, 0.49, 0.61, 0.96);
   cairo_set_line_width (cr, 2.0);
   cairo_set_line_join (cr, CAIRO_LINE_JOIN_ROUND);
   for (int i = 0; i < HIST; i++)
