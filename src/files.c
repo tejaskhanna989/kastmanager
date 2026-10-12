@@ -415,7 +415,7 @@ kast_files_page (KastUi *ui)
   gtk_box_append (GTK_BOX (toolbar), go);
 
   k->fsearch = GTK_SEARCH_ENTRY (gtk_search_entry_new ());
-  gtk_entry_set_placeholder_text (GTK_ENTRY (k->fsearch), "Filter here");
+  g_object_set (k->fsearch, "placeholder-text", "Filter here", NULL);
   gtk_widget_set_size_request (GTK_WIDGET (k->fsearch), 150, -1);
   g_signal_connect (k->fsearch, "search-changed", G_CALLBACK (on_fsearch), k);
   gtk_box_append (GTK_BOX (toolbar), GTK_WIDGET (k->fsearch));
