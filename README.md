@@ -1,5 +1,7 @@
 # Kast Manager
 
+[![Get it from the Snap Store](https://snapcraft.io/static/images/badges/en/snap-store-black.svg)](https://snapcraft.io/kastmanager)
+
 > Fresh minimal system companion by **Tejas Khanna** — https://github.com/tejaskhanna989/kastmanager
 
 Kast Manager 2.x is written from scratch (C, GTK4, libadwaita, libgtop):
@@ -16,6 +18,16 @@ with End/Kill, hand-drawn **Graphs**, **File Systems** usage, and a minimal
 ## License
 
 GNU General Public License v3.0 or later. See `COPYING`.
+
+## Install
+
+```sh
+sudo snap install kastmanager
+```
+
+Or AppImage: download `KastManager-x86_64.AppImage` and `install.sh` from
+[releases](https://github.com/tejaskhanna989/kastmanager/releases),
+then `bash install.sh`.
 
 ## Building
 
