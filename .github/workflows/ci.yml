@@ -81,15 +81,16 @@ jobs:
             libgtk-4-dev libadwaita-1-dev libgtop2-dev
 
       - name: Build binary package
-        run: dpkg-buildpackage -b -us -uc
+        run: |
+          dpkg-buildpackage -b -us -uc
+          mkdir -p deb-out && mv ../kast-manager_*.deb deb-out/ && ls deb-out/
 
       - name: Test install
         run: |
-          sudo apt-get install -y ../kast-manager_*.deb
-          kast-manager --help 2>&1 | head -n 3 || true
-          /usr/bin/kast-manager --version 2>&1 | head -n 2 || true
+          sudo apt-get install -y ./deb-out/kast-manager_*.deb
+          /usr/bin/kast-manager --help 2>&1 | head -n 3 || true
 
       - uses: actions/upload-artifact@v4
         with:
           name: kast-manager-deb
-          path: ../kast-manager_*.deb
+          path: deb-out/
