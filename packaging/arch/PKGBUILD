@@ -1,0 +1,21 @@
+# Maintainer: Tejas Khanna <khannatejas989@gmail.com>
+pkgname=kast-manager
+pkgver=2.6.0
+pkgrel=1
+pkgdesc='Processes, resources, disks and files in one dark place'
+arch=('x86_64')
+url='https://github.com/tejaskhanna989/kastmanager'
+license=('GPL-3.0-or-later')
+depends=('gtk4' 'libadwaita' 'libgtop')
+makedepends=('meson' 'ninja')
+source=("$pkgname-$pkgver.tar.gz::https://github.com/tejaskhanna989/kastmanager/archive/refs/tags/v$pkgver.tar.gz")
+sha256sums=('d1f4fca871a4dae0a5f3fe3a41812cb05e7d704dc265ca846da657eccfaaf12f')
+
+build() {
+  meson setup build "$pkgname-$pkgver" --prefix=/usr --buildtype=release
+  ninja -C build
+}
+
+package() {
+  DESTDIR="$pkgdir" ninja -C build install
+}

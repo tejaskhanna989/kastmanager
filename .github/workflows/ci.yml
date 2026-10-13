@@ -94,3 +94,30 @@ jobs:
         with:
           name: kast-manager-deb
           path: deb-out/
+
+  rpm:
+    runs-on: ubuntu-24.04
+    container: fedora:latest
+    needs: build
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          dnf install -y rpm-build rpmdevtools meson ninja-build gcc \
+            pkg-config gtk4-devel libadwaita-devel libgtop2-devel \
+            desktop-file-utils libappstream-glib
+
+      - name: Build RPM
+        run: |
+          mkdir -p ~/rpmbuild/{BUILD,RPMS,SOURCES,SPECS,SRPMS}
+          cp packaging/fedora/kast-manager.spec ~/rpmbuild/SPECS/
+          cd ~/rpmbuild/SPECS && spectool -g -R kast-manager.spec
+          rpmbuild -bb ~/rpmbuild/SPECS/kast-manager.spec
+          ls ~/rpmbuild/RPMS/x86_64/
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: kast-manager-rpm
+          path: /root/rpmbuild/RPMS/x86_64/*.rpm
