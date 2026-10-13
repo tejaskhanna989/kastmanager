@@ -77,7 +77,7 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y debhelper meson ninja-build pkg-config \
+          sudo apt-get install -y build-essential devscripts debhelper meson ninja-build pkg-config \
             libgtk-4-dev libadwaita-1-dev libgtop2-dev
 
       - name: Build binary package
