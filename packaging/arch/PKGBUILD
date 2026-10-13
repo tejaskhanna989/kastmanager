@@ -12,7 +12,7 @@ source=("$pkgname-$pkgver.tar.gz::https://github.com/tejaskhanna989/kastmanager/
 sha256sums=('d1f4fca871a4dae0a5f3fe3a41812cb05e7d704dc265ca846da657eccfaaf12f')
 
 build() {
-  meson setup build "$pkgname-$pkgver" --prefix=/usr --buildtype=release
+  meson setup build "kastmanager-$pkgver" --prefix=/usr --buildtype=release
   ninja -C build
 }
 
