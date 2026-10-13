@@ -66,19 +66,3 @@ jobs:
           name: kastmanager-snap
           path: ${{ steps.snapcraft.outputs.snap }}
 
-  ppa-check:
-    runs-on: ubuntu-24.04
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Validate Debian source package
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y devscripts debhelper
-          debuild -S -us -uc
-          mkdir -p deb-out && mv ../kast-manager_* deb-out/ && ls deb-out/
-
-      - uses: actions/upload-artifact@v4
-        with:
-          name: debian-source
-          path: deb-out/

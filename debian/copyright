@@ -1,9 +1,0 @@
-Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
-Upstream-Name: kast-manager
-Upstream-Contact: Tejas Khanna <khannatejas989@gmail.com>
-Source: https://github.com/tejaskhanna989/kastmanager
-
-Files: *
-Copyright: 2026 Tejas Khanna
-License: GPL-3.0-or-later
- See /usr/share/common-licenses/GPL-3.
