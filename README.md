@@ -25,6 +25,10 @@ GNU General Public License v3.0 or later. See `COPYING`.
 sudo snap install kastmanager
 ```
 
+Or `.deb` (Ubuntu 24.04+): download `kast-manager_2.6.0-1_amd64.deb` from
+[releases](https://github.com/tejaskhanna989/kastmanager/releases),
+then `sudo apt install ./kast-manager_2.6.0-1_amd64.deb`.
+
 Or AppImage: download `KastManager-x86_64.AppImage` and `install.sh` from
 [releases](https://github.com/tejaskhanna989/kastmanager/releases),
 then `bash install.sh`.
