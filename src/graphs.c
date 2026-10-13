@@ -58,9 +58,13 @@ draw_history (GtkDrawingArea *area, cairo_t *cr, int width, int height, gpointer
   double *hist = data;
   const double pad = 8.0;
   double w = width - 2 * pad, h = height - 2 * pad;
+  gboolean dark = adw_style_manager_get_dark (adw_style_manager_get_default ());
 
   /* grid */
-  cairo_set_source_rgba (cr, 1.0, 1.0, 1.0, 0.07);
+  if (dark)
+    cairo_set_source_rgba (cr, 1.0, 1.0, 1.0, 0.07);
+  else
+    cairo_set_source_rgba (cr, 0.0, 0.0, 0.0, 0.08);
   cairo_set_line_width (cr, 1.0);
   for (int i = 1; i < 4; i++)
     {
@@ -172,8 +176,12 @@ draw_net (GtkDrawingArea *area, cairo_t *cr, int width, int height, gpointer dat
   const double pad = 8.0;
   double w = width - 2 * pad, h = height - 2 * pad;
   double max = g->net_max > 0 ? g->net_max : 1.0;
+  gboolean dark = adw_style_manager_get_dark (adw_style_manager_get_default ());
 
-  cairo_set_source_rgba (cr, 1.0, 1.0, 1.0, 0.07);
+  if (dark)
+    cairo_set_source_rgba (cr, 1.0, 1.0, 1.0, 0.07);
+  else
+    cairo_set_source_rgba (cr, 0.0, 0.0, 0.0, 0.08);
   cairo_set_line_width (cr, 1.0);
   for (int i = 1; i < 4; i++)
     {
@@ -200,7 +208,10 @@ draw_net (GtkDrawingArea *area, cairo_t *cr, int width, int height, gpointer dat
   cairo_fill (cr);
   cairo_pattern_destroy (grad);
 
-  cairo_set_source_rgb (cr, 0.18, 0.83, 0.75);
+  if (dark)
+    cairo_set_source_rgb (cr, 0.18, 0.83, 0.75);
+  else
+    cairo_set_source_rgb (cr, 0.05, 0.58, 0.53);
   cairo_set_line_width (cr, 2.0);
   cairo_set_line_join (cr, CAIRO_LINE_JOIN_ROUND);
   for (int i = 0; i < HIST; i++)
@@ -215,7 +226,10 @@ draw_net (GtkDrawingArea *area, cairo_t *cr, int width, int height, gpointer dat
   cairo_stroke (cr);
 
   /* upload: periwinkle line */
-  cairo_set_source_rgb (cr, 0.49, 0.61, 0.96);
+  if (dark)
+    cairo_set_source_rgb (cr, 0.49, 0.61, 0.96);
+  else
+    cairo_set_source_rgb (cr, 0.28, 0.39, 0.75);
   cairo_set_line_width (cr, 1.5);
   for (int i = 0; i < HIST; i++)
     {

@@ -58,6 +58,8 @@ typedef struct {
   GtkWidget *bottom_bar;
   GtkWidget *overlay;
   GtkWidget *float_panel;
+  GtkCssProvider *theme_css;
+  int theme_mode; /* 0 dark, 1 light, 2 system */
   GtkWidget *page_menu_btn;
   GtkWidget *side_toggle_btn;
   int side_mode; /* 0-9 */
@@ -86,7 +88,9 @@ gboolean kast_have_tool (const char *name);
 void kast_show_page (KastUi *ui, const char *page);
 void kast_nav_sync (KastUi *ui);
 void kast_side_apply (KastUi *ui, int mode);
+void kast_apply_theme (KastUi *ui, int mode);
 extern const char *kast_side_mode_names[15];
+extern const char *kast_theme_names[3];
 
 /* pages — each returns the widget to add to the stack */
 GtkWidget *kast_dash_page (KastUi *ui);

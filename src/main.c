@@ -266,6 +266,43 @@ kast_side_apply (KastUi *ui, int mode)
   kast_nav_sync (ui);
 }
 
+const char *kast_theme_names[3] = { "Dark", "Light", "System" };
+
+void
+kast_apply_theme (KastUi *ui, int mode)
+{
+  if (mode < 0 || mode > 2)
+    mode = 0;
+  ui->theme_mode = mode;
+  kast_cfg_set ("theme", mode);
+
+  AdwStyleManager *sm = adw_style_manager_get_default ();
+  if (mode == 1)
+    adw_style_manager_set_color_scheme (sm, ADW_COLOR_SCHEME_FORCE_LIGHT);
+  else if (mode == 2)
+    adw_style_manager_set_color_scheme (sm, ADW_COLOR_SCHEME_DEFAULT);
+  else
+    adw_style_manager_set_color_scheme (sm, ADW_COLOR_SCHEME_PREFER_DARK);
+
+  GdkDisplay *dpy = gdk_display_get_default ();
+  if (ui->theme_css)
+    {
+      gtk_style_context_remove_provider_for_display (dpy,
+          GTK_STYLE_PROVIDER (ui->theme_css));
+      g_object_unref (ui->theme_css);
+      ui->theme_css = NULL;
+    }
+  if (mode == 2)
+    return; /* System: pure stock Adwaita, no Kast CSS */
+  ui->theme_css = gtk_css_provider_new ();
+  gtk_css_provider_load_from_resource (ui->theme_css,
+      mode == 1 ? "/io/github/tejaskhanna989/KastManager/style-light.css"
+                : "/io/github/tejaskhanna989/KastManager/style.css");
+  gtk_style_context_add_provider_for_display (dpy,
+      GTK_STYLE_PROVIDER (ui->theme_css),
+      GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
+}
+
 static void
 on_side_toggle (GtkButton *, gpointer data)
 {
@@ -292,17 +329,11 @@ on_startup (GApplication *gapp, gpointer data)
 
   g_resources_register (kast_get_resource ());
 
-  /* Stock Adwaita dark: immune to quirky host themes. */
+  /* Stock Adwaita: immune to quirky host themes. */
   g_object_set (gtk_settings_get_default (), "gtk-theme-name", "Adwaita", NULL);
-  AdwStyleManager *sm = adw_style_manager_get_default ();
-  adw_style_manager_set_color_scheme (sm, ADW_COLOR_SCHEME_PREFER_DARK);
 
-  GtkCssProvider *css = gtk_css_provider_new ();
-  gtk_css_provider_load_from_resource (css, "/io/github/tejaskhanna989/KastManager/style.css");
-  gtk_style_context_add_provider_for_display (gdk_display_get_default (),
-                                              GTK_STYLE_PROVIDER (css),
-                                              GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
-  g_object_unref (css);
+  ui->theme_css = NULL;
+  kast_apply_theme (ui, kast_cfg_get ("theme", 0));
 
   ui->nav_names[0] = KAST_PAGE_DASHBOARD;
   ui->nav_names[1] = KAST_PAGE_PROCESSES;

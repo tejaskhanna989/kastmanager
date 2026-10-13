@@ -252,6 +252,12 @@ on_side_mode (GtkDropDown *drop, GParamSpec *, gpointer data)
   kast_side_apply (data, (int) gtk_drop_down_get_selected (drop));
 }
 
+static void
+on_theme_mode (GtkDropDown *drop, GParamSpec *, gpointer data)
+{
+  kast_apply_theme (data, (int) gtk_drop_down_get_selected (drop));
+}
+
 /* ---- volume ---- */
 
 typedef struct {
@@ -534,6 +540,19 @@ kast_controls_page (KastUi *ui)
   g_signal_connect (drop, "notify::selected", G_CALLBACK (on_side_mode), k->ui);
   gtk_box_append (GTK_BOX (vprow), drop);
   gtk_box_append (GTK_BOX (vpcard), vprow);
+  GtkWidget *trow = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 12);
+  GtkWidget *tlab = gtk_label_new ("Theme");
+  gtk_widget_set_halign (tlab, GTK_ALIGN_START);
+  gtk_widget_set_hexpand (tlab, TRUE);
+  gtk_box_append (GTK_BOX (trow), tlab);
+  const char *themes[4] = { NULL, NULL, NULL, NULL };
+  for (int i = 0; i < 3; i++)
+    themes[i] = kast_theme_names[i];
+  GtkWidget *tdrop = gtk_drop_down_new_from_strings (themes);
+  gtk_drop_down_set_selected (GTK_DROP_DOWN (tdrop), (guint) k->ui->theme_mode);
+  g_signal_connect (tdrop, "notify::selected", G_CALLBACK (on_theme_mode), k->ui);
+  gtk_box_append (GTK_BOX (trow), tdrop);
+  gtk_box_append (GTK_BOX (vpcard), trow);
   gtk_box_append (GTK_BOX (box), vpcard);
 
   /* services */

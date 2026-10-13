@@ -1,3 +1,8 @@
+New in 2.7.0 - 13 October 2026
+
+* Light mode with full light stylesheet and theme-aware graphs
+* Theme switcher in Controls (Dark/Light/System)
+
 New in 2.6.0 - 12 October 2026
 
 * 30 entries: network, bluetooth, printers, audio, displays, input,

@@ -1,0 +1,230 @@
+/* Kast Manager 2.x — light theme (Tejas Khanna) */
+
+@define-color window_bg_color #f4f3f1;
+@define-color window_fg_color #2e3436;
+@define-color view_bg_color #ffffff;
+@define-color view_fg_color #2e3436;
+@define-color headerbar_bg_color #f4f3f1;
+@define-color headerbar_fg_color #2e3436;
+@define-color card_bg_color #ffffff;
+@define-color card_fg_color #2e3436;
+@define-color popover_bg_color #ffffff;
+@define-color popover_fg_color #2e3436;
+@define-color accent_bg_color #0d9488;
+@define-color accent_fg_color #ffffff;
+@define-color accent_color #0d9488;
+@define-color destructive_bg_color #e5484d;
+@define-color destructive_fg_color #ffffff;
+@define-color borders rgba(0, 0, 0, 0.1);
+
+window {
+  background-color: #f4f3f1;
+  color: #2e3436;
+}
+
+headerbar {
+  background-color: #f4f3f1;
+  color: #2e3436;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+button.destructive-action {
+  background-color: #e5484d;
+  color: #ffffff;
+  font-weight: 700;
+  border: none;
+}
+
+button.suggested-action {
+  background-color: #0d9488;
+  color: #ffffff;
+  font-weight: 700;
+  border: none;
+}
+
+.card {
+  background-color: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.09);
+  border-radius: 12px;
+  padding: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+.dim-label {
+  color: #5e5c64;
+}
+
+.kast-neon-title {
+  font-size: 17px;
+  font-weight: 800;
+  color: #2e3436;
+}
+
+/* ---- sidebar ---- */
+
+.kast-sidebar {
+  background-color: #e9e8e6;
+  border-right: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 0 16px 16px 0;
+}
+
+.kast-brand {
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 5px;
+  color: #0d9488;
+}
+
+.kast-header-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #2e3436;
+}
+
+button.kast-nav {
+  background: transparent;
+  border: none;
+  border-radius: 10px;
+  padding: 9px 12px;
+  color: #5e5c64;
+  font-weight: 600;
+}
+
+button.kast-nav:hover {
+  background: rgba(0, 0, 0, 0.05);
+  color: #2e3436;
+}
+
+button.kast-nav.kast-nav-active {
+  background: rgba(13, 148, 136, 0.14);
+  color: #0d9488;
+  font-weight: 700;
+}
+
+button.kast-nav.kast-nav-active image {
+  color: #0d9488;
+}
+
+.kast-sidebar.floating {
+  background-color: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 16px;
+  margin-top: 12px;
+  margin-bottom: 12px;
+  margin-left: 12px;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.12);
+}
+
+.kast-sidebar.rightside {
+  border-right: none;
+  border-left: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 16px 0 0 16px;
+}
+
+.kast-sidebar.ghost {
+  background-color: transparent;
+  border-right: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.kast-topbar {
+  background-color: #e9e8e6;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  padding: 8px 12px;
+}
+
+.kast-topbar button.kast-nav {
+  padding: 8px 10px;
+}
+
+.kast-topbar.floating-bar {
+  background-color: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 14px;
+  margin: 10px 14px 0 14px;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.1);
+}
+
+.kast-float-panel {
+  background-color: rgba(255, 255, 255, 0.97);
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 16px;
+  padding: 10px;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.14);
+}
+
+/* ---- dashboard cards ---- */
+
+.dash-value {
+  font-feature-settings: "tnum";
+}
+
+#dash_grid > flowboxchild {
+  padding: 0;
+  background: transparent;
+  border: none;
+}
+
+#dash_grid button.card {
+  padding: 14px 18px;
+  border-radius: 12px;
+  border: 1px solid rgba(0, 0, 0, 0.09);
+  background-color: #ffffff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+#dash_grid button.card:hover {
+  border-color: rgba(0, 0, 0, 0.18);
+}
+
+/* ---- process table ---- */
+
+row:selected {
+  background: rgba(13, 148, 136, 0.14);
+  color: #2e3436;
+}
+
+headerbutton {
+  background-color: transparent;
+  color: #5e5c64;
+  font-weight: 700;
+}
+
+/* ---- level bars ---- */
+
+levelbar trough {
+  background-color: rgba(0, 0, 0, 0.1);
+  border-radius: 999px;
+  min-height: 6px;
+}
+
+levelbar .filled {
+  background: #0d9488;
+  border-radius: 999px;
+  border: none;
+}
+
+/* ---- inputs ---- */
+
+entry {
+  background-color: #ffffff;
+  color: #2e3436;
+  border: 1px solid rgba(0, 0, 0, 0.14);
+  border-radius: 8px;
+}
+
+entry:focus {
+  border-color: #0d9488;
+}
+
+/* ---- scrollbars ---- */
+
+scrollbar slider {
+  background-color: rgba(0, 0, 0, 0.18);
+  border-radius: 999px;
+  min-width: 8px;
+  min-height: 8px;
+}
+
+scrollbar slider:hover {
+  background-color: rgba(0, 0, 0, 0.3);
+}

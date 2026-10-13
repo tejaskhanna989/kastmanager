@@ -6,7 +6,7 @@ project('kast-manager',
     'warning_level=2',
     'b_lto=true',
   ],
-  version: '2.6.0',
+  version: '2.7.0',
   meson_version: '>=0.57.0',
 )
 
