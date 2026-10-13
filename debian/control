@@ -1,0 +1,21 @@
+Source: kast-manager
+Section: utils
+Priority: optional
+Maintainer: Tejas Khanna <khannatejas989@gmail.com>
+Build-Depends: debhelper-compat (= 13), meson, ninja-build, pkg-config,
+ libgtk-4-dev,
+ libadwaita-1-dev,
+ libgtop2-dev
+Standards-Version: 4.6.2
+Rules-Requires-Root: no
+
+Package: kast-manager
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Processes, resources, disks and files in one dark place
+ Kast Manager 2.x by Tejas Khanna is a fresh minimal system companion
+ with a dark restrained interface: live dashboard, sortable processes
+ with End/Kill, hand-drawn graphs, file systems, file browser,
+ PC rating, full controls, and 20+ more tools.
+ .
+ https://github.com/tejaskhanna989/kastmanager

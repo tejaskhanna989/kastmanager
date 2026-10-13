@@ -66,3 +66,30 @@ jobs:
           name: kastmanager-snap
           path: ${{ steps.snapcraft.outputs.snap }}
 
+
+  deb:
+    runs-on: ubuntu-24.04
+    needs: build
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y debhelper meson ninja-build pkg-config \
+            libgtk-4-dev libadwaita-1-dev libgtop2-dev
+
+      - name: Build binary package
+        run: dpkg-buildpackage -b -us -uc
+
+      - name: Test install
+        run: |
+          sudo apt-get install -y ../kast-manager_*.deb
+          kast-manager --help 2>&1 | head -n 3 || true
+          /usr/bin/kast-manager --version 2>&1 | head -n 2 || true
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: kast-manager-deb
+          path: ../kast-manager_*.deb
