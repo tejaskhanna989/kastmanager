@@ -105,7 +105,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          dnf install -y rpm-build rpmdevtools meson ninja-build gcc \
+          dnf install -y git rpm-build rpmdevtools meson ninja-build gcc \
             pkg-config gtk4-devel libadwaita-devel libgtop2-devel \
             desktop-file-utils libappstream-glib
 
