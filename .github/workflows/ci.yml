@@ -151,7 +151,10 @@ jobs:
           echo "ANDROID_HOME=$SDK" >> $GITHUB_ENV
 
       - name: Build debug APK
-        run: /tmp/gradle-8.10.2/bin/gradle -p android assembleDebug --no-daemon
+        run: |
+          curl -sL https://services.gradle.org/distributions/gradle-8.10.2-bin.zip -o /tmp/gradle.zip
+          unzip -q /tmp/gradle.zip -d /tmp
+          /tmp/gradle-8.10.2/bin/gradle -p android assembleDebug --no-daemon
 
       - uses: actions/upload-artifact@v4
         with:
