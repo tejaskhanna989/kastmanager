@@ -9,7 +9,7 @@ license=('GPL-3.0-or-later')
 depends=('gtk4' 'libadwaita' 'libgtop')
 makedepends=('meson' 'ninja')
 source=("$pkgname-$pkgver.tar.gz::https://github.com/tejaskhanna989/kastmanager/archive/refs/tags/v$pkgver.tar.gz")
-sha256sums=('eaa65a8132ff3df5e54e3f9d86b25a981dd9a26e4adcbad98f7296181a27079f')
+sha256sums=('ae0f775705c5c2e7570ba691fc8bed76848c254df069be8848fedb52bab66750')
 
 build() {
   meson setup build "kastmanager-$pkgver" --prefix=/usr --buildtype=release
