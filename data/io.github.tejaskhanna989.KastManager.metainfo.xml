@@ -31,6 +31,13 @@
   </provides>
 
   <releases>
+    <release date="2026-10-14" version="2.7.3" type="stable">
+      <description>
+        <ul>
+          <li>Renamed symbolic icons so Kast coexists with GNOME System Monitor</li>
+        </ul>
+      </description>
+    </release>
     <release date="2026-10-14" version="2.7.2" type="stable">
       <description>
         <ul>

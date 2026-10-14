@@ -522,8 +522,8 @@ on_startup (GApplication *gapp, gpointer data)
   g_object_set_data (G_OBJECT (side), "kast-navbox", navbox);
 
   gtk_box_append (GTK_BOX (navbox), nav_button (ui, 0, "view-grid-symbolic", "Dashboard"));
-  gtk_box_append (GTK_BOX (navbox), nav_button (ui, 1, "processes-symbolic", "Processes"));
-  gtk_box_append (GTK_BOX (navbox), nav_button (ui, 2, "resources-symbolic", "Graphs"));
+  gtk_box_append (GTK_BOX (navbox), nav_button (ui, 1, "kast-processes-symbolic", "Processes"));
+  gtk_box_append (GTK_BOX (navbox), nav_button (ui, 2, "kast-resources-symbolic", "Graphs"));
   gtk_box_append (GTK_BOX (navbox), nav_button (ui, 3, "drive-harddisk-symbolic", "File Systems"));
   gtk_box_append (GTK_BOX (navbox), nav_button (ui, 4, "folder-symbolic", "Files"));
   gtk_box_append (GTK_BOX (navbox), nav_button (ui, 5, "starred-symbolic", "Rating"));
