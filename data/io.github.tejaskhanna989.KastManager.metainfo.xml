@@ -31,6 +31,13 @@
   </provides>
 
   <releases>
+    <release date="2026-10-14" version="2.8.0" type="stable">
+      <description>
+        <ul>
+          <li>Android companion app with dashboard, processes, system and about</li>
+        </ul>
+      </description>
+    </release>
     <release date="2026-10-14" version="2.7.4" type="stable">
       <description>
         <ul>

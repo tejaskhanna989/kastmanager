@@ -1,6 +1,6 @@
 # Maintainer: Tejas Khanna <khannatejas989@gmail.com>
 pkgname=kast-manager
-pkgver=2.7.4
+pkgver=2.8.0
 pkgrel=1
 pkgdesc='Processes, resources, disks and files in one dark place'
 arch=('x86_64')
