@@ -31,6 +31,13 @@
   </provides>
 
   <releases>
+    <release date="2026-10-14" version="2.7.4" type="stable">
+      <description>
+        <ul>
+          <li>Redrawn Processes and Graphs nav icons</li>
+        </ul>
+      </description>
+    </release>
     <release date="2026-10-14" version="2.7.3" type="stable">
       <description>
         <ul>

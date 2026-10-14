@@ -1,5 +1,5 @@
 Name:           kast-manager
-Version:        2.7.3
+Version:        2.7.4
 Release:        1%{?dist}
 Summary:        Processes, resources, disks and files in one dark place
 License:        GPL-3.0-or-later
@@ -46,9 +46,11 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/*.desktop || :
 * Tue Oct 13 2026 Tejas Khanna <khannatejas989@gmail.com> - 2.6.0-1
 - Fresh 2.x upstream release.
 * Tue Oct 13 2026 Tejas Khanna <khannatejas989@gmail.com> - 2.7.0-1
-* Tue Oct 13 2026 Tejas Khanna <khannatejas989@gmail.com> - 2.7.2-1
+* Tue Oct 13 2026 Tejas Khanna <khannatejas989@gmail.com> - 2.7.4-1
 - Donate region popup.
 - Light mode and theme switcher.
 
+* Tue Oct 14 2026 Tejas Khanna <khannatejas989@gmail.com> - 2.7.4-1
+- Redrawn nav icons.
 * Tue Oct 14 2026 Tejas Khanna <khannatejas989@gmail.com> - 2.7.3-1
 - Rename symbolic icons to avoid file conflicts.
