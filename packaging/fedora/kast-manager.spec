@@ -43,14 +43,14 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/*.desktop || :
 %{_datadir}/icons/hicolor/
 
 %changelog
+* Wed Oct 14 2026 Tejas Khanna <khannatejas989@gmail.com> - 2.7.4-1
+- Redrawn nav icons.
+* Tue Oct 13 2026 Tejas Khanna <khannatejas989@gmail.com> - 2.7.3-1
+- Rename symbolic icons to avoid file conflicts.
+* Tue Oct 13 2026 Tejas Khanna <khannatejas989@gmail.com> - 2.7.2-1
+- Donate region popup.
+* Tue Oct 13 2026 Tejas Khanna <khannatejas989@gmail.com> - 2.7.1-1
+- Light mode and theme switcher.
+* Tue Oct 13 2026 Tejas Khanna <khannatejas989@gmail.com> - 2.7.0-1
 * Tue Oct 13 2026 Tejas Khanna <khannatejas989@gmail.com> - 2.6.0-1
 - Fresh 2.x upstream release.
-* Tue Oct 13 2026 Tejas Khanna <khannatejas989@gmail.com> - 2.7.0-1
-* Tue Oct 13 2026 Tejas Khanna <khannatejas989@gmail.com> - 2.7.4-1
-- Donate region popup.
-- Light mode and theme switcher.
-
-* Tue Oct 14 2026 Tejas Khanna <khannatejas989@gmail.com> - 2.7.4-1
-- Redrawn nav icons.
-* Tue Oct 14 2026 Tejas Khanna <khannatejas989@gmail.com> - 2.7.3-1
-- Rename symbolic icons to avoid file conflicts.
