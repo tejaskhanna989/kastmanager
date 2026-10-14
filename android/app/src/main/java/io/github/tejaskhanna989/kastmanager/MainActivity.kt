@@ -146,7 +146,7 @@ class MainActivity : AppCompatActivity() {
             val t = TextView(this)
             t.text = "$k: $v"
             t.setPadding(10, 10, 10, 10)
-            t.isTextSelectable = true
+            t.setTextIsSelectable(true)
             box.addView(t)
         }
         row("Device", "${android.os.Build.MANUFACTURER} ${android.os.Build.MODEL}")
