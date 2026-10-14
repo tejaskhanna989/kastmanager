@@ -108,6 +108,7 @@ draw_history (GtkDrawingArea *area, cairo_t *cr, int width, int height, gpointer
     cairo_set_source_rgb (cr, 0.49, 0.61, 0.96);
   cairo_set_line_width (cr, 2.0);
   cairo_set_line_join (cr, CAIRO_LINE_JOIN_ROUND);
+  double last_x = pad, last_y = pad + h;
   for (int i = 0; i < HIST; i++)
     {
       double x = pad + w * i / (HIST - 1);
@@ -116,8 +117,13 @@ draw_history (GtkDrawingArea *area, cairo_t *cr, int width, int height, gpointer
         cairo_move_to (cr, x, y);
       else
         cairo_line_to (cr, x, y);
+      last_x = x;
+      last_y = y;
     }
   cairo_stroke (cr);
+  /* end dot at the live value */
+  cairo_arc (cr, last_x, last_y, 3.5, 0, 2 * G_PI);
+  cairo_fill (cr);
 }
 
 static gboolean

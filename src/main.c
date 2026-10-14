@@ -413,8 +413,13 @@ on_startup (GApplication *gapp, gpointer data)
   GtkWidget *header = gtk_header_bar_new ();
   gtk_window_set_titlebar (GTK_WINDOW (win), header);
 
-  GtkWidget *htitle = gtk_label_new ("Kast Manager");
-  gtk_widget_add_css_class (htitle, "kast-header-title");
+  GtkWidget *htitle = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 8);
+  GtkWidget *hlogo = gtk_image_new_from_resource ("/io/github/tejaskhanna989/KastManager/kast-logo.svg");
+  gtk_image_set_pixel_size (GTK_IMAGE (hlogo), 22);
+  gtk_box_append (GTK_BOX (htitle), hlogo);
+  GtkWidget *htitle_l = gtk_label_new ("Kast Manager");
+  gtk_widget_add_css_class (htitle_l, "kast-header-title");
+  gtk_box_append (GTK_BOX (htitle), htitle_l);
   gtk_header_bar_set_title_widget (GTK_HEADER_BAR (header), htitle);
 
   GtkWidget *menu_btn = gtk_menu_button_new ();

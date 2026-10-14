@@ -1,0 +1,10 @@
+<resources>
+    <color name="kast_bg">#141419</color>
+    <color name="kast_card">#1E1E26</color>
+    <color name="kast_fg">#E8E8EC</color>
+    <color name="kast_dim">#9A9AA5</color>
+    <color name="kast_accent">#2DD4BF</color>
+    <color name="kast_green">#3DFF9E</color>
+    <color name="kast_amber">#FFB224</color>
+    <color name="kast_red">#FF5470</color>
+</resources>

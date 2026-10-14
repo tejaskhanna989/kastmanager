@@ -127,8 +127,9 @@ button.suggested-action {
 button.kast-nav {
   background: transparent;
   border: none;
-  border-radius: 10px;
-  padding: 9px 12px;
+  border-left: 3px solid transparent;
+  border-radius: 0 10px 10px 0;
+  padding: 9px 12px 9px 9px;
   color: #9a9aa5;
   font-weight: 600;
 }
@@ -139,7 +140,8 @@ button.kast-nav:hover {
 }
 
 button.kast-nav.kast-nav-active {
-  background: rgba(45, 212, 191, 0.14);
+  background: rgba(45, 212, 191, 0.1);
+  border-left-color: #2dd4bf;
   color: #2dd4bf;
   font-weight: 700;
 }
@@ -202,6 +204,12 @@ levelbar .filled {
   border-radius: 999px;
   border: none;
 }
+
+/* ---- heat-colored CPU readouts ---- */
+
+.kast-cool { color: #3dff9e; }
+.kast-warm { color: #ffb224; }
+.kast-hot { color: #ff5470; font-weight: 800; }
 
 /* ---- inputs ---- */
 

@@ -185,6 +185,8 @@ refill_rows (KastProcs *k)
       GtkWidget *cpu = gtk_label_new (cpu_txt);
       g_free (cpu_txt);
       gtk_widget_add_css_class (cpu, "dash-value");
+      gtk_widget_add_css_class (cpu,
+          p->cpu >= 80.0 ? "kast-hot" : p->cpu >= 50.0 ? "kast-warm" : "kast-cool");
       gtk_widget_set_halign (cpu, GTK_ALIGN_END);
       gtk_widget_set_size_request (cpu, 70, -1);
       gtk_grid_attach (GTK_GRID (grid), cpu, 2, 0, 1, 1);
