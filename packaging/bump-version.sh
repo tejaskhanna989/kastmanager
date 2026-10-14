@@ -21,8 +21,17 @@ sed -i "s/^Version:        $OLD_SPEC$/Version:        $VER/" packaging/fedora/ka
 OLD_PKG=$(grep -oP '^pkgver=\K[0-9.]+' packaging/arch/PKGBUILD)
 sed -i "s/^pkgver=$OLD_PKG$/pkgver=$VER/" packaging/arch/PKGBUILD
 
-OLD_SNAP=$(grep -oP "^version: '\K[0-9.]+'" snap/snapcraft.yaml)
-sed -i "s/^version: '$OLD_SNAP'$/version: '$VER'/" snap/snapcraft.yaml
+OLD_SNAP=$(grep -oP "^version: '\K[0-9.]+'" snap/snapcraft.yaml | head -n 1)
+python3 - "$OLD_SNAP" "$VER" <<'PYEOF'
+import pathlib, sys
+old, ver = sys.argv[1], sys.argv[2]
+p = pathlib.Path("snap/snapcraft.yaml")
+t = p.read_text()
+assert f"version: '{old}'" in t, "snap version line not found"
+t = t.replace(f"version: '{old}'", f"version: '{ver}'", 1)
+p.write_text(t)
+print(f"snap {old} -> {ver}")
+PYEOF
 
 python3 - "$VER" "$DATE" "$D" <<'PY'
 import pathlib, sys
