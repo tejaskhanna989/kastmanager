@@ -31,6 +31,13 @@
   </provides>
 
   <releases>
+    <release date="2026-10-14" version="2.7.2" type="stable">
+      <description>
+        <ul>
+          <li>Donate asks India Yes/No with Razorpay and PayPal</li>
+        </ul>
+      </description>
+    </release>
     <release date="2026-10-14" version="2.7.1" type="stable">
       <description>
         <ul>

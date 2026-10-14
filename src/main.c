@@ -77,17 +77,40 @@ on_widget (GSimpleAction *, GVariant *, gpointer data)
 }
 
 static void
-on_donate (GSimpleAction *, GVariant *, gpointer data)
+on_donate_pick (GtkDialog *dlg, int resp, gpointer data)
 {
   KastUi *ui = data;
-  gtk_show_uri (GTK_WINDOW (ui->window), KAST_DONATE_URL, GDK_CURRENT_TIME);
+  if (resp == GTK_RESPONSE_YES)
+    gtk_show_uri (GTK_WINDOW (ui->window), KAST_DONATE_IN_URL, GDK_CURRENT_TIME);
+  else if (resp == GTK_RESPONSE_NO)
+    gtk_show_uri (GTK_WINDOW (ui->window), KAST_DONATE_OUT_URL, GDK_CURRENT_TIME);
+  gtk_window_destroy (GTK_WINDOW (dlg));
+}
+
+static void
+kast_donate_ask (KastUi *ui)
+{
+  GtkWidget *dlg = gtk_message_dialog_new (GTK_WINDOW (ui->window),
+      GTK_DIALOG_MODAL, GTK_MESSAGE_QUESTION, GTK_BUTTONS_NONE,
+      "Are You From India?");
+  gtk_window_set_title (GTK_WINDOW (dlg), "Donate");
+  gtk_dialog_add_button (GTK_DIALOG (dlg), "Yes", GTK_RESPONSE_YES);
+  gtk_dialog_add_button (GTK_DIALOG (dlg), "No", GTK_RESPONSE_NO);
+  gtk_dialog_set_default_response (GTK_DIALOG (dlg), GTK_RESPONSE_YES);
+  g_signal_connect (dlg, "response", G_CALLBACK (on_donate_pick), ui);
+  gtk_window_present (GTK_WINDOW (dlg));
+}
+
+static void
+on_donate (GSimpleAction *, GVariant *, gpointer data)
+{
+  kast_donate_ask (data);
 }
 
 static void
 on_donate_btn (GtkButton *, gpointer data)
 {
-  KastUi *ui = data;
-  gtk_show_uri (GTK_WINDOW (ui->window), KAST_DONATE_URL, GDK_CURRENT_TIME);
+  kast_donate_ask (data);
 }
 
 static GtkWidget *

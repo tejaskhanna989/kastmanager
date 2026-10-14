@@ -39,6 +39,8 @@
 #define KAST_NPAGES 30
 
 #define KAST_DONATE_URL "https://github.com/sponsors/tejaskhanna989"
+#define KAST_DONATE_IN_URL "https://razorpay.me/@deepakkhanna1473"
+#define KAST_DONATE_OUT_URL "https://www.paypal.com/paypalme/deepakrajkhanna/"
 
 typedef struct {
   GtkApplication *app;

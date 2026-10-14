@@ -115,7 +115,8 @@ jobs:
           cp packaging/fedora/kast-manager.spec ~/rpmbuild/SPECS/
           cd ~/rpmbuild/SPECS && spectool -g -R kast-manager.spec
           rpmbuild -bb ~/rpmbuild/SPECS/kast-manager.spec
-          mkdir -p rpm-out && cp ~/rpmbuild/RPMS/*/kast-manager-*.rpm rpm-out/ && ls rpm-out/
+          mkdir -p "$GITHUB_WORKSPACE/rpm-out"
+          cp ~/rpmbuild/RPMS/*/kast-manager-[0-9]*.rpm "$GITHUB_WORKSPACE/rpm-out/" && ls "$GITHUB_WORKSPACE/rpm-out/"
 
       - uses: actions/upload-artifact@v4
         with:
