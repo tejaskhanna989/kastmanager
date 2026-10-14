@@ -19,6 +19,10 @@ with End/Kill, hand-drawn **Graphs**, **File Systems** usage, and a minimal
 
 GNU General Public License v3.0 or later. See `COPYING`.
 
+## Donate
+
+If Kast Manager helps you: https://github.com/sponsors/tejaskhanna989
+
 ## Install
 
 ```sh

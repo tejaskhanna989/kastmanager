@@ -1,5 +1,5 @@
 Name:           kast-manager
-Version:        2.7.0
+Version:        2.7.1
 Release:        1%{?dist}
 Summary:        Processes, resources, disks and files in one dark place
 License:        GPL-3.0-or-later

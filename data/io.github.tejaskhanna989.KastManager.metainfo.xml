@@ -22,6 +22,7 @@
 
   <url type="homepage">https://github.com/tejaskhanna989/kastmanager</url>
   <url type="bugtracker">https://github.com/tejaskhanna989/kastmanager/issues</url>
+  <url type="donation">https://github.com/sponsors/tejaskhanna989</url>
   <url type="vcs-browser">https://github.com/tejaskhanna989/kastmanager</url>
 
   <provides>
@@ -30,6 +31,13 @@
   </provides>
 
   <releases>
+    <release date="2026-10-14" version="2.7.1" type="stable">
+      <description>
+        <ul>
+          <li>Donate button in sidebar, menu and About</li>
+        </ul>
+      </description>
+    </release>
     <release date="2026-10-13" version="2.7.0" type="stable">
       <description>
         <ul>

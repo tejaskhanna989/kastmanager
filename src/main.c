@@ -58,6 +58,7 @@ on_about (GSimpleAction *, GVariant *, gpointer data)
       "copyright", "© 2026 Tejas Khanna",
       "license-type", GTK_LICENSE_GPL_3_0,
       "website", "https://github.com/tejaskhanna989/kastmanager",
+      "comments", "If Kast Manager helps you, please donate: " KAST_DONATE_URL,
       NULL);
   gtk_window_present (GTK_WINDOW (dlg));
 }
@@ -73,6 +74,20 @@ static void
 on_widget (GSimpleAction *, GVariant *, gpointer data)
 {
   kast_widget_toggle (data);
+}
+
+static void
+on_donate (GSimpleAction *, GVariant *, gpointer data)
+{
+  KastUi *ui = data;
+  gtk_show_uri (GTK_WINDOW (ui->window), KAST_DONATE_URL, GDK_CURRENT_TIME);
+}
+
+static void
+on_donate_btn (GtkButton *, gpointer data)
+{
+  KastUi *ui = data;
+  gtk_show_uri (GTK_WINDOW (ui->window), KAST_DONATE_URL, GDK_CURRENT_TIME);
 }
 
 static GtkWidget *
@@ -433,6 +448,7 @@ on_startup (GApplication *gapp, gpointer data)
 
   GMenu *menu = g_menu_new ();
   g_menu_append (menu, "Mini widget", "app.widget");
+  g_menu_append (menu, "Donate ♥", "app.donate");
   g_menu_append (menu, "About Kast Manager", "app.about");
   g_menu_append (menu, "Quit", "app.quit");
   gtk_menu_button_set_menu_model (GTK_MENU_BUTTON (menu_btn), G_MENU_MODEL (menu));
@@ -512,6 +528,13 @@ on_startup (GApplication *gapp, gpointer data)
   gtk_box_append (GTK_BOX (navbox), nav_button (ui, 27, "user-trash-symbolic", "Trash"));
   gtk_box_append (GTK_BOX (navbox), nav_button (ui, 28, "edit-copy-symbolic", "Clipboard"));
   gtk_box_append (GTK_BOX (navbox), nav_button (ui, 29, "dialog-information-symbolic", "Shortcuts"));
+
+  GtkWidget *donate_btn = gtk_button_new_with_label ("♥ Donate");
+  gtk_widget_add_css_class (donate_btn, "suggested-action");
+  gtk_widget_set_halign (donate_btn, GTK_ALIGN_FILL);
+  gtk_widget_set_margin_top (donate_btn, 6);
+  g_signal_connect (donate_btn, "clicked", G_CALLBACK (on_donate_btn), ui);
+  gtk_box_append (GTK_BOX (side), donate_btn);
 
   GtkWidget *ver = gtk_label_new ("v" VERSION);
   gtk_widget_add_css_class (ver, "dim-label");
@@ -593,10 +616,11 @@ on_startup (GApplication *gapp, gpointer data)
   const GActionEntry app_actions[] = {
     { "about", on_about, NULL, NULL, NULL, { 0 } },
     { "widget", on_widget, NULL, NULL, NULL, { 0 } },
+    { "donate", on_donate, NULL, NULL, NULL, { 0 } },
     { "show-page", on_show_page, "s", NULL, NULL, { 0 } },
     { "quit", on_quit, NULL, NULL, NULL, { 0 } },
   };
-  g_action_map_add_action_entries (G_ACTION_MAP (gapp), app_actions, 4, ui);
+  g_action_map_add_action_entries (G_ACTION_MAP (gapp), app_actions, 5, ui);
 
   kast_nav_sync (ui);
   kast_side_apply (ui, kast_cfg_get ("sidebar-mode", 0));

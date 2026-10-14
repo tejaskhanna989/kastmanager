@@ -38,6 +38,8 @@
 #define KAST_PAGE_KEYS      "keys"
 #define KAST_NPAGES 30
 
+#define KAST_DONATE_URL "https://github.com/sponsors/tejaskhanna989"
+
 typedef struct {
   GtkApplication *app;
   GtkWidget *window;
