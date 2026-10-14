@@ -47,3 +47,8 @@ PY
 
 echo "Bumped $OLD_MESON -> $VER (meson/deb/spec/PKGBUILD/snap/metainfo/NEWS)."
 echo "Remember: PKGBUILD sha256 needs the published tag tarball."
+
+echo "--- verify ---"
+grep -H -oP "^(version|pkgver): .?\K[0-9.]+" meson.build snap/snapcraft.yaml packaging/arch/PKGBUILD 2>/dev/null || true
+grep -H -oP "^kast-manager \(\K[0-9.]+" debian/changelog || true
+grep -H -oP "^Version:\s+\K[0-9.]+" packaging/fedora/kast-manager.spec || true
