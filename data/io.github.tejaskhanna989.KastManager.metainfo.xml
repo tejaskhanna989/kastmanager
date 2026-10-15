@@ -31,6 +31,13 @@
   </provides>
 
   <releases>
+    <release date="2026-10-15" version="2.8.1" type="stable">
+      <description>
+        <ul>
+          <li>Redesigned donate dialog</li>
+        </ul>
+      </description>
+    </release>
     <release date="2026-10-14" version="2.8.0" type="stable">
       <description>
         <ul>

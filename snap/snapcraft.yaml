@@ -1,6 +1,6 @@
 name: kastmanager
 base: core24
-version: '2.8.0'
+version: '2.8.1'
 summary: Processes, resources, disks and files in one dark place
 description: |
   Kast Manager 2.x by Tejas Khanna — a fresh minimal system companion

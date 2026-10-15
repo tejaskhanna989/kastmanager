@@ -90,12 +90,40 @@ on_donate_pick (GtkDialog *dlg, int resp, gpointer data)
 static void
 kast_donate_ask (KastUi *ui)
 {
-  GtkWidget *dlg = gtk_message_dialog_new (GTK_WINDOW (ui->window),
-      GTK_DIALOG_MODAL, GTK_MESSAGE_QUESTION, GTK_BUTTONS_NONE,
-      "Are You From India?");
+  GtkWidget *dlg = gtk_dialog_new ();
+  gtk_window_set_transient_for (GTK_WINDOW (dlg), GTK_WINDOW (ui->window));
+  gtk_window_set_modal (GTK_WINDOW (dlg), TRUE);
   gtk_window_set_title (GTK_WINDOW (dlg), "Donate");
-  gtk_dialog_add_button (GTK_DIALOG (dlg), "Yes", GTK_RESPONSE_YES);
-  gtk_dialog_add_button (GTK_DIALOG (dlg), "No", GTK_RESPONSE_NO);
+  gtk_window_set_default_size (GTK_WINDOW (dlg), 340, -1);
+
+  GtkWidget *content = gtk_dialog_get_content_area (GTK_DIALOG (dlg));
+  gtk_widget_set_margin_top (content, 18);
+  gtk_widget_set_margin_bottom (content, 6);
+  gtk_widget_set_margin_start (content, 20);
+  gtk_widget_set_margin_end (content, 20);
+
+  GtkWidget *logo = gtk_image_new_from_resource ("/io/github/tejaskhanna989/KastManager/kast-logo.svg");
+  gtk_image_set_pixel_size (GTK_IMAGE (logo), 56);
+  gtk_widget_set_halign (logo, GTK_ALIGN_CENTER);
+  gtk_widget_set_margin_bottom (logo, 10);
+  gtk_box_append (GTK_BOX (content), logo);
+
+  GtkWidget *head = gtk_label_new ("Support Kast Manager");
+  gtk_widget_add_css_class (head, "kast-neon-title");
+  gtk_widget_set_halign (head, GTK_ALIGN_CENTER);
+  gtk_box_append (GTK_BOX (content), head);
+
+  GtkWidget *body = gtk_label_new ("Are you from India?\nThis picks your payment method.");
+  gtk_widget_add_css_class (body, "dim-label");
+  gtk_widget_set_halign (body, GTK_ALIGN_CENTER);
+  gtk_label_set_justify (GTK_LABEL (body), GTK_JUSTIFY_CENTER);
+  gtk_widget_set_margin_top (body, 6);
+  gtk_widget_set_margin_bottom (body, 4);
+  gtk_box_append (GTK_BOX (content), body);
+
+  gtk_dialog_add_button (GTK_DIALOG (dlg), "No, outside India", GTK_RESPONSE_NO);
+  GtkWidget *yes = gtk_dialog_add_button (GTK_DIALOG (dlg), "Yes, I'm in India", GTK_RESPONSE_YES);
+  gtk_widget_add_css_class (yes, "suggested-action");
   gtk_dialog_set_default_response (GTK_DIALOG (dlg), GTK_RESPONSE_YES);
   g_signal_connect (dlg, "response", G_CALLBACK (on_donate_pick), ui);
   gtk_window_present (GTK_WINDOW (dlg));
