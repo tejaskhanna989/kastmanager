@@ -38,6 +38,7 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/*.desktop || :
 
 %files
 %{_bindir}/kast-manager
+%{_bindir}/kast-tui
 %{_datadir}/applications/io.github.tejaskhanna989.KastManager.desktop
 %{_datadir}/metainfo/io.github.tejaskhanna989.KastManager.metainfo.xml
 %{_datadir}/icons/hicolor/
