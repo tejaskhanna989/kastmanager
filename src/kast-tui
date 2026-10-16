@@ -263,7 +263,7 @@ class KastTui:
 
     def add(self, y, x, text, attr=0, width=None):
         h, w = self.s.getmaxyx()
-        if y < 0 or y >= h - 1 or x >= w:
+        if y < 0 or y >= h or x >= w:
             return
         if width is not None:
             text = text[:width]
@@ -280,6 +280,8 @@ class KastTui:
 
     def footer_keys(self):
         h, w = self.s.getmaxyx()
+        now = time.strftime("%H:%M:%S")
+        live = f"● LIVE {now}"
         if self.tab == 1:
             hints = [("F1", "Help"), ("F2", "Sort"), ("F3", "Search"),
                      ("F5", "Tree"), ("F9", "Kill"), ("F10", "Quit")]
@@ -290,15 +292,16 @@ class KastTui:
             hints = [("1-5", "Tabs"), ("F1", "Help"), ("F10", "Quit")]
         x = 2
         for key, label in hints:
-            if x + len(key) + len(label) + 3 >= w:
+            if x + len(key) + len(label) + 3 >= w - len(live) - 3:
                 break
             self.add(h - 1, x, key, curses.A_BOLD | self.color(ACCENT))
             self.add(h - 1, x + len(key), " " + label + " ",
                      self.color(DIM))
             x += len(key) + len(label) + 3
+        self.add(h - 1, w - len(live) - 2, live, self.color(GOOD))
         if self.msg:
-            self.add(h - 1, max(x, w - len(self.msg) - 2), self.msg,
-                     self.color(WARN))
+            self.add(h - 1, max(x, w - len(self.msg) - len(live) - 4),
+                     self.msg, self.color(WARN))
 
     def status(self):
         h, w = self.s.getmaxyx()
@@ -348,7 +351,8 @@ class KastTui:
 
     def draw_dash(self):
         h, w = self.s.getmaxyx()
-        bw = min(46, (w - 8) // 2)
+        narrow = w < 100
+        bw = (w - 4) if narrow else min(46, (w - 8) // 2)
         pct = self.cpu_pct()
         mem = mem_info()
         mtotal = mem.get("MemTotal", 1)
@@ -388,8 +392,9 @@ class KastTui:
             npids = 0
         cards.append(("Processes", str(npids), 0, "total tasks"))
         y = 2
-        for i in range(0, len(cards), 2):
-            for j, (cap, val, pc, det) in enumerate(cards[i:i + 2]):
+        per_row = 1 if narrow else 2
+        for i in range(0, len(cards), per_row):
+            for j, (cap, val, pc, det) in enumerate(cards[i:i + per_row]):
                 x = 2 + j * (bw + 2)
                 self.add(y, x, cap, self.color(DIM))
                 self.add(y + 1, x, val, curses.A_BOLD | self.color(ACCENT))

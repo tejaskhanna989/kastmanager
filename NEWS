@@ -1,3 +1,7 @@
+New in 2.9.2 - 16 October 2026
+
+* TUI footer that actually renders plus live clock
+
 New in 2.9.1 - 16 October 2026
 
 * htop-style TUI: F-keys, tree view, kill menu, mouse

@@ -31,6 +31,13 @@
   </provides>
 
   <releases>
+    <release date="2026-10-16" version="2.9.2" type="stable">
+      <description>
+        <ul>
+          <li>TUI footer that actually renders plus live clock</li>
+        </ul>
+      </description>
+    </release>
     <release date="2026-10-16" version="2.9.1" type="stable">
       <description>
         <ul>
