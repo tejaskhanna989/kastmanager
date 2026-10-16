@@ -174,6 +174,44 @@ def mounts():
     return rows
 
 
+def proc_ppid(pid):
+    try:
+        with open(f"/proc/{pid}/stat") as f:
+            rest = f.read().rsplit(")", 1)[-1].split()
+        return int(rest[1])
+    except (OSError, IndexError, ValueError):
+        return 0
+
+
+def build_tree(procs):
+    by_pid = {p["pid"]: p for p in procs}
+    kids = {}
+    for p in procs:
+        ppid = proc_ppid(p["pid"])
+        kids.setdefault(ppid, []).append(p["pid"])
+    ordered = []
+
+    def walk(pid, depth):
+        p = by_pid.get(pid)
+        if p is None:
+            return
+        p["depth"] = depth
+        ordered.append(p)
+        for c in sorted(kids.get(pid, [])):
+            walk(c, depth + 1)
+
+    roots = [p["pid"] for p in procs if proc_ppid(p["pid"]) not in by_pid]
+    for pid in sorted(roots):
+        walk(pid, 0)
+    # orphans missed above (races): append flat
+    seen = {p["pid"] for p in ordered}
+    for p in procs:
+        if p["pid"] not in seen:
+            p["depth"] = 0
+            ordered.append(p)
+    return ordered
+
+
 class KastTui:
     def __init__(self, stdscr):
         self.s = stdscr
@@ -186,6 +224,8 @@ class KastTui:
         self.sort_desc = True
         self.proc_filter = ""
         self.last_pref = 0.0
+        self.tree_mode = False
+        self.show_help = False
         self.procs = []
         self.last_total = 0
         self.last_idle = 0
@@ -238,20 +278,62 @@ class KastTui:
         self.add(0, 2, f"Kast Manager — {text}",
                  curses.A_BOLD | self.color(ACCENT))
 
+    def footer_keys(self):
+        h, w = self.s.getmaxyx()
+        if self.tab == 1:
+            hints = [("F1", "Help"), ("F2", "Sort"), ("F3", "Search"),
+                     ("F5", "Tree"), ("F9", "Kill"), ("F10", "Quit")]
+        elif self.tab == 4:
+            hints = [("Enter", "Open"), ("Bksp", "Up"), ("F3", "Search"),
+                     ("1-5", "Tabs"), ("F10", "Quit")]
+        else:
+            hints = [("1-5", "Tabs"), ("F1", "Help"), ("F10", "Quit")]
+        x = 2
+        for key, label in hints:
+            if x + len(key) + len(label) + 3 >= w:
+                break
+            self.add(h - 1, x, key, curses.A_BOLD | self.color(ACCENT))
+            self.add(h - 1, x + len(key), " " + label + " ",
+                     self.color(DIM))
+            x += len(key) + len(label) + 3
+        if self.msg:
+            self.add(h - 1, max(x, w - len(self.msg) - 2), self.msg,
+                     self.color(WARN))
+
     def status(self):
         h, w = self.s.getmaxyx()
-        keys = {
-            0: "1-5 tabs · q quit",
-            1: "↑↓/jk move · c sort · / filter · e end · x kill · r renice",
-            2: "1-5 tabs · q quit",
-            3: "1-5 tabs · q quit",
-            4: "↑↓ move · enter open · / filter · backspace up",
-        }[self.tab]
         self.add(h - 1, 0, " " * (w - 1))
-        self.add(h - 1, 2, keys, self.color(DIM))
-        if self.msg:
-            self.add(h - 1, w - len(self.msg) - 2, self.msg,
-                     self.color(WARN))
+        self.footer_keys()
+
+    def draw_help(self):
+        h, w = self.s.getmaxyx()
+        lines = [
+            "Kast TUI keys",
+            "",
+            "Up Down j k ..... move selection",
+            "1-5 ............. switch tabs",
+            "F1 .............. this help",
+            "F2 / c .......... cycle sort column",
+            "F3 / / .......... search processes",
+            "F5 .............. process tree on/off",
+            "F9 .............. kill menu (pick signal)",
+            "e ............... end process (SIGTERM)",
+            "x ............... kill process (SIGKILL)",
+            "r ............... change priority",
+            "Enter ........... open file / folder",
+            "Backspace ....... folder up",
+            "F10 / q ......... quit (Esc: dashboard)",
+        ]
+        bw = max(len(line) for line in lines) + 4
+        bh = len(lines) + 2
+        y0, x0 = max(1, (h - bh) // 2), max(0, (w - bw) // 2)
+        for i in range(bh):
+            self.add(y0 + i, x0, " " * min(bw, w - x0 - 1),
+                     curses.A_REVERSE)
+        for i, line in enumerate(lines):
+            attr = curses.A_REVERSE | curses.A_BOLD if i == 0 \
+                else curses.A_REVERSE
+            self.add(y0 + 1 + i, x0 + 2, line, attr)
 
     def cpu_pct(self):
         total, idle = cpu_times()
@@ -325,10 +407,18 @@ class KastTui:
             q = self.proc_filter.lower()
             self.procs = [p for p in self.procs
                           if q in p["name"].lower() or q in str(p["pid"])]
-        rev = self.sort_desc
-        k = self.sort_key
-        self.procs.sort(key=lambda p: p[k] if k != "name" else p[k].lower(),
-                        reverse=rev)
+        if self.tree_mode:
+            for p in self.procs:
+                p["depth"] = 0
+            self.procs = build_tree(self.procs)
+        else:
+            rev = self.sort_desc
+            k = self.sort_key
+            self.procs.sort(
+                key=lambda p: p[k] if k != "name" else p[k].lower(),
+                reverse=rev)
+            for p in self.procs:
+                p["depth"] = 0
         self.last_pref = time.time()
         if keep > 0:
             for i, p in enumerate(self.procs):
@@ -360,8 +450,10 @@ class KastTui:
         h, w = self.s.getmaxyx()
         if not self.procs or time.time() - self.last_pref > 3:
             self.refresh_procs()
+        mode = "TREE" if self.tree_mode else "LIST"
+        filt = f" filter:{self.proc_filter}" if self.proc_filter else ""
         self.add(2, 2, f"{'Process':<30}{'User':<12}{'CPU%':>7}  "
-                      f"{'Memory':>10}  {'PID':>7}",
+                      f"{'Memory':>10}  {'PID':>7}   [{mode}{filt}]",
                  curses.A_BOLD | self.color(ACCENT))
         y0, rows = 3, h - 5
         n = len(self.procs)
@@ -373,7 +465,8 @@ class KastTui:
             self.top = self.sel - rows + 1
         for i in range(self.top, min(n, self.top + rows)):
             p = self.procs[i]
-            line = (f"{p['name'][:28]:<30}{p['user'][:10]:<12}"
+            nm = ("  " * min(p.get("depth", 0), 8)) + p["name"]
+            line = (f"{nm[:28]:<30}{p['user'][:10]:<12}"
                     f"{p['cpu']:>6.1f}%  {fmt_bytes(p['mem']):>10}  "
                     f"{p['pid']:>7}")
             attr = curses.A_REVERSE if i == self.sel else 0
@@ -526,7 +619,76 @@ class KastTui:
                              stdout=subprocess.DEVNULL,
                              stderr=subprocess.DEVNULL)
 
+    def cycle_sort(self):
+        order = ["cpu", "mem", "pid", "name"]
+        i = order.index(self.sort_key)
+        if self.sort_desc and i < len(order) - 1:
+            self.sort_key = order[i + 1]
+            self.sort_desc = self.sort_key in ("cpu", "mem")
+        else:
+            self.sort_desc = not self.sort_desc
+        self.refresh_procs()
+
+    def search_procs(self):
+        self.proc_filter = self.prompt("filter")
+        self.sel = 0
+        self.refresh_procs()
+
+    def kill_menu(self):
+        if self.tab != 1 or not self.procs:
+            return
+        p = self.procs[self.sel]
+        ans = self.prompt(
+            f"signal for {p['pid']} (15 TERM, 9 KILL, 19 STOP, 18 CONT, 2 INT)")
+        try:
+            sig = int(ans)
+        except ValueError:
+            self.msg = "cancelled"
+            return
+        if sig not in (15, 9, 19, 18, 2):
+            self.msg = "bad signal"
+            return
+        try:
+            if p["uid"] == os.geteuid():
+                os.kill(p["pid"], sig)
+                self.msg = f"sent {sig}"
+            else:
+                r = subprocess.run(
+                    ["pkexec", "kill", f"-{sig}", str(p["pid"])],
+                    capture_output=True, timeout=60)
+                self.msg = "done" if r.returncode == 0 else "pkexec failed"
+        except (OSError, subprocess.SubprocessError) as e:
+            self.msg = str(e)[:40]
+        time.sleep(0.4)
+        self.refresh_procs()
+
+    def click(self, y, x):
+        h, w = self.s.getmaxyx()
+        if self.tab == 1 and 3 <= y < h - 1:
+            idx = self.top + (y - 3)
+            if 0 <= idx < len(self.procs):
+                self.sel = idx
+        elif self.tab == 4 and 3 <= y < h - 1:
+            idx = self.ftop + (y - 3)
+            if 0 <= idx < len(self.ffiles):
+                self.fsel = idx
+
     def handle(self, ch):
+        if self.show_help:
+            self.show_help = False
+            return True
+        if ch == curses.KEY_F10:
+            return False
+        if ch == curses.KEY_F1:
+            self.show_help = True
+            return True
+        if ch == curses.KEY_MOUSE:
+            try:
+                _, mx, my, _, _ = curses.getmouse()
+                self.click(my, mx)
+            except curses.error:
+                pass
+            return True
         if ch in (ord("q"), 27):
             if self.tab == 0:
                 return False
@@ -545,19 +707,17 @@ class KastTui:
                 self.sel = max(0, self.sel - 1)
             elif ch in (curses.KEY_DOWN, ord("j")):
                 self.sel = min(max(0, n - 1), self.sel + 1)
-            elif ch == ord("c"):
-                order = ["cpu", "mem", "pid", "name"]
-                i = order.index(self.sort_key)
-                if self.sort_desc and i < len(order) - 1:
-                    self.sort_key = order[i + 1]
-                    self.sort_desc = self.sort_key in ("cpu", "mem")
-                else:
-                    self.sort_desc = not self.sort_desc
-                self.refresh_procs()
-            elif ch == ord("/"):
-                self.proc_filter = self.prompt("filter")
+            elif ch in (curses.KEY_F2, ord("c")):
+                self.cycle_sort()
+            elif ch in (curses.KEY_F3, ord("/")):
+                self.search_procs()
+            elif ch == curses.KEY_F5:
+                self.tree_mode = not self.tree_mode
                 self.sel = 0
                 self.refresh_procs()
+                self.msg = "tree on" if self.tree_mode else "tree off"
+            elif ch == curses.KEY_F9:
+                self.kill_menu()
             elif ch == ord("e"):
                 self.kill_selected(signal.SIGTERM)
             elif ch == ord("x"):
@@ -589,6 +749,8 @@ class KastTui:
         [self.draw_dash, self.draw_procs, self.draw_graphs,
          self.draw_disks, self.draw_files][self.tab]()
         self.status()
+        if self.show_help:
+            self.draw_help()
         self.s.refresh()
         self.msg = ""
 
@@ -596,6 +758,10 @@ class KastTui:
         self.s.keypad(True)
         try:
             curses.curs_set(0)
+        except curses.error:
+            pass
+        try:
+            curses.mousemask(curses.ALL_MOUSE_EVENTS)
         except curses.error:
             pass
         self.s.timeout(2000)
