@@ -31,6 +31,13 @@
   </provides>
 
   <releases>
+    <release date="2026-10-16" version="2.9.0" type="stable">
+      <description>
+        <ul>
+          <li>kast-tui terminal app plus PNG app icons</li>
+        </ul>
+      </description>
+    </release>
     <release date="2026-10-15" version="2.8.1" type="stable">
       <description>
         <ul>

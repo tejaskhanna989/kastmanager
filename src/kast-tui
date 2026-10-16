@@ -1,0 +1,626 @@
+#!/usr/bin/env python3
+"""Kast Manager TUI 2.9.0 — Tejas Khanna, GPL-3.0-or-later.
+Terminal system monitor: dashboard, processes, graphs, disks, files.
+Standard library only (curses). Keys shown in the bottom bar.
+"""
+import curses
+import os
+import pwd
+import signal
+import subprocess
+import sys
+import time
+
+ACCENT = 1
+DIM = 2
+GOOD = 3
+WARN = 4
+BAD = 5
+
+
+def read_first(path):
+    try:
+        with open(path, errors="replace") as f:
+            return f.read()
+    except OSError:
+        return ""
+
+
+def cpu_times():
+    try:
+        p = read_first("/proc/stat").splitlines()[0].split()[1:]
+        nums = [int(x) for x in p]
+        return sum(nums), nums[3] + nums[4]
+    except (IndexError, ValueError):
+        return 0, 0
+
+
+def mem_info():
+    info = {}
+    for line in read_first("/proc/meminfo").splitlines():
+        if ":" in line:
+            k, v = line.split(":", 1)
+            v = v.strip().split()
+            if v:
+                try:
+                    info[k] = int(v[0]) * 1024
+                except ValueError:
+                    pass
+    return info
+
+
+def fmt_bytes(n):
+    n = float(n)
+    for unit in ("B", "KB", "MB", "GB", "TB"):
+        if n < 1024 or unit == "TB":
+            return f"{n:.1f} {unit}" if unit != "B" else f"{int(n)} B"
+        n /= 1024.0
+    return f"{n:.1f} TB"
+
+
+def fmt_uptime():
+    try:
+        secs = int(float(read_first("/proc/uptime").split()[0]))
+    except (IndexError, ValueError):
+        return "?"
+    d, secs = divmod(secs, 86400)
+    h, secs = divmod(secs, 3600)
+    m, _ = divmod(secs, 60)
+    if d:
+        return f"{d}d {h}h"
+    if h:
+        return f"{h}h {m}m"
+    return f"{m}m"
+
+
+def bar(pct, width):
+    pct = max(0.0, min(100.0, pct))
+    fill = int(width * pct / 100.0)
+    return "[" + "#" * fill + "-" * (width - fill) + "]"
+
+
+def net_totals():
+    tin = tout = 0
+    for line in read_first("/proc/net/dev").splitlines()[2:]:
+        if ":" not in line:
+            continue
+        iface, vals = line.split(":", 1)
+        if iface.strip() == "lo":
+            continue
+        f = vals.split()
+        try:
+            tout += int(f[0])
+            tin += int(f[8])
+        except (IndexError, ValueError):
+            pass
+    return tin, tout
+
+
+def battery():
+    base = "/sys/class/power_supply"
+    try:
+        names = os.listdir(base)
+    except OSError:
+        return None
+    for name in names:
+        if not name.startswith("BAT"):
+            continue
+        cap = read_first(f"{base}/{name}/capacity").strip()
+        st = read_first(f"{base}/{name}/status").strip()
+        try:
+            return int(cap), st or "?"
+        except ValueError:
+            return None
+    return None
+
+
+def proc_list():
+    out = []
+    for pid in filter(str.isdigit, os.listdir("/proc")):
+        try:
+            with open(f"/proc/{pid}/comm", errors="replace") as f:
+                name = f.read().strip() or "?"
+            st = read_first(f"/proc/{pid}/status")
+            uid = -1
+            for line in st.splitlines():
+                if line.startswith("Uid:"):
+                    uid = int(line.split()[1])
+                    break
+            try:
+                user = pwd.getpwuid(uid).pw_name
+            except (KeyError, OverflowError):
+                user = str(uid)
+            with open(f"/proc/{pid}/stat") as f:
+                s = f.read().rsplit(")", 1)[-1].split()
+            utime, stime = int(s[11]), int(s[12])
+            nice = int(s[17])
+            with open(f"/proc/{pid}/statm") as f:
+                rss = int(f.read().split()[1]) * os.sysconf("SC_PAGE_SIZE")
+            out.append({"pid": int(pid), "name": name, "user": user,
+                        "uid": uid, "t": utime + stime, "mem": rss,
+                        "nice": nice})
+        except (OSError, IndexError, ValueError):
+            continue
+    return out
+
+
+def mounts():
+    rows = []
+    skip = {"squashfs", "overlay", "nsfs", "cgroup", "cgroup2", "proc",
+            "sysfs", "devpts", "mqueue", "tracefs", "debugfs", "securityfs",
+            "configfs", "fusectl", "binfmt_misc", "autofs", "sunrpc",
+            "fuse.portal", "fuse.gvfsd-fuse"}
+    try:
+        with open("/proc/mounts") as f:
+            lines = f.read().splitlines()
+    except OSError:
+        return rows
+    for line in lines:
+        parts = line.split()
+        if len(parts) < 3:
+            continue
+        dev, mnt, fstype = parts[0], parts[1], parts[2]
+        if fstype in skip or mnt.startswith("/tmp/.mount_"):
+            continue
+        try:
+            st = os.statvfs(mnt)
+        except OSError:
+            continue
+        if st.f_blocks == 0:
+            continue
+        total = st.f_blocks * st.f_frsize
+        free = st.f_bfree * st.f_frsize
+        rows.append((dev, mnt, fstype, total, total - free))
+    return rows
+
+
+class KastTui:
+    def __init__(self, stdscr):
+        self.s = stdscr
+        self.tab = 0
+        self.tabs = ["Dashboard", "Processes", "Graphs", "Disks", "Files"]
+        self.msg = ""
+        self.sel = 0
+        self.top = 0
+        self.sort_key = "cpu"
+        self.sort_desc = True
+        self.proc_filter = ""
+        self.last_pref = 0.0
+        self.procs = []
+        self.last_total = 0
+        self.last_idle = 0
+        self.have_cpu = False
+        self.ptime = {}
+        self.cpu_hist = [0.0] * 60
+        self.mem_hist = [0.0] * 60
+        self.net_in_last = self.net_out_last = 0
+        self.net_have = False
+        self.fdir = os.path.expanduser("~")
+        self.ffiles = []
+        self.fsel = 0
+        self.ftop = 0
+        self.ffilter = ""
+        if curses.has_colors():
+            curses.start_color()
+            curses.use_default_colors()
+            curses.init_pair(ACCENT, curses.COLOR_CYAN, -1)
+            curses.init_pair(GOOD, curses.COLOR_GREEN, -1)
+            curses.init_pair(WARN, curses.COLOR_YELLOW, -1)
+            curses.init_pair(BAD, curses.COLOR_RED, -1)
+            try:
+                if curses.COLORS >= 16:
+                    curses.init_pair(DIM, 8, -1)
+                else:
+                    curses.init_pair(DIM, curses.COLOR_WHITE, -1)
+            except curses.error:
+                pass
+
+    def color(self, n):
+        try:
+            return curses.color_pair(n)
+        except curses.error:
+            return 0
+
+    def add(self, y, x, text, attr=0, width=None):
+        h, w = self.s.getmaxyx()
+        if y < 0 or y >= h - 1 or x >= w:
+            return
+        if width is not None:
+            text = text[:width]
+        if x + len(text) > w:
+            text = text[: max(0, w - x - 1)]
+        try:
+            self.s.addstr(y, max(0, x), text, attr)
+        except curses.error:
+            pass
+
+    def title(self, text):
+        self.add(0, 2, f"Kast Manager — {text}",
+                 curses.A_BOLD | self.color(ACCENT))
+
+    def status(self):
+        h, w = self.s.getmaxyx()
+        keys = {
+            0: "1-5 tabs · q quit",
+            1: "↑↓/jk move · c sort · / filter · e end · x kill · r renice",
+            2: "1-5 tabs · q quit",
+            3: "1-5 tabs · q quit",
+            4: "↑↓ move · enter open · / filter · backspace up",
+        }[self.tab]
+        self.add(h - 1, 0, " " * (w - 1))
+        self.add(h - 1, 2, keys, self.color(DIM))
+        if self.msg:
+            self.add(h - 1, w - len(self.msg) - 2, self.msg,
+                     self.color(WARN))
+
+    def cpu_pct(self):
+        total, idle = cpu_times()
+        pct = 0.0
+        if self.have_cpu and total > self.last_total:
+            dt = total - self.last_total
+            di = max(0, idle - self.last_idle)
+            pct = max(0.0, min(100.0, 100.0 * (1.0 - di / dt)))
+        self.last_total, self.last_idle = total, idle
+        self.have_cpu = True
+        return pct
+
+    def draw_dash(self):
+        h, w = self.s.getmaxyx()
+        bw = min(46, (w - 8) // 2)
+        pct = self.cpu_pct()
+        mem = mem_info()
+        mtotal = mem.get("MemTotal", 1)
+        mfree = mem.get("MemAvailable", 0)
+        mempct = 100.0 * (mtotal - mfree) / mtotal if mtotal else 0
+        cards = [
+            ("CPU", f"{pct:.1f}%", pct,
+             f"{os.cpu_count() or '?'} logical CPUs"),
+            ("Memory", f"{mempct:.1f}%",
+             mempct, f"{fmt_bytes(mtotal - mfree)} of {fmt_bytes(mtotal)}"),
+        ]
+        try:
+            with open("/proc/meminfo") as f:
+                st = f.read()
+            sw_t = sw_f = 0
+            for line in st.splitlines():
+                if line.startswith("SwapTotal:"):
+                    sw_t = int(line.split()[1]) * 1024
+                elif line.startswith("SwapFree:"):
+                    sw_f = int(line.split()[1]) * 1024
+            swp = 100.0 * (sw_t - sw_f) / sw_t if sw_t else 0
+        except (OSError, ValueError):
+            sw_t, sw_f, swp = 0, 0, 0.0
+        cards.append(("Swap", f"{swp:.1f}%", swp,
+                      f"{fmt_bytes(sw_t - sw_f)} of {fmt_bytes(sw_t)}"))
+        try:
+            lavg = read_first("/proc/loadavg").split()[:3]
+            cards.append(("Load", lavg[0], min(100.0, float(lavg[0]) /
+                         max(1, os.cpu_count() or 1) * 100),
+                         " ".join(lavg)))
+        except (IndexError, ValueError):
+            cards.append(("Load", "?", 0, ""))
+        cards.append(("Uptime", fmt_uptime(), 0, "since boot"))
+        try:
+            npids = sum(1 for p in os.listdir("/proc") if p.isdigit())
+        except OSError:
+            npids = 0
+        cards.append(("Processes", str(npids), 0, "total tasks"))
+        y = 2
+        for i in range(0, len(cards), 2):
+            for j, (cap, val, pc, det) in enumerate(cards[i:i + 2]):
+                x = 2 + j * (bw + 2)
+                self.add(y, x, cap, self.color(DIM))
+                self.add(y + 1, x, val, curses.A_BOLD | self.color(ACCENT))
+                self.add(y + 2, x, bar(pc, bw - 2), self.color(GOOD))
+                self.add(y + 3, x, det, self.color(DIM))
+            y += 5
+            if y + 5 >= h - 1:
+                break
+
+    def refresh_procs(self):
+        keep = self.procs[self.sel]["pid"] if self.procs and \
+            0 <= self.sel < len(self.procs) else -1
+        self.enumerate_procs()
+        if self.proc_filter:
+            q = self.proc_filter.lower()
+            self.procs = [p for p in self.procs
+                          if q in p["name"].lower() or q in str(p["pid"])]
+        rev = self.sort_desc
+        k = self.sort_key
+        self.procs.sort(key=lambda p: p[k] if k != "name" else p[k].lower(),
+                        reverse=rev)
+        self.last_pref = time.time()
+        if keep > 0:
+            for i, p in enumerate(self.procs):
+                if p["pid"] == keep:
+                    self.sel = i
+                    break
+            else:
+                self.sel = 0
+
+    def enumerate_procs(self):
+        total, _ = cpu_times()
+        plist = proc_list()
+        out = []
+        for p in plist:
+            pt = p.pop("t")
+            prev = self.ptime.get(p["pid"])
+            pct = 0.0
+            if prev is not None and total > self.last_total:
+                dt = total - self.last_total
+                pct = max(0.0, min(100.0 * os.cpu_count(), 100.0 *
+                                   max(0, pt - prev) / dt)) if dt else 0.0
+            self.ptime[p["pid"]] = pt
+            p["cpu"] = pct
+            out.append(p)
+        self.last_total = total
+        self.procs = out
+
+    def draw_procs(self):
+        h, w = self.s.getmaxyx()
+        if not self.procs or time.time() - self.last_pref > 3:
+            self.refresh_procs()
+        self.add(2, 2, f"{'Process':<30}{'User':<12}{'CPU%':>7}  "
+                      f"{'Memory':>10}  {'PID':>7}",
+                 curses.A_BOLD | self.color(ACCENT))
+        y0, rows = 3, h - 5
+        n = len(self.procs)
+        if self.sel >= n:
+            self.sel = max(0, n - 1)
+        if self.sel < self.top:
+            self.top = self.sel
+        if self.sel >= self.top + rows:
+            self.top = self.sel - rows + 1
+        for i in range(self.top, min(n, self.top + rows)):
+            p = self.procs[i]
+            line = (f"{p['name'][:28]:<30}{p['user'][:10]:<12}"
+                    f"{p['cpu']:>6.1f}%  {fmt_bytes(p['mem']):>10}  "
+                    f"{p['pid']:>7}")
+            attr = curses.A_REVERSE if i == self.sel else 0
+            self.add(y0 + i - self.top, 2, line, attr, w - 4)
+
+    def spark(self, hist, width):
+        chars = " _.-+=*#%@"
+        mx = max(hist) or 1.0
+        out = ""
+        for v in hist[-width:]:
+            out += chars[min(len(chars) - 1, int(v / mx * (len(chars) - 1)))]
+        return out
+
+    def draw_graphs(self):
+        h, w = self.s.getmaxyx()
+        pct = self.cpu_pct()
+        mem = mem_info()
+        mtotal = mem.get("MemTotal", 1)
+        mempct = 100.0 * (mtotal - mem.get("MemAvailable", 0)) / mtotal \
+            if mtotal else 0
+        self.cpu_hist.append(pct)
+        self.cpu_hist.pop(0)
+        self.mem_hist.append(mempct)
+        self.mem_hist.pop(0)
+        self.add(2, 2, f"CPU {pct:.1f}%", curses.A_BOLD | self.color(ACCENT))
+        self.add(3, 2, self.spark(self.cpu_hist, w - 4), self.color(GOOD))
+        self.add(5, 2, f"Memory {mempct:.1f}%",
+                 curses.A_BOLD | self.color(ACCENT))
+        self.add(6, 2, self.spark(self.mem_hist, w - 4), self.color(GOOD))
+        self.add(8, 2, "Graphs update live while this tab is open.",
+                 self.color(DIM))
+
+    def draw_disks(self):
+        h, w = self.s.getmaxyx()
+        self.add(2, 2, f"{'Device':<18}{'Mount':<24}{'Used':>22}",
+                 curses.A_BOLD | self.color(ACCENT))
+        y = 3
+        for dev, mnt, _fs, total, used in mounts():
+            if y >= h - 1:
+                break
+            pct = 100.0 * used / total if total else 0
+            self.add(y, 2, f"{dev[:16]:<18}{mnt[:22]:<24}",
+                     0, w - 30)
+            self.add(y + 1, 4, bar(pct, 20) +
+                     f" {fmt_bytes(used)} of {fmt_bytes(total)}",
+                     self.color(GOOD))
+            y += 2
+
+    def refresh_files(self):
+        try:
+            names = sorted(os.listdir(self.fdir),
+                           key=lambda n: (not os.path.isdir(
+                               os.path.join(self.fdir, n)), n.lower()))
+        except OSError as e:
+            self.msg = str(e)
+            names = []
+        if self.ffilter:
+            q = self.ffilter.lower()
+            names = [n for n in names if q in n.lower()]
+        self.ffiles = names
+        self.fsel = min(self.fsel, max(0, len(names) - 1))
+
+    def draw_files(self):
+        h, w = self.s.getmaxyx()
+        self.add(2, 2, self.fdir + f"  [filter: {self.ffilter}]",
+                 curses.A_BOLD | self.color(ACCENT))
+        y0, rows = 3, h - 5
+        n = len(self.ffiles)
+        if self.fsel >= n:
+            self.fsel = max(0, n - 1)
+        if self.fsel < self.ftop:
+            self.ftop = self.fsel
+        if self.fsel >= self.ftop + rows:
+            self.ftop = self.fsel - rows + 1
+        for i in range(self.ftop, min(n, self.ftop + rows)):
+            name = self.ffiles[i]
+            full = os.path.join(self.fdir, name)
+            mark = "/" if os.path.isdir(full) else ""
+            try:
+                sz = "" if os.path.isdir(full) else fmt_bytes(
+                    os.path.getsize(full))
+            except OSError:
+                sz = "?"
+            line = f"{name}{mark}"
+            attr = curses.A_REVERSE if i == self.fsel else 0
+            self.add(y0 + i - self.ftop, 2, line, attr, w - 14)
+            self.add(y0 + i - self.ftop, w - 12, sz, self.color(DIM))
+
+    def prompt(self, text):
+        h, w = self.s.getmaxyx()
+        self.add(h - 1, 2, text + ": ")
+        curses.echo()
+        try:
+            out = self.s.getstr(h - 1, 2 + len(text) + 2, 60).decode()
+        except (curses.error, ValueError):
+            out = ""
+        curses.noecho()
+        return out.strip()
+
+    def kill_selected(self, sig):
+        if self.tab != 1 or not self.procs:
+            return
+        p = self.procs[self.sel]
+        try:
+            if p["uid"] == os.geteuid():
+                os.kill(p["pid"], sig)
+                self.msg = f"sent {sig} to {p['pid']}"
+            else:
+                r = subprocess.run(
+                    ["pkexec", "kill", f"-{sig}", str(p["pid"])],
+                    capture_output=True, timeout=60)
+                self.msg = "done" if r.returncode == 0 else "pkexec failed"
+        except (OSError, subprocess.SubprocessError) as e:
+            self.msg = str(e)[:40]
+        time.sleep(0.4)
+        self.refresh_procs()
+
+    def renice_selected(self):
+        if self.tab != 1 or not self.procs:
+            return
+        p = self.procs[self.sel]
+        val = self.prompt(f"nice for {p['pid']} (-20..19)")
+        try:
+            nice = max(-20, min(19, int(val)))
+        except ValueError:
+            self.msg = "not a number"
+            return
+        try:
+            if p["uid"] == os.geteuid():
+                os.setpriority(os.PRIO_PROCESS, p["pid"], nice)
+            else:
+                subprocess.run(["pkexec", "renice", "-n", str(nice),
+                                "-p", str(p["pid"])], check=False,
+                               timeout=60)
+            self.msg = f"nice {nice}"
+        except OSError as e:
+            self.msg = str(e)[:40]
+        self.refresh_procs()
+
+    def open_selected_file(self):
+        if not self.ffiles:
+            return
+        full = os.path.join(self.fdir, self.ffiles[self.fsel])
+        if os.path.isdir(full):
+            self.fdir = full
+            self.fsel = self.ftop = 0
+            self.refresh_files()
+        else:
+            subprocess.Popen(["xdg-open", full],
+                             stdout=subprocess.DEVNULL,
+                             stderr=subprocess.DEVNULL)
+
+    def handle(self, ch):
+        if ch in (ord("q"), 27):
+            if self.tab == 0:
+                return False
+            self.tab = 0
+            return True
+        if ord("1") <= ch <= ord("5"):
+            self.tab = ch - ord("1")
+            if self.tab == 4:
+                self.refresh_files()
+            if self.tab == 1:
+                self.refresh_procs()
+            return True
+        if self.tab == 1:
+            n = len(self.procs)
+            if ch in (curses.KEY_UP, ord("k")):
+                self.sel = max(0, self.sel - 1)
+            elif ch in (curses.KEY_DOWN, ord("j")):
+                self.sel = min(max(0, n - 1), self.sel + 1)
+            elif ch == ord("c"):
+                order = ["cpu", "mem", "pid", "name"]
+                i = order.index(self.sort_key)
+                if self.sort_desc and i < len(order) - 1:
+                    self.sort_key = order[i + 1]
+                    self.sort_desc = self.sort_key in ("cpu", "mem")
+                else:
+                    self.sort_desc = not self.sort_desc
+                self.refresh_procs()
+            elif ch == ord("/"):
+                self.proc_filter = self.prompt("filter")
+                self.sel = 0
+                self.refresh_procs()
+            elif ch == ord("e"):
+                self.kill_selected(signal.SIGTERM)
+            elif ch == ord("x"):
+                self.kill_selected(signal.SIGKILL)
+            elif ch == ord("r"):
+                self.renice_selected()
+        elif self.tab == 4:
+            n = len(self.ffiles)
+            if ch in (curses.KEY_UP,):
+                self.fsel = max(0, self.fsel - 1)
+            elif ch in (curses.KEY_DOWN,):
+                self.fsel = min(max(0, n - 1), self.fsel + 1)
+            elif ch in (curses.KEY_ENTER, ord("\n"), ord("\r")):
+                self.open_selected_file()
+            elif ch in (curses.KEY_BACKSPACE, 127, 8):
+                parent = os.path.dirname(self.fdir.rstrip("/")) or "/"
+                self.fdir = parent
+                self.fsel = self.ftop = 0
+                self.refresh_files()
+            elif ch == ord("/"):
+                self.ffilter = self.prompt("filter")
+                self.fsel = self.ftop = 0
+                self.refresh_files()
+        return True
+
+    def draw(self):
+        self.s.erase()
+        self.title(self.tabs[self.tab])
+        [self.draw_dash, self.draw_procs, self.draw_graphs,
+         self.draw_disks, self.draw_files][self.tab]()
+        self.status()
+        self.s.refresh()
+        self.msg = ""
+
+    def run(self):
+        self.s.keypad(True)
+        try:
+            curses.curs_set(0)
+        except curses.error:
+            pass
+        self.s.timeout(2000)
+        self.refresh_procs()
+        self.refresh_files()
+        self.draw()
+        while True:
+            try:
+                ch = self.s.getch()
+            except KeyboardInterrupt:
+                break
+            if ch == -1:
+                self.draw()
+                continue
+            if not self.handle(ch):
+                break
+            self.draw()
+
+
+def main(stdscr):
+    KastTui(stdscr).run()
+
+
+if __name__ == "__main__":
+    if len(sys.argv) > 1 and sys.argv[1] in ("-h", "--help"):
+        print("kast-tui: terminal system monitor (1-5 tabs, q quits)")
+        sys.exit(0)
+    curses.wrapper(main)

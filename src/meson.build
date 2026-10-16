@@ -29,3 +29,8 @@ executable('kast-manager',
   dependencies: [gtk4, libadwaita, libgtop, glib, gio, gmodule, math],
   install: true,
 )
+
+install_data('kast-tui',
+  install_dir: get_option('bindir'),
+  install_mode: 'rwxr-xr-x',
+)

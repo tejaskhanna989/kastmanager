@@ -1,5 +1,5 @@
 Name:           kast-manager
-Version:        2.8.1
+Version:        2.9.0
 Release:        1%{?dist}
 Summary:        Processes, resources, disks and files in one dark place
 License:        GPL-3.0-or-later
@@ -43,6 +43,8 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/*.desktop || :
 %{_datadir}/icons/hicolor/
 
 %changelog
+* Fri Oct 16 2026 Tejas Khanna <khannatejas989@gmail.com> - 2.9.0-1
+- kast-tui terminal app, PNG icons.
 * Wed Oct 14 2026 Tejas Khanna <khannatejas989@gmail.com> - 2.8.1-1
 - Redesigned donate dialog.
 * Wed Oct 14 2026 Tejas Khanna <khannatejas989@gmail.com> - 2.8.0-1
