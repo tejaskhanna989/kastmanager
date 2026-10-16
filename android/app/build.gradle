@@ -11,8 +11,8 @@ android {
         applicationId = "io.github.tejaskhanna989.kastmanager"
         minSdk = 26
         targetSdk = 34
-        versionCode = 1
-        versionName = "2.8.0"
+        versionCode = 3
+        versionName = "2.9.2"
     }
 
     buildTypes {
